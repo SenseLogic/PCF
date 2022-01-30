@@ -23,10 +23,10 @@ Point cloud serialization library.
 
 ## Limitations
 
-* The point order is not kept if the components are discretized.
 * The first three components are expected to :
   * be the point coordinates;
   * use the same compression method.
+* The point order is not kept if the coordinate components are discretized.
 
 ## Author
 
