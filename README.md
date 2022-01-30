@@ -1,4 +1,4 @@
-![](https://github.com/senselogic/BIF/blob/master/LOGO/bif.png)
+![](https://github.com/senselogic/PCF/blob/master/LOGO/pcf.png)
 
 # PCF : Point Cloud Format
 
