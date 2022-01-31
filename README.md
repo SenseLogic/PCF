@@ -26,7 +26,7 @@ Point cloud serialization library.
 * The first three components are expected to :
   * be the point coordinates;
   * use the same compression method.
-* The point order is not kept if the coordinate components are discretized.
+* The point order is not kept when the coordinate components are discretized.
 
 ## Author
 
