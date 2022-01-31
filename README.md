@@ -7,8 +7,8 @@ Point cloud serialization library.
 ## Goals
 
 * Simple
-* Compact
 * Complete
+* Compressible
 
 ## Features
 
