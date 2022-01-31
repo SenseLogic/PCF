@@ -4,6 +4,6 @@ module pcf.compression;
 
 enum COMPRESSION : ushort
 {
-    None,
-    Discretization
+    None = 0,
+    Discretization = 1
 }

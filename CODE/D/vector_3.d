@@ -21,9 +21,9 @@ struct VECTOR_3
         FILE file
         )
     {
-        file.WriteReal( X );
-        file.WriteReal( Y );
-        file.WriteReal( Z );
+        file.WriteReal64( X );
+        file.WriteReal64( Y );
+        file.WriteReal64( Z );
     }
 
     // -- OPERATIONS
@@ -32,9 +32,9 @@ struct VECTOR_3
         FILE file
         )
     {
-        file.ReadReal( X );
-        file.ReadReal( Y );
-        file.ReadReal( Z );
+        file.ReadReal64( X );
+        file.ReadReal64( Y );
+        file.ReadReal64( Z );
     }
 
     // ~~

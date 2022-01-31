@@ -46,9 +46,9 @@ class BUFFER
         )
     {
         file.WriteScalarArray( ByteArray );
-        file.WriteNatural( ComponentBitCount );
-        file.WriteNatural( ComponentMinimumValue );
-        file.WriteNatural( BitCount );
+        file.WriteNatural16( ComponentBitCount );
+        file.WriteNatural64( ComponentMinimumValue );
+        file.WriteNatural64( BitCount );
     }
 
     // -- OPERATIONS
@@ -58,9 +58,9 @@ class BUFFER
         )
     {
         file.ReadScalarArray( ByteArray );
-        file.ReadNatural( ComponentBitCount );
-        file.ReadNatural( ComponentMinimumValue );
-        file.ReadNatural( BitCount );
+        file.ReadNatural16( ComponentBitCount );
+        file.ReadNatural64( ComponentMinimumValue );
+        file.ReadNatural64( BitCount );
 
         ReadBitIndex = 0;
     }

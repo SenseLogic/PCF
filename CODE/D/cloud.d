@@ -6,6 +6,7 @@ import pcf.cell;
 import pcf.component;
 import pcf.compression;
 import pcf.file;
+import pcf.property;
 import pcf.scalar;
 import pcf.scan;
 import pcf.vector_3;
@@ -18,7 +19,7 @@ class CLOUD
 {
     // -- ATTRIBUTES
 
-    ulong
+    uint
         Version;
     string
         Name;
@@ -28,8 +29,8 @@ class CLOUD
         IsCompressed;
     COMPONENT[]
         ComponentArray;
-    string
-        Data;
+    PROPERTY[]
+        PropertyArray;
     SCAN[]
         ScanArray;
 
@@ -39,12 +40,12 @@ class CLOUD
         FILE file
         )
     {
-        file.WriteNatural( Version );
+        file.WriteNatural32( Version );
         file.WriteText( Name );
         file.WriteBoolean( IsLeftHanded );
         file.WriteBoolean( IsZUp );
         file.WriteObjectArray( ComponentArray );
-        file.WriteText( Data );
+        file.WriteObjectArray( PropertyArray );
         file.WriteObjectArray( ScanArray );
     }
 
@@ -116,12 +117,12 @@ class CLOUD
         FILE file
         )
     {
-        file.ReadNatural( Version );
+        file.ReadNatural32( Version );
         file.ReadText( Name );
         file.ReadBoolean( IsLeftHanded );
         file.ReadBoolean( IsZUp );
         file.ReadObjectArray( ComponentArray );
-        file.ReadText( Data );
+        file.ReadObjectArray( PropertyArray );
         file.ReadObjectArray( ScanArray );
     }
 

@@ -45,7 +45,7 @@ class CELL
         FILE file
         )
     {
-        file.WriteNatural( PointCount );
+        file.WriteNatural64( PointCount );
         file.WriteValue( PositionVector );
         file.WriteObjectArray( BufferArray );
     }
@@ -56,7 +56,7 @@ class CELL
         FILE file
         )
     {
-        file.ReadNatural( PointCount );
+        file.ReadNatural64( PointCount );
         file.ReadValue( PositionVector );
         file.ReadObjectArray( BufferArray );
     }

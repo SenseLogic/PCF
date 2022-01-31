@@ -54,11 +54,11 @@ class COMPONENT
         )
     {
         file.WriteText( Name );
-        file.WriteReal( Precision );
-        file.WriteNatural( BitCount );
-        file.WriteNatural( Compression );
-        file.WriteReal( MinimumValue );
-        file.WriteReal( OneOverPrecision );
+        file.WriteReal64( Precision );
+        file.WriteNatural16( BitCount );
+        file.WriteNatural16( Compression );
+        file.WriteReal64( MinimumValue );
+        file.WriteReal64( OneOverPrecision );
     }
 
     // -- OPERATIONS
@@ -68,10 +68,10 @@ class COMPONENT
         )
     {
         file.ReadText( Name );
-        file.ReadReal( Precision );
-        file.ReadNatural( BitCount );
-        file.ReadNatural( Compression );
-        file.ReadReal( MinimumValue );
-        file.ReadReal( OneOverPrecision );
+        file.ReadReal64( Precision );
+        file.ReadNatural16( BitCount );
+        file.ReadNatural16( Compression );
+        file.ReadReal64( MinimumValue );
+        file.ReadReal64( OneOverPrecision );
     }
 }

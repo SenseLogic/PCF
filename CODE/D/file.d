@@ -47,7 +47,7 @@ class FILE
 
     // ~~
 
-    void WriteNatural(
+    void WriteNatural8(
         ubyte natural
         )
     {
@@ -57,37 +57,46 @@ class FILE
 
     // ~~
 
-    void WriteNatural(
+    void WriteNatural16(
         ushort natural
         )
     {
-        Scalar.Natural16 = natural;
-        File_.rawWrite( Scalar.TwoByteArray );
+        WriteNatural64( ulong( natural ) );
     }
 
     // ~~
 
-    void WriteNatural(
+    void WriteNatural32(
         uint natural
         )
     {
-        Scalar.Natural32 = natural;
-        File_.rawWrite( Scalar.FourByteArray );
+        WriteNatural64( ulong( natural ) );
     }
 
     // ~~
 
-    void WriteNatural(
+    void WriteNatural64(
         ulong natural
         )
     {
-        Scalar.Natural64 = natural;
-        File_.rawWrite( Scalar.EightByteArray );
+        ulong
+            remaining_natural;
+
+        remaining_natural = natural;
+
+        while ( remaining_natural > 127 )
+        {
+            WriteNatural8( ubyte( 128 | ( remaining_natural & 127 ) ) );
+
+            remaining_natural >>= 7;
+        }
+
+        WriteNatural8( ubyte( remaining_natural & 127 ) );
     }
 
     // ~~
 
-    void WriteInteger(
+    void WriteInteger8(
         byte integer
         )
     {
@@ -97,37 +106,44 @@ class FILE
 
     // ~~
 
-    void WriteInteger(
+    void WriteInteger16(
         short integer
         )
     {
-        Scalar.Integer16 = integer;
-        File_.rawWrite( Scalar.TwoByteArray );
+        WriteInteger64( long( integer ) );
     }
 
     // ~~
 
-    void WriteInteger(
+    void WriteInteger32(
         int integer
         )
     {
-        Scalar.Integer32 = integer;
-        File_.rawWrite( Scalar.FourByteArray );
+        WriteInteger64( long( integer ) );
     }
 
     // ~~
 
-    void WriteInteger(
+    void WriteInteger64(
         long integer
         )
     {
-        Scalar.Integer64 = integer;
-        File_.rawWrite( Scalar.EightByteArray );
+        ulong
+            natural;
+
+        natural = ( ulong( integer ) & 0x7FFFFFFFFFFFFFFF ) << 1;
+
+        if ( integer < 0 )
+        {
+            natural = ~natural | 1;
+        }
+
+        WriteNatural64( natural );
     }
 
     // ~~
 
-    void WriteReal(
+    void WriteReal32(
         float real_
         )
     {
@@ -137,7 +153,7 @@ class FILE
 
     // ~~
 
-    void WriteReal(
+    void WriteReal64(
         double real_
         )
     {
@@ -169,7 +185,7 @@ class FILE
         string text
         )
     {
-        WriteNatural( text.length );
+        WriteNatural64( text.length );
 
         if ( text.length > 0 )
         {
@@ -183,7 +199,7 @@ class FILE
         _SCALAR_[] scalar_array
         )
     {
-        WriteNatural( scalar_array.length );
+        WriteNatural64( scalar_array.length );
 
         if ( scalar_array.length > 0 )
         {
@@ -197,7 +213,7 @@ class FILE
         _VALUE_[] value_array
         )
     {
-        WriteNatural( value_array.length );
+        WriteNatural64( value_array.length );
 
         foreach ( value_index; 0 .. value_array.length )
         {
@@ -211,7 +227,7 @@ class FILE
         _OBJECT_[] object_array
         )
     {
-        WriteNatural( object_array.length );
+        WriteNatural64( object_array.length );
 
         foreach ( object_index; 0 .. object_array.length )
         {
@@ -225,7 +241,7 @@ class FILE
         _OBJECT_[ _KEY_ ] object_map
         )
     {
-        WriteNatural( object_map.length );
+        WriteNatural64( object_map.length );
 
         foreach ( entry; object_map.byKeyValue() )
         {
@@ -246,7 +262,7 @@ class FILE
 
     // ~~
 
-    void ReadNatural(
+    void ReadNatural8(
         ref ubyte natural
         )
     {
@@ -256,37 +272,57 @@ class FILE
 
     // ~~
 
-    void ReadNatural(
+    void ReadNatural16(
         ref ushort natural
         )
     {
-        File_.rawRead( Scalar.TwoByteArray );
-        natural = Scalar.Natural16;
+        ulong
+            read_natural;
+
+        ReadNatural64( read_natural );
+        natural = cast( ushort )( read_natural );
     }
 
     // ~~
 
-    void ReadNatural(
+    void ReadNatural32(
         ref uint natural
         )
     {
-        File_.rawRead( Scalar.FourByteArray );
-        natural = Scalar.Natural32;
+        ulong
+            read_natural;
+
+        ReadNatural64( read_natural );
+        natural = cast( uint )( read_natural );
     }
 
     // ~~
 
-    void ReadNatural(
+    void ReadNatural64(
         ref ulong natural
         )
     {
-        File_.rawRead( Scalar.EightByteArray );
-        natural = Scalar.Natural64;
+        uint
+            bit_count;
+        ulong
+            byte_;
+
+        natural = 0;
+        bit_count = 0;
+
+        do
+        {
+            File_.rawRead( Scalar.OneByteArray );
+            byte_ = ulong( Scalar.Natural8 );
+            natural |= ( byte_ & 127 ) << bit_count;
+            bit_count += 7;
+        }
+        while ( ( byte_ & 128 ) != 0 );
     }
 
     // ~~
 
-    void ReadInteger(
+    void ReadInteger8(
         ref byte integer
         )
     {
@@ -296,37 +332,54 @@ class FILE
 
     // ~~
 
-    void ReadInteger(
+    void ReadInteger16(
         ref short integer
         )
     {
-        File_.rawRead( Scalar.TwoByteArray );
-        integer = Scalar.Integer16;
+        long
+            read_integer;
+
+        ReadInteger64( read_integer );
+        integer = cast( short )( read_integer );
     }
 
     // ~~
 
-    void ReadInteger(
+    void ReadInteger32(
         ref int integer
         )
     {
-        File_.rawRead( Scalar.FourByteArray );
-        integer = Scalar.Integer32;
+        long
+            read_integer;
+
+        ReadInteger64( read_integer );
+        integer = cast( int )( read_integer );
     }
 
     // ~~
 
-    void ReadInteger(
+    void ReadInteger64(
         ref long integer
         )
     {
-        File_.rawRead( Scalar.EightByteArray );
-        integer = Scalar.Integer64;
+        ulong
+            natural;
+
+        ReadNatural64( natural );
+
+        if ( ( natural & 1 ) == 0 )
+        {
+            integer = long( natural >> 1 );
+        }
+        else
+        {
+            integer = long( ~( natural >> 1 ) | 0x8000000000000000 );
+        }
     }
 
     // ~~
 
-    void ReadReal(
+    void ReadReal32(
         ref float real_
         )
     {
@@ -336,7 +389,7 @@ class FILE
 
     // ~~
 
-    void ReadReal(
+    void ReadReal64(
         ref double real_
         )
     {
@@ -378,10 +431,13 @@ class FILE
         ref string text
         )
     {
-        File_.rawRead( Scalar.EightByteArray );
-        text.length = Scalar.Natural64;
+        ulong
+            character_count;
 
-        if ( text.length > 0 )
+        ReadNatural64( character_count );
+        text.length = character_count;
+
+        if ( character_count > 0 )
         {
             File_.rawRead( cast( ubyte[] )text );
         }
@@ -393,10 +449,13 @@ class FILE
         ref _SCALAR_[] scalar_array
         )
     {
-        File_.rawRead( Scalar.EightByteArray );
-        scalar_array.length = Scalar.Natural64;
+        ulong
+            scalar_count;
 
-        if ( scalar_array.length > 0 )
+        ReadNatural64( scalar_count );
+        scalar_array.length = scalar_count;
+
+        if ( scalar_count > 0 )
         {
             File_.rawRead( scalar_array );
         }
@@ -408,10 +467,13 @@ class FILE
         ref _VALUE_[] value_array
         )
     {
-        File_.rawRead( Scalar.EightByteArray );
-        value_array.length = Scalar.Natural64;
+        ulong
+            value_count;
 
-        foreach ( value_index; 0 .. value_array.length )
+        ReadNatural64( value_count );
+        value_array.length = value_count;
+
+        foreach ( value_index; 0 .. value_count )
         {
             value_array[ value_index ].Read( this );
         }
@@ -423,10 +485,13 @@ class FILE
         ref _OBJECT_[] object_array
         )
     {
-        File_.rawRead( Scalar.EightByteArray );
-        object_array.length = Scalar.Natural64;
+        ulong
+            object_count;
 
-        foreach ( object_index; 0 .. object_array.length )
+        ReadNatural64( object_count );
+        object_array.length = object_count;
+
+        foreach ( object_index; 0 .. object_count )
         {
             object_array[ object_index ] = new _OBJECT_();
             object_array[ object_index ].Read( this );
@@ -446,8 +511,7 @@ class FILE
         _OBJECT_
             object;
 
-        File_.rawRead( Scalar.EightByteArray );
-        object_count = Scalar.Natural64;
+        ReadNatural64( object_count );
         object_map = null;
 
         foreach ( object_index; 0 .. object_count )

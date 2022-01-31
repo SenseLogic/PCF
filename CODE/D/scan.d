@@ -7,6 +7,7 @@ import pcf.component;
 import pcf.compression;
 import pcf.file;
 import pcf.image;
+import pcf.property;
 import pcf.vector_3;
 import std.math: floor;
 
@@ -27,8 +28,8 @@ class SCAN
         XAxisVector,
         YAxisVector,
         ZAxisVector;
-    string
-        Data;
+    PROPERTY[]
+        PropertyArray;
     IMAGE[]
         ImageArray;
     CELL[ VECTOR_3 ]
@@ -41,14 +42,14 @@ class SCAN
         )
     {
         file.WriteText( Name );
-        file.WriteNatural( ColumnCount );
-        file.WriteNatural( RowCount );
-        file.WriteNatural( PointCount );
+        file.WriteNatural64( ColumnCount );
+        file.WriteNatural64( RowCount );
+        file.WriteNatural64( PointCount );
         file.WriteValue( PositionVector );
         file.WriteValue( XAxisVector );
         file.WriteValue( YAxisVector );
         file.WriteValue( ZAxisVector );
-        file.WriteText( Data );
+        file.WriteObjectArray( PropertyArray );
         file.WriteObjectArray( ImageArray );
         file.WriteObjectByValueMap!( CELL, VECTOR_3 )( CellMap );
     }
@@ -71,14 +72,14 @@ class SCAN
         )
     {
         file.ReadText( Name );
-        file.ReadNatural( ColumnCount );
-        file.ReadNatural( RowCount );
-        file.ReadNatural( PointCount );
+        file.ReadNatural64( ColumnCount );
+        file.ReadNatural64( RowCount );
+        file.ReadNatural64( PointCount );
         file.ReadValue( PositionVector );
         file.ReadValue( XAxisVector );
         file.ReadValue( YAxisVector );
         file.ReadValue( ZAxisVector );
-        file.ReadText( Data );
+        file.ReadObjectArray( PropertyArray );
         file.ReadObjectArray( ImageArray );
         file.ReadObjectByValueMap!( CELL, VECTOR_3 )( CellMap );
     }

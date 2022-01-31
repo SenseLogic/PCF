@@ -1,24 +1,19 @@
-module pcf.image;
+module pcf.property;
 
 // -- IMPORTS
 
 import pcf.file;
-import pcf.property;
 
 // -- TYPES
 
-class IMAGE
+class PROPERTY
 {
     // -- ATTRIBUTES
 
     string
         Name,
-        Role,
+        Value,
         Format;
-    PROPERTY[]
-        PropertyArray;
-    ubyte[]
-        ByteArray;
 
     // -- INQUIRIES
 
@@ -27,10 +22,8 @@ class IMAGE
         )
     {
         file.WriteText( Name );
-        file.WriteText( Role );
+        file.WriteText( Value );
         file.WriteText( Format );
-        file.WriteObjectArray( PropertyArray );
-        file.WriteScalarArray( ByteArray );
     }
 
     // -- OPERATIONS
@@ -40,9 +33,7 @@ class IMAGE
         )
     {
         file.ReadText( Name );
-        file.ReadText( Role );
+        file.ReadText( Value );
         file.ReadText( Format );
-        file.ReadObjectArray( PropertyArray );
-        file.ReadScalarArray( ByteArray );
     }
 }
