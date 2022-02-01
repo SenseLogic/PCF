@@ -4,8 +4,8 @@ module pcf.buffer;
 
 import pcf.component;
 import pcf.compression;
-import pcf.stream;
 import pcf.scalar;
+import pcf.stream;
 import std.conv: to;
 
 // -- TYPES

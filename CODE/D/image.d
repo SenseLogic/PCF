@@ -2,8 +2,8 @@ module pcf.image;
 
 // -- IMPORTS
 
-import pcf.stream;
 import pcf.property;
+import pcf.stream;
 
 // -- TYPES
 

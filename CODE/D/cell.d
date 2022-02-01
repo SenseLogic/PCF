@@ -3,8 +3,8 @@ module pcf.cell;
 // -- IMPORTS
 
 import pcf.component;
-import pcf.stream;
 import pcf.buffer;
+import pcf.stream;
 import pcf.vector_3;
 
 // -- TYPES

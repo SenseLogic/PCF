@@ -5,9 +5,9 @@ module pcf.scan;
 import pcf.cell;
 import pcf.component;
 import pcf.compression;
-import pcf.stream;
 import pcf.image;
 import pcf.property;
+import pcf.stream;
 import pcf.vector_3;
 import std.math: floor;
 
