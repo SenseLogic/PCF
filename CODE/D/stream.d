@@ -1,14 +1,15 @@
-module pcf.file;
+module pcf.stream;
 
 // -- IMPORTS
 
+import pcf.base;
 import pcf.scalar;
 import std.stdio : File;
 import std.string: split, stripRight;
 
 // -- TYPES
 
-class FILE
+class STREAM
 {
     // -- ATTRIBUTES
 

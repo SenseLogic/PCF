@@ -1,85 +1,90 @@
-module pcf.cell;
+#pragma once
 
 // -- IMPORTS
 
-import pcf.component;
-import pcf.stream;
-import pcf.buffer;
-import pcf.vector_3;
+#include "base.hpp"
+#include "component.hpp"
+#include "stream.hpp"
+#include "buffer.hpp"
+#include "link_.hpp"
+#include "object.hpp"
+#include "vector_.hpp"
+#include "vector_3.hpp"
 
 // -- TYPES
 
-class CELL
+struct CELL :
+    public OBJECT
 {
     // -- ATTRIBUTES
 
-    ulong
+    uint64_t
         PointCount;
     VECTOR_3
         PositionVector;
-    BUFFER[]
-        BufferArray;
+    VECTOR_<LINK_<BUFFER>>
+        BufferVector;
 
     // -- CONSTRUCTORS
 
-    this(
+    CELL(
         )
     {
     }
 
     // ~~
 
-    this(
-        COMPONENT[] component_array
+    CELL(
+        const VECTOR_<LINK_<COMPONENT>> & component_vector
         )
     {
-        foreach ( component; component_array )
+        for ( auto & component : component_vector )
         {
-            BufferArray ~= new BUFFER( component );
+            BufferVector.push_back( new BUFFER( *component ) );
         }
     }
 
     // -- INQUIRIES
 
     void Write(
-        STREAM stream
+        STREAM & stream
         )
     {
         stream.WriteNatural64( PointCount );
         stream.WriteValue( PositionVector );
-        stream.WriteObjectArray( BufferArray );
+        stream.WriteObjectVector( BufferVector );
     }
 
     // -- OPERATIONS
 
     void Read(
-        STREAM stream
+        STREAM & stream
         )
     {
         stream.ReadNatural64( PointCount );
         stream.ReadValue( PositionVector );
-        stream.ReadObjectArray( BufferArray );
+        stream.ReadObjectVector( BufferVector );
     }
 
     // ~~
 
     void SeekComponent(
-        ulong component_index
+        uint64_t component_index
         )
     {
         assert( component_index == 0 );
 
-        foreach ( buffer; BufferArray )
+        for ( auto & buffer : BufferVector )
         {
-            buffer.ReadBitIndex = 0;
+            buffer->ReadBitIndex = 0;
         }
     }
 
     // ~~
 
     void AddComponentValue(
-        COMPONENT[] component_array,
-        ulong component_index,
+        const VECTOR_<LINK_<COMPONENT>> & component_vector,
+        uint64_t component_index,
         double component_value
         )
     {
@@ -96,20 +101,20 @@ class CELL
             component_value -= PositionVector.Z;
         }
 
-        BufferArray[ component_index ].AddComponentValue( component_array[ component_index ], component_value );
+        BufferVector[ component_index ]->AddComponentValue( *component_vector[ component_index ], component_value );
     }
 
     // ~~
 
     double GetComponentValue(
-        COMPONENT[] component_array,
-        ulong component_index
+        const VECTOR_<LINK_<COMPONENT>> & component_vector,
+        uint64_t component_index
         )
     {
         double
             component_value;
 
-        component_value = BufferArray[ component_index ].GetComponentValue( component_array[ component_index ] );
+        component_value = BufferVector[ component_index ]->GetComponentValue( *component_vector[ component_index ] );
 
         if ( component_index == 0 )
         {
@@ -126,4 +131,4 @@ class CELL
 
         return component_value;
     }
-}
+};

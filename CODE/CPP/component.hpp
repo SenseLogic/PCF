@@ -1,13 +1,16 @@
-module pcf.component;
+#pragma once
 
 // -- IMPORTS
 
-import pcf.compression;
-import pcf.stream;
+#include "base.hpp"
+#include "compression.hpp"
+#include "stream.hpp"
+#include "object.hpp"
 
 // -- TYPES
 
-class COMPONENT
+struct COMPONENT :
+    public OBJECT
 {
     // -- ATTRIBUTES
 
@@ -15,7 +18,7 @@ class COMPONENT
         Name;
     double
         Precision = 0.0;
-    ushort
+    uint16_t
         BitCount,
         Compression;
     double
@@ -24,18 +27,18 @@ class COMPONENT
 
     // -- CONSTRUCTORS
 
-    this(
+    COMPONENT(
         )
     {
     }
 
     // ~~
 
-    this(
+    COMPONENT(
         string name,
         double precision = 1.0,
-        ushort bit_count = 8,
-        ushort compression = COMPRESSION.Discretization,
+        uint16_t bit_count = 8,
+        uint16_t compression = COMPRESSION_Discretization,
         double minimum_value = 0.0
         )
     {
@@ -50,7 +53,7 @@ class COMPONENT
     // -- INQUIRIES
 
     void Write(
-        STREAM stream
+        STREAM & stream
         )
     {
         stream.WriteText( Name );
@@ -64,7 +67,7 @@ class COMPONENT
     // -- OPERATIONS
 
     void Read(
-        STREAM stream
+        STREAM & stream
         )
     {
         stream.ReadText( Name );
@@ -74,4 +77,4 @@ class COMPONENT
         stream.ReadReal64( MinimumValue );
         stream.ReadReal64( OneOverPrecision );
     }
-}
+};

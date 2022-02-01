@@ -1,12 +1,15 @@
-module pcf.property;
+#pragma once
 
 // -- IMPORTS
 
-import pcf.stream;
+#include "base.hpp"
+#include "stream.hpp"
+#include "object.hpp"
 
 // -- TYPES
 
-class PROPERTY
+struct PROPERTY :
+    public OBJECT
 {
     // -- ATTRIBUTES
 
@@ -18,7 +21,7 @@ class PROPERTY
     // -- INQUIRIES
 
     void Write(
-        STREAM stream
+        STREAM & stream
         )
     {
         stream.WriteText( Name );
@@ -29,11 +32,11 @@ class PROPERTY
     // -- OPERATIONS
 
     void Read(
-        STREAM stream
+        STREAM & stream
         )
     {
         stream.ReadText( Name );
         stream.ReadText( Value );
         stream.ReadText( Format );
     }
-}
+};

@@ -1,41 +1,44 @@
-module pcf.buffer;
+#pragma once
 
 // -- IMPORTS
 
-import pcf.component;
-import pcf.compression;
-import pcf.stream;
-import pcf.scalar;
-import std.conv: to;
+#include "base.hpp"
+#include "component.hpp"
+#include "compression.hpp"
+#include "stream.hpp"
+#include "object.hpp"
+#include "scalar.hpp"
+#include "vector_.hpp"
 
 // -- TYPES
 
-class BUFFER
+struct BUFFER :
+    public OBJECT
 {
     // -- ATTIBUTES
 
-    ulong
+    uint64_t
         MinimumNaturalValue;
-    ushort
+    uint16_t
         ComponentBitCount;
-    ulong
+    uint64_t
         BitCount;
-    ubyte[]
-        ByteArray;
-    ulong
+    VECTOR_<uint8_t>
+        ByteVector;
+    uint64_t
         ReadBitIndex;
 
     // -- CONSTRUCTORS
 
-    this(
+    BUFFER(
         )
     {
     }
 
     // ~~
 
-    this(
-        COMPONENT component
+    BUFFER(
+        const COMPONENT & component
         )
     {
         ComponentBitCount = component.BitCount;
@@ -44,25 +47,25 @@ class BUFFER
     // -- INQUIRIES
 
     void Write(
-        STREAM stream
+        STREAM & stream
         )
     {
         stream.WriteNatural64( MinimumNaturalValue );
         stream.WriteNatural16( ComponentBitCount );
         stream.WriteNatural64( BitCount );
-        stream.WriteScalarArray( ByteArray );
+        stream.WriteScalarVector( ByteVector );
     }
 
     // -- OPERATIONS
 
     void Read(
-        STREAM stream
+        STREAM & stream
         )
     {
         stream.ReadNatural64( MinimumNaturalValue );
         stream.ReadNatural16( ComponentBitCount );
         stream.ReadNatural64( BitCount );
-        stream.ReadScalarArray( ByteArray );
+        stream.ReadScalarVector( ByteVector );
 
         ReadBitIndex = 0;
     }
@@ -70,46 +73,52 @@ class BUFFER
     // ~~
 
     void AddComponentValue(
-        COMPONENT component,
+        COMPONENT & component,
         double component_value
         )
     {
         double
             real_value;
-        ulong
+        uint16_t
+            byte_bit_index,
+            component_bit_index;
+        uint64_t
             bit_index,
             byte_index,
+            component_byte_index,
             natural_value;
-        ushort
-            byte_bit_index;
         SCALAR
             scalar;
 
-        if ( component.Compression == COMPRESSION.None )
+        if ( component.Compression == COMPRESSION_None )
         {
             if ( ComponentBitCount == 32 )
             {
-                scalar.Real32 = component_value.to!float();
+                scalar.Real32 = ( float )component_value;
 
-                foreach ( component_byte_index; 0 .. 4 )
+                for ( component_byte_index = 0;
+                      component_byte_index < 4;
+                      ++component_byte_index )
                 {
-                    ByteArray ~= scalar.FourByteArray[ component_byte_index ];
+                    ByteVector.push_back( scalar.FourByteVector[ component_byte_index ] );
                 }
             }
             else if ( ComponentBitCount == 64 )
             {
                 scalar.Real64 = component_value;
 
-                foreach ( component_byte_index; 0 .. 8 )
+                for ( component_byte_index = 0;
+                      component_byte_index < 8;
+                      ++component_byte_index )
                 {
-                    ByteArray ~= scalar.EightByteArray[ component_byte_index ];
+                    ByteVector.push_back( scalar.EightByteVector[ component_byte_index ] );
                 }
             }
         }
-        else if ( component.Compression == COMPRESSION.Discretization )
+        else if ( component.Compression == COMPRESSION_Discretization )
         {
             real_value = ( component_value - component.MinimumValue ) * component.OneOverPrecision;
-            natural_value = real_value.to!ulong() - MinimumNaturalValue;
+            natural_value = ( uint64_t )real_value - MinimumNaturalValue;
 
             assert(
                 real_value >= 0.0
@@ -117,20 +126,22 @@ class BUFFER
                      || natural_value < ( 1UL << ComponentBitCount ) )
                 );
 
-            foreach ( component_bit_index; 0 .. ComponentBitCount )
+            for ( component_bit_index = 0;
+                  component_bit_index < ComponentBitCount;
+                  ++component_bit_index )
             {
                 bit_index = BitCount + component_bit_index;
                 byte_index = bit_index >> 3;
                 byte_bit_index = bit_index & 7;
 
-                if ( byte_index == ByteArray.length )
+                if ( byte_index == ByteVector.size() )
                 {
-                    ByteArray ~= 0;
+                    ByteVector.push_back( 0 );
                 }
 
                 if ( natural_value & ( 1UL << component_bit_index ) )
                 {
-                    ByteArray[ byte_index ] |= 1 << byte_bit_index;
+                    ByteVector[ byte_index ] |= 1 << byte_bit_index;
                 }
             }
         }
@@ -141,61 +152,69 @@ class BUFFER
     // ~~
 
     double GetComponentValue(
-        COMPONENT component
+        COMPONENT & component
         )
     {
         double
             component_value,
             real_value;
-        ulong
+        uint16_t
+            byte_bit_index,
+            component_bit_index;
+        uint64_t
             bit_index,
             byte_index,
+            component_byte_index,
             natural_value;
-        ushort
-            byte_bit_index;
         SCALAR
             scalar;
 
-        if ( component.Compression == COMPRESSION.None )
+        if ( component.Compression == COMPRESSION_None )
         {
             byte_index = ReadBitIndex >> 3;
 
             if ( ComponentBitCount == 32 )
             {
-                foreach ( component_byte_index; 0 .. 4 )
+                for ( component_byte_index = 0;
+                      component_byte_index < 4;
+                      ++component_byte_index )
                 {
-                    scalar.FourByteArray[ component_byte_index ] = ByteArray[ byte_index + component_byte_index ];
+                    scalar.FourByteVector[ component_byte_index ] = ByteVector[ byte_index + component_byte_index ];
                 }
 
                 component_value = scalar.Real32;
             }
             else if ( ComponentBitCount == 64 )
             {
-                foreach ( component_byte_index; 0 .. 8 )
+                for ( component_byte_index = 0;
+                      component_byte_index < 8;
+                      ++component_byte_index )
                 {
-                    scalar.EightByteArray[ component_byte_index ] = ByteArray[ byte_index + component_byte_index ];
+                    scalar.EightByteVector[ component_byte_index ] = ByteVector[ byte_index + component_byte_index ];
                 }
 
                 component_value = scalar.Real64;
             }
         }
-        else if ( component.Compression == COMPRESSION.Discretization )
+        else if ( component.Compression == COMPRESSION_Discretization )
         {
             natural_value = 0;
 
-            foreach ( component_bit_index; 0 .. ComponentBitCount )
+            for ( component_bit_index = 0;
+                  component_bit_index < ComponentBitCount;
+                  ++component_bit_index )
             {
                 bit_index = ReadBitIndex + component_bit_index;
                 byte_index = bit_index >> 3;
                 byte_bit_index = bit_index & 7;
 
-                if ( ByteArray[ byte_index ] & ( 1 << byte_bit_index ) )
+                if ( ByteVector[ byte_index ] & ( 1 << byte_bit_index ) )
                 {
                     natural_value |= 1UL << component_bit_index;
                 }
             }
 
-            real_value = natural_value.to!double();
+            real_value = ( double )natural_value;
             component_value = ( real_value * component.Precision ) + component.MinimumValue;
         }
 
@@ -203,4 +222,4 @@ class BUFFER
 
         return component_value;
     }
-}
+};

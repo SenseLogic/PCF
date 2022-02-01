@@ -5,7 +5,7 @@ module pcf.scan;
 import pcf.cell;
 import pcf.component;
 import pcf.compression;
-import pcf.file;
+import pcf.stream;
 import pcf.image;
 import pcf.property;
 import pcf.vector_3;
@@ -38,20 +38,20 @@ class SCAN
     // -- INQUIRIES
 
     void Write(
-        FILE file
+        STREAM stream
         )
     {
-        file.WriteText( Name );
-        file.WriteNatural64( ColumnCount );
-        file.WriteNatural64( RowCount );
-        file.WriteNatural64( PointCount );
-        file.WriteValue( PositionVector );
-        file.WriteValue( XAxisVector );
-        file.WriteValue( YAxisVector );
-        file.WriteValue( ZAxisVector );
-        file.WriteObjectArray( PropertyArray );
-        file.WriteObjectArray( ImageArray );
-        file.WriteObjectByValueMap!( CELL, VECTOR_3 )( CellMap );
+        stream.WriteText( Name );
+        stream.WriteNatural64( ColumnCount );
+        stream.WriteNatural64( RowCount );
+        stream.WriteNatural64( PointCount );
+        stream.WriteValue( PositionVector );
+        stream.WriteValue( XAxisVector );
+        stream.WriteValue( YAxisVector );
+        stream.WriteValue( ZAxisVector );
+        stream.WriteObjectArray( PropertyArray );
+        stream.WriteObjectArray( ImageArray );
+        stream.WriteObjectByValueMap!( CELL, VECTOR_3 )( CellMap );
     }
 
     // -- CONSTRUCTORS
@@ -68,20 +68,20 @@ class SCAN
     // -- OPERATIONS
 
     void Read(
-        FILE file
+        STREAM stream
         )
     {
-        file.ReadText( Name );
-        file.ReadNatural64( ColumnCount );
-        file.ReadNatural64( RowCount );
-        file.ReadNatural64( PointCount );
-        file.ReadValue( PositionVector );
-        file.ReadValue( XAxisVector );
-        file.ReadValue( YAxisVector );
-        file.ReadValue( ZAxisVector );
-        file.ReadObjectArray( PropertyArray );
-        file.ReadObjectArray( ImageArray );
-        file.ReadObjectByValueMap!( CELL, VECTOR_3 )( CellMap );
+        stream.ReadText( Name );
+        stream.ReadNatural64( ColumnCount );
+        stream.ReadNatural64( RowCount );
+        stream.ReadNatural64( PointCount );
+        stream.ReadValue( PositionVector );
+        stream.ReadValue( XAxisVector );
+        stream.ReadValue( YAxisVector );
+        stream.ReadValue( ZAxisVector );
+        stream.ReadObjectArray( PropertyArray );
+        stream.ReadObjectArray( ImageArray );
+        stream.ReadObjectByValueMap!( CELL, VECTOR_3 )( CellMap );
     }
 
     // ~~
@@ -137,18 +137,6 @@ class SCAN
             CellMap[ cell_position_vector ] = cell;
 
             return cell;
-        }
-    }
-
-    // ~~
-
-    void Compress(
-        COMPONENT[] component_array
-        )
-    {
-        foreach ( cell; CellMap.byValue )
-        {
-            cell.Compress( component_array );
         }
     }
 }

@@ -2,7 +2,7 @@ module pcf.image;
 
 // -- IMPORTS
 
-import pcf.file;
+import pcf.stream;
 import pcf.property;
 
 // -- TYPES
@@ -23,26 +23,26 @@ class IMAGE
     // -- INQUIRIES
 
     void Write(
-        FILE file
+        STREAM stream
         )
     {
-        file.WriteText( Name );
-        file.WriteText( Role );
-        file.WriteText( Format );
-        file.WriteObjectArray( PropertyArray );
-        file.WriteScalarArray( ByteArray );
+        stream.WriteText( Name );
+        stream.WriteText( Role );
+        stream.WriteText( Format );
+        stream.WriteObjectArray( PropertyArray );
+        stream.WriteScalarArray( ByteArray );
     }
 
     // -- OPERATIONS
 
     void Read(
-        FILE file
+        STREAM stream
         )
     {
-        file.ReadText( Name );
-        file.ReadText( Role );
-        file.ReadText( Format );
-        file.ReadObjectArray( PropertyArray );
-        file.ReadScalarArray( ByteArray );
+        stream.ReadText( Name );
+        stream.ReadText( Role );
+        stream.ReadText( Format );
+        stream.ReadObjectArray( PropertyArray );
+        stream.ReadScalarArray( ByteArray );
     }
 }

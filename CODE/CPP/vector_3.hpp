@@ -1,8 +1,8 @@
-module pcf.vector_3;
+#pragma once
 
 // -- IMPORTS
 
-import pcf.stream;
+#include "stream.hpp"
 
 // -- TYPES
 
@@ -15,11 +15,27 @@ struct VECTOR_3
         Y = 0.0,
         Z = 0.0;
 
+    // -- OPERATORS
+
+    bool operator<(
+        const VECTOR_3 & vector
+        ) const
+    {
+        return
+            X < vector.X
+            || ( X == vector.X
+                 && Y < vector.Y )
+            || ( X == vector.X
+                 && Z == vector.Z
+                 && Y < vector.Y );
+
+    }
+
     // -- INQUIRIES
 
     void Write(
-        STREAM stream
-        )
+        STREAM & stream
+        ) const
     {
         stream.WriteReal64( X );
         stream.WriteReal64( Y );
@@ -29,7 +45,7 @@ struct VECTOR_3
     // -- OPERATIONS
 
     void Read(
-        STREAM stream
+        STREAM & stream
         )
     {
         stream.ReadReal64( X );
@@ -53,11 +69,11 @@ struct VECTOR_3
     // ~~
 
     void SetInverseVector(
-        ref VECTOR_3 vector
+        const VECTOR_3 & vector
         )
     {
         X = 1.0 / vector.X;
         Y = 1.0 / vector.Y;
         Z = 1.0 / vector.Z;
     }
-}
+};
