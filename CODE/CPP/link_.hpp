@@ -48,20 +48,24 @@ struct LINK_
 
     // -- OPERATORS
 
-    void operator=(
+    LINK_ & operator=(
         const LINK_ & link
         )
     {
         SetAddress( link.Address );
+
+        return *this;
     }
 
     // ~~
 
-    void operator=(
+    LINK_ & operator=(
         const _TYPE_ * address
         )
     {
         SetAddress( address );
+
+        return *this;
     }
 
     // ~~

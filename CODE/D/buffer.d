@@ -96,8 +96,10 @@ class BUFFER
                     ByteArray ~= scalar.FourByteArray[ component_byte_index ];
                 }
             }
-            else if ( ComponentBitCount == 64 )
+            else
             {
+                assert( ComponentBitCount == 64 );
+
                 scalar.Real64 = component_value;
 
                 foreach ( component_byte_index; 0 .. 8 )
@@ -106,8 +108,10 @@ class BUFFER
                 }
             }
         }
-        else if ( component.Compression == COMPRESSION.Discretization )
+        else
         {
+            assert( component.Compression == COMPRESSION.Discretization );
+
             real_value = ( component_value - component.MinimumValue ) * component.OneOverPrecision;
             natural_value = real_value.to!ulong() - MinimumNaturalValue;
 
@@ -169,8 +173,10 @@ class BUFFER
 
                 component_value = scalar.Real32;
             }
-            else if ( ComponentBitCount == 64 )
+            else
             {
+                assert( ComponentBitCount == 64 );
+
                 foreach ( component_byte_index; 0 .. 8 )
                 {
                     scalar.EightByteArray[ component_byte_index ] = ByteArray[ byte_index + component_byte_index ];
@@ -179,8 +185,10 @@ class BUFFER
                 component_value = scalar.Real64;
             }
         }
-        else if ( component.Compression == COMPRESSION.Discretization )
+        else
         {
+            assert( component.Compression == COMPRESSION.Discretization );
+
             natural_value = 0;
 
             foreach ( component_bit_index; 0 .. ComponentBitCount )

@@ -29,6 +29,7 @@ struct COMPONENT :
 
     COMPONENT(
         ) :
+        OBJECT(),
         Name(),
         Precision( 0.0 ),
         BitCount( 0 ),
@@ -41,19 +42,35 @@ struct COMPONENT :
     // ~~
 
     COMPONENT(
+        const COMPONENT & component
+        ) :
+        OBJECT( component ),
+        Name( component.Name ),
+        Precision( component.Precision ),
+        BitCount( component.BitCount ),
+        Compression( component.Compression ),
+        MinimumValue( component.MinimumValue ),
+        OneOverPrecision( component.OneOverPrecision )
+    {
+    }
+
+    // ~~
+
+    COMPONENT(
         string name,
         double precision = 1.0,
         uint16_t bit_count = 8,
         uint16_t compression = COMPRESSION_Discretization,
         double minimum_value = 0.0
-        )
+        ) :
+        OBJECT(),
+        Name( name ),
+        Precision( precision ),
+        BitCount( bit_count ),
+        Compression( compression ),
+        MinimumValue( minimum_value ),
+        OneOverPrecision( 1.0 / precision )
     {
-        Name = name;
-        Precision = precision;
-        BitCount = bit_count;
-        Compression = compression;
-        MinimumValue = minimum_value;
-        OneOverPrecision = 1.0 / precision;
     }
 
     // -- DESTRUCTORS
@@ -61,6 +78,22 @@ struct COMPONENT :
     virtual ~COMPONENT(
         )
     {
+    }
+
+    // -- OPERATORS
+
+    COMPONENT & operator=(
+        const COMPONENT & component
+        )
+    {
+        Name = component.Name;
+        Precision = component.Precision;
+        BitCount = component.BitCount;
+        Compression = component.Compression;
+        MinimumValue = component.MinimumValue;
+        OneOverPrecision = component.OneOverPrecision;
+
+        return *this;
     }
 
     // -- INQUIRIES

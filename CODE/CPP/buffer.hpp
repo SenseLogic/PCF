@@ -32,6 +32,7 @@ struct BUFFER :
 
     BUFFER(
         ) :
+        OBJECT(),
         MinimumNaturalValue( 0 ),
         ComponentBitCount( 0 ),
         BitCount( 0 ),
@@ -43,10 +44,29 @@ struct BUFFER :
     // ~~
 
     BUFFER(
-        const COMPONENT & component
-        )
+        const BUFFER & buffer
+        ) :
+        OBJECT( buffer ),
+        MinimumNaturalValue( buffer.MinimumNaturalValue ),
+        ComponentBitCount( buffer.ComponentBitCount ),
+        BitCount( buffer.BitCount ),
+        ByteVector( buffer.ByteVector ),
+        ReadBitIndex( buffer.ReadBitIndex )
     {
-        ComponentBitCount = component.BitCount;
+    }
+
+    // ~~
+
+    BUFFER(
+        const COMPONENT & component
+        ) :
+        OBJECT(),
+        MinimumNaturalValue( 0 ),
+        ComponentBitCount( component.BitCount ),
+        BitCount( 0 ),
+        ByteVector(),
+        ReadBitIndex( 0 )
+    {
     }
 
     // -- DESTRUCTORS
@@ -54,6 +74,21 @@ struct BUFFER :
     virtual ~BUFFER(
         )
     {
+    }
+
+    // -- OPERATORS
+
+    BUFFER & operator=(
+        const BUFFER & buffer
+        )
+    {
+        MinimumNaturalValue = buffer.MinimumNaturalValue;
+        ComponentBitCount = buffer.ComponentBitCount;
+        BitCount = buffer.BitCount;
+        ByteVector = buffer.ByteVector;
+        ReadBitIndex = buffer.ReadBitIndex;
+
+        return *this;
     }
 
     // -- INQUIRIES
@@ -115,8 +150,10 @@ struct BUFFER :
                     ByteVector.push_back( scalar.FourByteVector[ component_byte_index ] );
                 }
             }
-            else if ( ComponentBitCount == 64 )
+            else
             {
+                assert( ComponentBitCount == 64 );
+
                 scalar.Real64 = component_value;
 
                 for ( component_byte_index = 0;
@@ -127,8 +164,10 @@ struct BUFFER :
                 }
             }
         }
-        else if ( component.Compression == COMPRESSION_Discretization )
+        else
         {
+            assert( component.Compression == COMPRESSION_Discretization );
+
             real_value = ( component_value - component.MinimumValue ) * component.OneOverPrecision;
             natural_value = ( uint64_t )real_value - MinimumNaturalValue;
 
@@ -196,8 +235,10 @@ struct BUFFER :
 
                 component_value = scalar.Real32;
             }
-            else if ( ComponentBitCount == 64 )
+            else
             {
+                assert( ComponentBitCount == 64 );
+
                 for ( component_byte_index = 0;
                       component_byte_index < 8;
                       ++component_byte_index )
@@ -208,8 +249,10 @@ struct BUFFER :
                 component_value = scalar.Real64;
             }
         }
-        else if ( component.Compression == COMPRESSION_Discretization )
+        else
         {
+            assert( component.Compression == COMPRESSION_Discretization );
+
             natural_value = 0;
 
             for ( component_bit_index = 0;

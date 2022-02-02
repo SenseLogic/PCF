@@ -144,10 +144,11 @@ class SCAN
 
             cell_position_vector.SetVector( 0.0, 0.0, 0.0 );
         }
-        else if ( component_array[ 0 ].Compression == COMPRESSION.Discretization )
+        else
         {
             assert(
-                component_array[ 1 ].Compression == COMPRESSION.Discretization
+                component_array[ 0 ].Compression == COMPRESSION.Discretization
+                && component_array[ 1 ].Compression == COMPRESSION.Discretization
                 && component_array[ 2 ].Compression == COMPRESSION.Discretization
                 );
 

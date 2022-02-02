@@ -38,6 +38,7 @@ struct CELL :
 
     CELL(
         ) :
+        OBJECT(),
         PointCount( 0 ),
         PositionVector(),
         BufferVector()
@@ -47,8 +48,24 @@ struct CELL :
     // ~~
 
     CELL(
+        const CELL & cell
+        ) :
+        OBJECT( cell ),
+        PointCount( cell.PointCount ),
+        PositionVector( cell.PositionVector ),
+        BufferVector( cell.BufferVector )
+    {
+    }
+
+    // ~~
+
+    CELL(
         const VECTOR_<LINK_<COMPONENT>> & component_vector
-        )
+        ) :
+        OBJECT(),
+        PointCount( 0 ),
+        PositionVector(),
+        BufferVector()
     {
         for ( auto & component : component_vector )
         {
@@ -61,6 +78,19 @@ struct CELL :
     virtual ~CELL(
         )
     {
+    }
+
+    // -- OPERATORS
+
+    CELL & operator=(
+        const CELL & cell
+        )
+    {
+        PointCount = cell.PointCount;
+        PositionVector = cell.PositionVector;
+        BufferVector = cell.BufferVector;
+
+        return *this;
     }
 
     // -- INQUIRIES

@@ -39,6 +39,7 @@ struct CLOUD :
 
     CLOUD(
         ) :
+        OBJECT(),
         Version( 0 ),
         Name(),
         IsLeftHanded( false ),
@@ -49,11 +50,44 @@ struct CLOUD :
     {
     }
 
+    // ~~
+
+    CLOUD(
+        const CLOUD & cloud
+        ) :
+        OBJECT( cloud ),
+        Version( cloud.Version ),
+        Name( cloud.Name ),
+        IsLeftHanded( cloud.IsLeftHanded ),
+        IsZUp( cloud.IsZUp ),
+        ComponentVector( cloud.ComponentVector ),
+        PropertyVector( cloud.PropertyVector ),
+        ScanVector( cloud.ScanVector )
+    {
+    }
+
     // -- DESTRUCTORS
 
     virtual ~CLOUD(
         )
     {
+    }
+
+    // -- OPERATORS
+
+    CLOUD & operator=(
+        const CLOUD & cloud
+        )
+    {
+        Version = cloud.Version;
+        Name = cloud.Name;
+        IsLeftHanded = cloud.IsLeftHanded;
+        IsZUp = cloud.IsZUp;
+        ComponentVector = cloud.ComponentVector;
+        PropertyVector = cloud.PropertyVector;
+        ScanVector = cloud.ScanVector;
+
+        return *this;
     }
 
     // -- INQUIRIES
@@ -199,8 +233,8 @@ struct CLOUD :
             point_index;
         STREAM
             stream;
-        LINK_<CELL>
-            cell;
+        CELL
+            * cell;
         LINK_<SCAN>
             scan;
 
@@ -216,8 +250,10 @@ struct CLOUD :
             ComponentVector.push_back( new COMPONENT( "G", 0.0, 32, COMPRESSION_None ) );
             ComponentVector.push_back( new COMPONENT( "B", 0.0, 32, COMPRESSION_None ) );
         }
-        else if ( compression == COMPRESSION_Discretization )
+        else
         {
+            assert( compression == COMPRESSION_Discretization );
+
             ComponentVector.push_back( new COMPONENT( "X", 0.001 ) );
             ComponentVector.push_back( new COMPONENT( "Y", 0.001 ) );
             ComponentVector.push_back( new COMPONENT( "Z", 0.001 ) );
@@ -261,7 +297,6 @@ struct CLOUD :
                     cell->AddComponentValue( ComponentVector, 4, color_red );
                     cell->AddComponentValue( ComponentVector, 5, color_green );
                     cell->AddComponentValue( ComponentVector, 6, color_blue );
-
                     ++cell->PointCount;
                 }
 

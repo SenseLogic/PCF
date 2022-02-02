@@ -22,9 +22,22 @@ struct PROPERTY :
 
     PROPERTY(
         ) :
+        OBJECT(),
         Name(),
         Value(),
         Format()
+    {
+    }
+
+    // ~~
+
+    PROPERTY(
+        const PROPERTY & property
+        ) :
+        OBJECT( property ),
+        Name( property.Name ),
+        Value( property.Value ),
+        Format( property.Format )
     {
     }
 
@@ -33,6 +46,19 @@ struct PROPERTY :
     virtual ~PROPERTY(
         )
     {
+    }
+
+    // -- OPERATORS
+
+    PROPERTY & operator=(
+        const PROPERTY & property
+        )
+    {
+        Name = property.Name;
+        Value = property.Value;
+        Format = property.Format;
+
+        return *this;
     }
 
     // -- INQUIRIES

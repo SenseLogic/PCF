@@ -28,6 +28,17 @@ struct VECTOR_3
     // ~~
 
     VECTOR_3(
+        const VECTOR_3 & vector
+        ) :
+        X( vector.X ),
+        Y( vector.Y ),
+        Z( vector.Z )
+    {
+    }
+
+    // ~~
+
+    VECTOR_3(
         double x,
         double y,
         double z
@@ -39,6 +50,19 @@ struct VECTOR_3
     }
 
     // -- OPERATORS
+
+    VECTOR_3 & operator=(
+        const VECTOR_3 & vector
+        )
+    {
+        X = vector.X;
+        Y = vector.Y;
+        Z = vector.Z;
+
+        return *this;
+    }
+
+    // ~~
 
     bool operator<(
         const VECTOR_3 & vector

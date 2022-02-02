@@ -186,8 +186,10 @@ class CLOUD
             ComponentArray ~= new COMPONENT( "G", 0.0, 32, COMPRESSION.None );
             ComponentArray ~= new COMPONENT( "B", 0.0, 32, COMPRESSION.None );
         }
-        else if ( compression == COMPRESSION.Discretization )
+        else
         {
+            assert( compression == COMPRESSION.Discretization );
+
             ComponentArray ~= new COMPONENT( "X", 0.001 );
             ComponentArray ~= new COMPONENT( "Y", 0.001 );
             ComponentArray ~= new COMPONENT( "Z", 0.001 );
@@ -230,7 +232,6 @@ class CLOUD
                     cell.AddComponentValue( ComponentArray, 4, color_red );
                     cell.AddComponentValue( ComponentArray, 5, color_green );
                     cell.AddComponentValue( ComponentArray, 6, color_blue );
-
                     ++cell.PointCount;
                 }
 

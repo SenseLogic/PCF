@@ -29,6 +29,7 @@ struct IMAGE :
 
     IMAGE(
         ) :
+        OBJECT(),
         Name(),
         Role(),
         Format(),
@@ -37,11 +38,40 @@ struct IMAGE :
     {
     }
 
+    // ~~
+
+    IMAGE(
+        const IMAGE & image
+        ) :
+        OBJECT( image ),
+        Name( image.Name ),
+        Role( image.Role ),
+        Format( image.Format ),
+        PropertyVector( image.PropertyVector ),
+        ByteVector( image.ByteVector )
+    {
+    }
+
     // -- DESTRUCTORS
 
     virtual ~IMAGE(
         )
     {
+    }
+
+    // ~~
+
+    IMAGE & operator=(
+        const IMAGE & image
+        )
+    {
+        Name = image.Name;
+        Role = image.Role;
+        Format = image.Format;
+        PropertyVector = image.PropertyVector;
+        ByteVector = image.ByteVector;
+
+        return *this;
     }
 
     // -- INQUIRIES

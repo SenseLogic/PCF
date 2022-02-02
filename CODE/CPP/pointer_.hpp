@@ -48,20 +48,24 @@ struct POINTER_
 
     // -- OPERATORS
 
-    void operator=(
+    POINTER_ & operator=(
         const POINTER_ & link
         )
     {
         SetAddress( link.Address );
+
+        return *this;
     }
 
     // ~~
 
-    void operator=(
+    POINTER_ & operator=(
         const _TYPE_ * address
         )
     {
         SetAddress( address );
+
+        return *this;
     }
 
     // ~~

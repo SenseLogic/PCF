@@ -53,6 +53,7 @@ struct SCAN :
 
     SCAN(
         ) :
+        OBJECT(),
         Name(),
         ColumnCount(),
         RowCount(),
@@ -67,11 +68,52 @@ struct SCAN :
     {
     }
 
+    // ~~
+
+    SCAN(
+        const SCAN & scan
+        ) :
+        OBJECT( scan ),
+        Name( scan.Name ),
+        ColumnCount( scan.ColumnCount ),
+        RowCount( scan.RowCount ),
+        PointCount( scan.PointCount ),
+        PositionVector( scan.PositionVector ),
+        XAxisVector( scan.XAxisVector ),
+        YAxisVector( scan.YAxisVector ),
+        ZAxisVector( scan.ZAxisVector ),
+        PropertyVector( scan.PropertyVector ),
+        ImageVector( scan.ImageVector ),
+        CellMap( scan.CellMap )
+    {
+    }
+
     // -- DESTRUCTORS
 
     virtual ~SCAN(
         )
     {
+    }
+
+    // -- OPERATORS
+
+    SCAN & operator=(
+        const SCAN & scan
+        )
+    {
+        Name = scan.Name;
+        ColumnCount = scan.ColumnCount;
+        RowCount = scan.RowCount;
+        PointCount = scan.PointCount;
+        PositionVector = scan.PositionVector;
+        XAxisVector = scan.XAxisVector;
+        YAxisVector = scan.YAxisVector;
+        ZAxisVector = scan.ZAxisVector;
+        PropertyVector = scan.PropertyVector;
+        ImageVector = scan.ImageVector;
+        CellMap = scan.CellMap;
+
+        return *this;
     }
 
     // -- INQUIRIES
@@ -144,7 +186,7 @@ struct SCAN :
 
     // ~~
 
-    LINK_<CELL> GetCell(
+    CELL * GetCell(
         const VECTOR_<LINK_<COMPONENT>> & component_vector,
         double position_x,
         double position_y,
@@ -165,10 +207,11 @@ struct SCAN :
 
             cell_position_vector.SetVector( 0.0, 0.0, 0.0 );
         }
-        else if ( component_vector[ 0 ]->Compression == COMPRESSION_Discretization )
+        else
         {
             assert(
-                component_vector[ 1 ]->Compression == COMPRESSION_Discretization
+                component_vector[ 0 ]->Compression == COMPRESSION_Discretization
+                && component_vector[ 1 ]->Compression == COMPRESSION_Discretization
                 && component_vector[ 2 ]->Compression == COMPRESSION_Discretization
                 );
 
@@ -183,7 +226,7 @@ struct SCAN :
 
         if ( found_cell != CellMap.end() )
         {
-            return found_cell->second;
+            return found_cell->second.Address;
         }
         else
         {
@@ -192,7 +235,7 @@ struct SCAN :
 
             CellMap[ cell_position_vector ] = cell;
 
-            return cell;
+            return cell.Address;
         }
     }
 };

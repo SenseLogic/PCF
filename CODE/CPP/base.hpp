@@ -3,6 +3,7 @@
 // -- IMPORTS
 
 #include <math.h>
+#include <string.h>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
