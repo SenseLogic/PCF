@@ -3,7 +3,7 @@
 // -- TYPES
 
 template <typename _TYPE_>
-struct LINK_
+struct POINTER_
 {
     // -- ATTRIBUTES
 
@@ -12,7 +12,7 @@ struct LINK_
 
     // -- CONSTRUCTORS
 
-    LINK_(
+    POINTER_(
         ) :
         Address( nullptr )
     {
@@ -20,8 +20,8 @@ struct LINK_
 
     // ~~
 
-    LINK_(
-        const LINK_ & link
+    POINTER_(
+        const POINTER_ & link
         ) :
         Address( nullptr )
     {
@@ -30,7 +30,7 @@ struct LINK_
 
     // ~~
 
-    LINK_(
+    POINTER_(
         _TYPE_ * address
         ) :
         Address( nullptr )
@@ -40,7 +40,7 @@ struct LINK_
 
     // ~~
 
-    ~LINK_(
+    ~POINTER_(
         )
     {
         SetNull();
@@ -49,7 +49,7 @@ struct LINK_
     // -- OPERATORS
 
     void operator=(
-        const LINK_ & link
+        const POINTER_ & link
         )
     {
         SetAddress( link.Address );
@@ -70,6 +70,11 @@ struct LINK_
         void
         ) const
     {
+        assert(
+            Address == nullptr
+            || Address->ReferenceCount > 0
+            );
+
         return Address;
     }
 
@@ -79,7 +84,10 @@ struct LINK_
         void
         ) const
     {
-        assert( Address != nullptr );
+        assert(
+            Address != nullptr
+            && Address->ReferenceCount > 0
+            );
 
         return *Address;
     }
@@ -90,7 +98,10 @@ struct LINK_
         void
         ) const
     {
-        assert( Address != nullptr );
+        assert(
+            Address != nullptr
+            && Address->ReferenceCount > 0
+            );
 
         return Address;
     }
@@ -102,7 +113,7 @@ struct LINK_
     {
         if ( Address != nullptr )
         {
-            Address->RemoveLink();
+            Address->RemovePointer();
             Address = nullptr;
         }
     }
@@ -125,7 +136,7 @@ struct LINK_
             else
             {
                 non_const_address = ( _TYPE_ * )address;
-                non_const_address->AddLink();
+                non_const_address->AddPointer();
                 SetNull();
                 Address = non_const_address;
             }

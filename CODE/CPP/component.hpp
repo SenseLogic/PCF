@@ -17,18 +17,24 @@ struct COMPONENT :
     string
         Name;
     double
-        Precision = 0.0;
+        Precision;
     uint16_t
         BitCount,
         Compression;
     double
-        MinimumValue = 0.0,
-        OneOverPrecision = 0.0;
+        MinimumValue,
+        OneOverPrecision;
 
     // -- CONSTRUCTORS
 
     COMPONENT(
-        )
+        ) :
+        Name(),
+        Precision( 0.0 ),
+        BitCount( 0 ),
+        Compression( COMPRESSION_None ),
+        MinimumValue( 0.0 ),
+        OneOverPrecision( 0.0 )
     {
     }
 
@@ -48,6 +54,13 @@ struct COMPONENT :
         Compression = compression;
         MinimumValue = minimum_value;
         OneOverPrecision = 1.0 / precision;
+    }
+
+    // -- DESTRUCTORS
+
+    virtual ~COMPONENT(
+        )
+    {
     }
 
     // -- INQUIRIES

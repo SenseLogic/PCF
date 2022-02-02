@@ -31,7 +31,12 @@ struct BUFFER :
     // -- CONSTRUCTORS
 
     BUFFER(
-        )
+        ) :
+        MinimumNaturalValue( 0 ),
+        ComponentBitCount( 0 ),
+        BitCount( 0 ),
+        ByteVector(),
+        ReadBitIndex( 0 )
     {
     }
 
@@ -42,6 +47,13 @@ struct BUFFER :
         )
     {
         ComponentBitCount = component.BitCount;
+    }
+
+    // -- DESTRUCTORS
+
+    virtual ~BUFFER(
+        )
+    {
     }
 
     // -- INQUIRIES

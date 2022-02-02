@@ -1,3 +1,7 @@
+*.exe
+*.ilk
 *.o
+*.obj
+*.pdb
 CODE/CPP/test
 CODE/D/test

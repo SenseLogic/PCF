@@ -7,6 +7,35 @@ import std.string : endsWith, format, indexOf;
 
 // -- FUNCTIONS
 
+string RemoveTrailingZeros(
+    string text
+    )
+{
+    if ( text.indexOf( '.' ) >= 0 )
+    {
+        while ( text.endsWith( '0' ) )
+        {
+            text = text[ 0 .. $ - 1 ];
+        }
+
+        if ( text.endsWith( '.' ) )
+        {
+            text = text[ 0 .. $ - 1 ];
+        }
+    }
+
+    if ( text == "-0" )
+    {
+        return "0";
+    }
+    else
+    {
+        return text;
+    }
+}
+
+// ~~
+
 bool IsInteger(
     string text
     )
@@ -148,32 +177,7 @@ string GetText(
     float real_
     )
 {
-    string
-        text;
-
-    text = format( "%f", real_ );
-
-    if ( text.indexOf( '.' ) >= 0 )
-    {
-        while ( text.endsWith( '0') )
-        {
-            text = text[ 0 .. $ - 1 ];
-        }
-
-        if ( text.endsWith( '.' ) )
-        {
-            text = text[ 0 .. $ - 1 ];
-        }
-    }
-
-    if ( text == "-0" )
-    {
-        return "0";
-    }
-    else
-    {
-        return text;
-    }
+    return RemoveTrailingZeros( format( "%f", real_ ) );
 }
 
 // ~~
@@ -182,30 +186,5 @@ string GetText(
     double real_
     )
 {
-    string
-        text;
-
-    text = format( "%f", real_ );
-
-    if ( text.indexOf( '.' ) >= 0 )
-    {
-        while ( text.endsWith( '0') )
-        {
-            text = text[ 0 .. $ - 1 ];
-        }
-
-        if ( text.endsWith( '.' ) )
-        {
-            text = text[ 0 .. $ - 1 ];
-        }
-    }
-
-    if ( text == "-0" )
-    {
-        return "0";
-    }
-    else
-    {
-        return text;
-    }
+    return RemoveTrailingZeros( format( "%f", real_ ) );
 }

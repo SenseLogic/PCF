@@ -35,6 +35,27 @@ struct CLOUD :
     VECTOR_<LINK_<SCAN>>
         ScanVector;
 
+    // -- CONSTRUCTORS
+
+    CLOUD(
+        ) :
+        Version( 0 ),
+        Name(),
+        IsLeftHanded( false ),
+        IsZUp( false ),
+        ComponentVector(),
+        PropertyVector(),
+        ScanVector()
+    {
+    }
+
+    // -- DESTRUCTORS
+
+    virtual ~CLOUD(
+        )
+    {
+    }
+
     // -- INQUIRIES
 
     void Write(
@@ -118,6 +139,16 @@ struct CLOUD :
     }
 
     // -- OPERATIONS
+
+    void Clear(
+        )
+    {
+        ComponentVector.clear();
+        PropertyVector.clear();
+        ScanVector.clear();
+    }
+
+    // ~~
 
     void Read(
         STREAM & stream

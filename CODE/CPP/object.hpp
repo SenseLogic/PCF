@@ -10,8 +10,9 @@ struct OBJECT
 {
     // -- ATTRIBUTES
 
-    uint64_t
-        LinkCount;
+    uint32_t
+        LinkCount,
+        PointerCount;
 
     // -- CONSTRUCTORS
 
@@ -19,6 +20,7 @@ struct OBJECT
         )
     {
         LinkCount = 0;
+        PointerCount = 0;
     }
 
     // ~~
@@ -67,5 +69,23 @@ struct OBJECT
 
             delete this;
         }
+    }
+
+    // ~~
+
+    void AddPointer(
+        )
+    {
+        ++PointerCount;
+    }
+
+    // ~~
+
+    void RemovePointer(
+        )
+    {
+        assert ( PointerCount > 1 );
+
+        --PointerCount;
     }
 };

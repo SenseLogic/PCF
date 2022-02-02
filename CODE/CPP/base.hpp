@@ -2,9 +2,9 @@
 
 // -- IMPORTS
 
-#include <assert.h>
 #include <math.h>
 #include <cstdint>
+#include <cstdio>
 #include <cstdlib>
 #include <string>
 
@@ -14,7 +14,91 @@ using namespace std;
 
 // -- FUNCTIONS
 
-bool IsInteger(
+#define assert( _condition_ ) \
+    \
+    if ( !( _condition_ ) ) \
+    { \
+        printf( \
+            "%s(%d) : %s\n", \
+            __FILE__, \
+            __LINE__, \
+            #_condition_ \
+            ); \
+        exit( -1 ); \
+    }
+
+// ~~
+
+inline VECTOR_<string> Split(
+    const string & text,
+    const char separator_character
+    )
+{
+    uint64_t
+        part_character_index,
+        separator_character_index,
+        text_character_count;
+    VECTOR_<string>
+        part_vector;
+
+    text_character_count = text.length();
+    part_character_index = 0;
+
+    for ( separator_character_index = 0;
+          separator_character_index < text_character_count;
+          ++separator_character_index )
+    {
+        if ( text[ separator_character_index ] == separator_character )
+        {
+            part_vector.push_back(
+                text.substr( part_character_index, separator_character_index - part_character_index )
+                );
+
+            part_character_index = separator_character_index + 1;
+        }
+    }
+
+    part_vector.push_back(
+        text.substr( part_character_index )
+        );
+
+    return part_vector;
+}
+
+// ~~
+
+inline string RemoveTrailingZeros(
+    string text
+    )
+{
+    if ( text.find( '.' ) != string::npos )
+    {
+        while ( text.length() > 0
+                && text.back() == '0' )
+        {
+            text.resize( text.length() - 1 );
+        }
+
+        if ( text.length() > 0
+             && text.back() == '.' )
+        {
+            text.resize( text.length() - 1 );
+        }
+    }
+
+    if ( text == "-0" )
+    {
+        return "0";
+    }
+    else
+    {
+        return text;
+    }
+}
+
+// ~~
+
+inline bool IsInteger(
     string text
     )
 {
@@ -43,7 +127,7 @@ bool IsInteger(
 
 // ~~
 
-bool IsReal(
+inline bool IsReal(
     string text
     )
 {
@@ -85,7 +169,7 @@ bool IsReal(
 
 // ~~
 
-uint64_t GetNatural64(
+inline uint64_t GetNatural64(
     string text
     )
 {
@@ -101,7 +185,7 @@ uint64_t GetNatural64(
 
 // ~~
 
-int64_t GetInteger64(
+inline int64_t GetInteger64(
     string text
     )
 {
@@ -117,7 +201,7 @@ int64_t GetInteger64(
 
 // ~~
 
-double GetReal64(
+inline double GetReal64(
     string text
     )
 {
@@ -133,7 +217,7 @@ double GetReal64(
 
 // ~~
 
-string GetText(
+inline string GetText(
     uint64_t natural
     )
 {
@@ -142,7 +226,7 @@ string GetText(
 
 // ~~
 
-string GetText(
+inline string GetText(
     int64_t integer
     )
 {
@@ -151,83 +235,18 @@ string GetText(
 
 // ~~
 
-string GetText(
+inline string GetText(
     float real
     )
 {
-    string
-        text;
-
-    text = to_string( real );
-    /*
-    if ( text.indexOf( '.' ) >= 0 )
-    {
-        while ( text.endsWith( '0') )
-        {
-            text = text[ 0 .. $ - 1 ];
-        }
-
-        if ( text.endsWith( '.' ) )
-        {
-            text = text[ 0 .. $ - 1 ];
-        }
-    }
-    */
-    if ( text == "-0" )
-    {
-        return "0";
-    }
-    else
-    {
-        return text;
-    }
+    return RemoveTrailingZeros( to_string( real ) );
 }
 
 // ~~
 
-string GetText(
+inline string GetText(
     double real
     )
 {
-    string
-        text;
-
-    text = to_string( real );
-    /*
-    if ( text.indexOf( '.' ) >= 0 )
-    {
-        while ( text.endsWith( '0') )
-        {
-            text = text[ 0 .. $ - 1 ];
-        }
-
-        if ( text.endsWith( '.' ) )
-        {
-            text = text[ 0 .. $ - 1 ];
-        }
-    }
-    */
-    if ( text == "-0" )
-    {
-        return "0";
-    }
-    else
-    {
-        return text;
-    }
-}
-
-// ~~
-
-inline VECTOR_<string> Split(
-    const string & text,
-    const string & delimiter
-    )
-{
-    VECTOR_<string>
-        part_vector;
-    /*
-    TODO
-    */
-    return part_vector;
+    return RemoveTrailingZeros( to_string( real ) );
 }

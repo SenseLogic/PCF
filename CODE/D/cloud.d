@@ -111,6 +111,16 @@ class CLOUD
 
     // -- OPERATIONS
 
+    void Clear(
+        )
+    {
+        ComponentArray.destroy();
+        PropertyArray.destroy();
+        ScanArray.destroy();
+    }
+
+    // ~~
+
     void Read(
         STREAM stream
         )

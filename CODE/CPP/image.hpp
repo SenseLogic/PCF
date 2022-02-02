@@ -25,6 +25,25 @@ struct IMAGE :
     VECTOR_<uint8_t>
         ByteVector;
 
+    // -- CONSTRUCTORS
+
+    IMAGE(
+        ) :
+        Name(),
+        Role(),
+        Format(),
+        PropertyVector(),
+        ByteVector()
+    {
+    }
+
+    // -- DESTRUCTORS
+
+    virtual ~IMAGE(
+        )
+    {
+    }
+
     // -- INQUIRIES
 
     void Write(

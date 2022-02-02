@@ -6,6 +6,8 @@ import pcf.component;
 import pcf.buffer;
 import pcf.stream;
 import pcf.vector_3;
+import std.container.array;
+import std.container.util;
 
 // -- TYPES
 
@@ -19,6 +21,11 @@ class CELL
         PositionVector;
     BUFFER[]
         BufferArray;
+    static void delegate( CELL )
+        PreWriteDelegate,
+        PostWriteDelegate,
+        PreReadDelegate,
+        PostReadDelegate;
 
     // -- CONSTRUCTORS
 
@@ -45,20 +52,48 @@ class CELL
         STREAM stream
         )
     {
+        if ( PreWriteDelegate !is null )
+        {
+            PreWriteDelegate( this );
+        }
+
         stream.WriteNatural64( PointCount );
         stream.WriteValue( PositionVector );
         stream.WriteObjectArray( BufferArray );
+
+        if ( PostWriteDelegate !is null )
+        {
+            PostWriteDelegate( this );
+        }
     }
 
     // -- OPERATIONS
+
+    void Clear(
+        )
+    {
+        BufferArray.destroy();
+    }
+
+    // ~~
 
     void Read(
         STREAM stream
         )
     {
+        if ( PreReadDelegate !is null )
+        {
+            PreReadDelegate( this );
+        }
+
         stream.ReadNatural64( PointCount );
         stream.ReadValue( PositionVector );
         stream.ReadObjectArray( BufferArray );
+
+        if ( PostReadDelegate !is null )
+        {
+            PostReadDelegate( this );
+        }
     }
 
     // ~~

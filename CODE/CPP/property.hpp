@@ -18,6 +18,23 @@ struct PROPERTY :
         Value,
         Format;
 
+    // -- CONSTRUCTORS
+
+    PROPERTY(
+        ) :
+        Name(),
+        Value(),
+        Format()
+    {
+    }
+
+    // -- DESTRUCTORS
+
+    virtual ~PROPERTY(
+        )
+    {
+    }
+
     // -- INQUIRIES
 
     void Write(

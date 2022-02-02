@@ -23,6 +23,14 @@ struct STREAM
     // -- CONSTRUCTORS
 
     STREAM(
+        ) :
+        File( nullptr )
+    {
+    }
+
+    // -- DESTRUCTORS
+
+    ~STREAM(
         )
     {
     }
@@ -705,16 +713,31 @@ struct STREAM
         string & line
         )
     {
-        /*
-        line = File.readln();
+        char
+            line_character_array[ 2048 ];
+        uint64_t
+            character_count;
 
-        if ( line !is null )
+        if ( fgets( line_character_array, sizeof( line_character_array ), File ) != nullptr )
         {
-            line = line.stripRight();
+            character_count = strlen( line_character_array );
+
+            while ( character_count > 0
+                    && line_character_array[ character_count - 1 ] >= 0
+                    && line_character_array[ character_count - 1 ] <= 32 )
+            {
+                --character_count;
+            }
+
+            line_character_array[ character_count ] = 0;
+            line = line_character_array;
         }
-        */
-        return
-            line != "";
+        else
+        {
+            line = "";
+        }
+
+        return line != "";
     }
 
     // ~~
@@ -795,7 +818,7 @@ struct STREAM
 
         if ( ReadLine( line ) )
         {
-            part_vector = Split( line, " " );
+            part_vector = Split( line, ' ' );
 
             first_real = GetReal64( part_vector[ 0 ] );
             second_real = GetReal64( part_vector[ 1 ] );
@@ -825,7 +848,7 @@ struct STREAM
 
         if ( ReadLine( line ) )
         {
-            part_vector = Split( line, " " );
+            part_vector = Split( line, ' ' );
 
             first_real = GetReal64( part_vector[ 0 ] );
             second_real = GetReal64( part_vector[ 1 ] );
@@ -859,7 +882,7 @@ struct STREAM
 
         if ( ReadLine( line ) )
         {
-            part_vector = Split( line, " " );
+            part_vector = Split( line, ' ' );
 
             first_real = GetReal64( part_vector[ 0 ] );
             second_real = GetReal64( part_vector[ 1 ] );

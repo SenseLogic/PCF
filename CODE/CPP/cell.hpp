@@ -16,6 +16,10 @@
 struct CELL :
     public OBJECT
 {
+    // -- TYPES
+
+    typedef void ( *DELEGATE )( CELL & );
+
     // -- ATTRIBUTES
 
     uint64_t
@@ -24,11 +28,19 @@ struct CELL :
         PositionVector;
     VECTOR_<LINK_<BUFFER>>
         BufferVector;
+    static DELEGATE
+        PreWriteDelegate,
+        PostWriteDelegate,
+        PreReadDelegate,
+        PostReadDelegate;
 
     // -- CONSTRUCTORS
 
     CELL(
-        )
+        ) :
+        PointCount( 0 ),
+        PositionVector(),
+        BufferVector()
     {
     }
 
@@ -44,26 +56,61 @@ struct CELL :
         }
     }
 
+    // -- DESTRUCTORS
+
+    virtual ~CELL(
+        )
+    {
+    }
+
     // -- INQUIRIES
 
     void Write(
         STREAM & stream
         )
     {
+        if ( PreWriteDelegate != nullptr )
+        {
+            ( *PreWriteDelegate )( *this );
+        }
+
         stream.WriteNatural64( PointCount );
         stream.WriteValue( PositionVector );
         stream.WriteObjectVector( BufferVector );
+
+        if ( PostWriteDelegate != nullptr )
+        {
+            ( *PostWriteDelegate )( *this );
+        }
     }
 
     // -- OPERATIONS
+
+    void Clear(
+        )
+    {
+        BufferVector.clear();
+    }
+
+    // ~~
 
     void Read(
         STREAM & stream
         )
     {
+        if ( PreReadDelegate != nullptr )
+        {
+            ( *PreReadDelegate )( *this );
+        }
+
         stream.ReadNatural64( PointCount );
         stream.ReadValue( PositionVector );
         stream.ReadObjectVector( BufferVector );
+
+        if ( PostReadDelegate != nullptr )
+        {
+            ( *PostReadDelegate )( *this );
+        }
     }
 
     // ~~

@@ -11,9 +11,32 @@ struct VECTOR_3
     // -- ATTRIBUTES
 
     double
-        X = 0.0,
-        Y = 0.0,
-        Z = 0.0;
+        X,
+        Y,
+        Z;
+
+    // -- CONSTRUCTORS
+
+    VECTOR_3(
+        ) :
+        X( 0.0 ),
+        Y( 0.0 ),
+        Z( 0.0 )
+    {
+    }
+
+    // ~~
+
+    VECTOR_3(
+        double x,
+        double y,
+        double z
+        ) :
+        X( x ),
+        Y( y ),
+        Z( z )
+    {
+    }
 
     // -- OPERATORS
 

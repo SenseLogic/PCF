@@ -20,6 +20,10 @@
 struct SCAN :
     public OBJECT
 {
+    // -- TYPES
+
+    typedef void ( *DELEGATE )( SCAN & );
+
     // -- ATTRIBUTES
 
     string
@@ -39,6 +43,36 @@ struct SCAN :
         ImageVector;
     MAP_<VECTOR_3, LINK_<CELL>>
         CellMap;
+    static DELEGATE
+        PreWriteDelegate,
+        PostWriteDelegate,
+        PreReadDelegate,
+        PostReadDelegate;
+
+    // -- CONSTRUCTORS
+
+    SCAN(
+        ) :
+        Name(),
+        ColumnCount(),
+        RowCount(),
+        PointCount(),
+        PositionVector( 0.0, 0.0, 0.0 ),
+        XAxisVector( 1.0, 0.0, 0.0 ),
+        YAxisVector( 0.0, 1.0, 0.0 ),
+        ZAxisVector( 0.0, 0.0, 1.0 ),
+        PropertyVector(),
+        ImageVector(),
+        CellMap()
+    {
+    }
+
+    // -- DESTRUCTORS
+
+    virtual ~SCAN(
+        )
+    {
+    }
 
     // -- INQUIRIES
 
@@ -46,6 +80,11 @@ struct SCAN :
         STREAM & stream
         )
     {
+        if ( PreWriteDelegate != nullptr )
+        {
+            ( *PreWriteDelegate )( *this );
+        }
+
         stream.WriteText( Name );
         stream.WriteNatural64( ColumnCount );
         stream.WriteNatural64( RowCount );
@@ -57,25 +96,34 @@ struct SCAN :
         stream.WriteObjectVector( PropertyVector );
         stream.WriteObjectVector( ImageVector );
         stream.WriteObjectByValueMap( CellMap );
-    }
 
-    // -- CONSTRUCTORS
-
-    SCAN(
-        )
-    {
-        PositionVector.SetVector( 0.0, 0.0, 0.0 );
-        XAxisVector.SetVector( 1.0, 0.0, 0.0 );
-        YAxisVector.SetVector( 0.0, 1.0, 0.0 );
-        ZAxisVector.SetVector( 0.0, 0.0, 1.0 );
+        if ( PostWriteDelegate != nullptr )
+        {
+            ( *PostWriteDelegate )( *this );
+        }
     }
 
     // -- OPERATIONS
+
+    void Clear(
+        )
+    {
+        PropertyVector.clear();
+        ImageVector.clear();
+        CellMap.clear();
+    }
+
+    // ~~
 
     void Read(
         STREAM & stream
         )
     {
+        if ( PreReadDelegate != nullptr )
+        {
+            ( *PreReadDelegate )( *this );
+        }
+
         stream.ReadText( Name );
         stream.ReadNatural64( ColumnCount );
         stream.ReadNatural64( RowCount );
@@ -87,6 +135,11 @@ struct SCAN :
         stream.ReadObjectVector( PropertyVector );
         stream.ReadObjectVector( ImageVector );
         stream.ReadObjectByValueMap( CellMap );
+
+        if ( PostReadDelegate != nullptr )
+        {
+            ( *PostReadDelegate )( *this );
+        }
     }
 
     // ~~

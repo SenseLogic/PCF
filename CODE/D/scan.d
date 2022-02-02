@@ -34,6 +34,11 @@ class SCAN
         ImageArray;
     CELL[ VECTOR_3 ]
         CellMap;
+    static void delegate( SCAN )
+        PreWriteDelegate,
+        PostWriteDelegate,
+        PreReadDelegate,
+        PostReadDelegate;
 
     // -- INQUIRIES
 
@@ -41,6 +46,11 @@ class SCAN
         STREAM stream
         )
     {
+        if ( PreWriteDelegate !is null )
+        {
+            PreWriteDelegate( this );
+        }
+
         stream.WriteText( Name );
         stream.WriteNatural64( ColumnCount );
         stream.WriteNatural64( RowCount );
@@ -52,6 +62,11 @@ class SCAN
         stream.WriteObjectArray( PropertyArray );
         stream.WriteObjectArray( ImageArray );
         stream.WriteObjectByValueMap!( CELL, VECTOR_3 )( CellMap );
+
+        if ( PostWriteDelegate !is null )
+        {
+            PostWriteDelegate( this );
+        }
     }
 
     // -- CONSTRUCTORS
@@ -67,10 +82,25 @@ class SCAN
 
     // -- OPERATIONS
 
+    void Clear(
+        )
+    {
+        PropertyArray.destroy();
+        ImageArray.destroy();
+        CellMap.destroy();
+    }
+
+    // ~~
+
     void Read(
         STREAM stream
         )
     {
+        if ( PreReadDelegate !is null )
+        {
+            PreReadDelegate( this );
+        }
+
         stream.ReadText( Name );
         stream.ReadNatural64( ColumnCount );
         stream.ReadNatural64( RowCount );
@@ -82,6 +112,11 @@ class SCAN
         stream.ReadObjectArray( PropertyArray );
         stream.ReadObjectArray( ImageArray );
         stream.ReadObjectByValueMap!( CELL, VECTOR_3 )( CellMap );
+
+        if ( PostReadDelegate !is null )
+        {
+            PostReadDelegate( this );
+        }
     }
 
     // ~~
