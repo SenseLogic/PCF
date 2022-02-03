@@ -1,6 +1,7 @@
 // -- IMPORTS
 
 #include "scan.hpp"
+using namespace pcf;
 
 // -- ATTRIBUTES
 

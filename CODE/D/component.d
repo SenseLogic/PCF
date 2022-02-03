@@ -13,13 +13,13 @@ class COMPONENT
 
     string
         Name;
-    double
-        Precision = 0.0;
     ushort
-        BitCount,
-        Compression;
+        Compression,
+        BitCount;
     double
+        Precision = 0.0,
         MinimumValue = 0.0,
+        MaximumValue = 0.0,
         OneOverPrecision = 0.0;
 
     // -- CONSTRUCTORS
@@ -33,17 +33,19 @@ class COMPONENT
 
     this(
         string name,
-        double precision = 1.0,
+        COMPRESSION compression = COMPRESSION.Discretization,
         ushort bit_count = 8,
-        ushort compression = COMPRESSION.Discretization,
-        double minimum_value = 0.0
+        double precision = 1.0,
+        double minimum_value = 0.0,
+        double maximum_value = 0.0
         )
     {
         Name = name;
-        Precision = precision;
-        BitCount = bit_count;
         Compression = compression;
+        BitCount = bit_count;
+        Precision = precision;
         MinimumValue = minimum_value;
+        MaximumValue = maximum_value;
         OneOverPrecision = 1.0 / precision;
     }
 
@@ -54,10 +56,11 @@ class COMPONENT
         )
     {
         stream.WriteText( Name );
-        stream.WriteReal64( Precision );
-        stream.WriteNatural16( BitCount );
         stream.WriteNatural16( Compression );
+        stream.WriteNatural16( BitCount );
+        stream.WriteReal64( Precision );
         stream.WriteReal64( MinimumValue );
+        stream.WriteReal64( MaximumValue );
         stream.WriteReal64( OneOverPrecision );
     }
 
@@ -68,10 +71,11 @@ class COMPONENT
         )
     {
         stream.ReadText( Name );
-        stream.ReadReal64( Precision );
-        stream.ReadNatural16( BitCount );
         stream.ReadNatural16( Compression );
+        stream.ReadNatural16( BitCount );
+        stream.ReadReal64( Precision );
         stream.ReadReal64( MinimumValue );
+        stream.ReadReal64( MaximumValue );
         stream.ReadReal64( OneOverPrecision );
     }
 }

@@ -1,6 +1,7 @@
 // -- IMPORTS
 
 #include "cell.hpp"
+using namespace pcf;
 
 // -- ATTRIBUTES
 

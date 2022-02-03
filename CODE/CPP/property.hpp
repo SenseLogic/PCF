@@ -8,78 +8,81 @@
 
 // -- TYPES
 
-struct PROPERTY :
-    public OBJECT
+namespace pcf
 {
-    // -- ATTRIBUTES
-
-    string
-        Name,
-        Value,
-        Format;
-
-    // -- CONSTRUCTORS
-
-    PROPERTY(
-        ) :
-        OBJECT(),
-        Name(),
-        Value(),
-        Format()
+    struct PROPERTY :
+        public OBJECT
     {
-    }
+        // -- ATTRIBUTES
 
-    // ~~
+        string
+            Name,
+            Value,
+            Format;
 
-    PROPERTY(
-        const PROPERTY & property
-        ) :
-        OBJECT( property ),
-        Name( property.Name ),
-        Value( property.Value ),
-        Format( property.Format )
-    {
-    }
+        // -- CONSTRUCTORS
 
-    // -- DESTRUCTORS
+        PROPERTY(
+            ) :
+            OBJECT(),
+            Name(),
+            Value(),
+            Format()
+        {
+        }
 
-    virtual ~PROPERTY(
-        )
-    {
-    }
+        // ~~
 
-    // -- OPERATORS
+        PROPERTY(
+            const PROPERTY & property
+            ) :
+            OBJECT( property ),
+            Name( property.Name ),
+            Value( property.Value ),
+            Format( property.Format )
+        {
+        }
 
-    PROPERTY & operator=(
-        const PROPERTY & property
-        )
-    {
-        Name = property.Name;
-        Value = property.Value;
-        Format = property.Format;
+        // -- DESTRUCTORS
 
-        return *this;
-    }
+        virtual ~PROPERTY(
+            )
+        {
+        }
 
-    // -- INQUIRIES
+        // -- OPERATORS
 
-    void Write(
-        STREAM & stream
-        )
-    {
-        stream.WriteText( Name );
-        stream.WriteText( Value );
-        stream.WriteText( Format );
-    }
+        PROPERTY & operator=(
+            const PROPERTY & property
+            )
+        {
+            Name = property.Name;
+            Value = property.Value;
+            Format = property.Format;
 
-    // -- OPERATIONS
+            return *this;
+        }
 
-    void Read(
-        STREAM & stream
-        )
-    {
-        stream.ReadText( Name );
-        stream.ReadText( Value );
-        stream.ReadText( Format );
-    }
-};
+        // -- INQUIRIES
+
+        void Write(
+            STREAM & stream
+            )
+        {
+            stream.WriteText( Name );
+            stream.WriteText( Value );
+            stream.WriteText( Format );
+        }
+
+        // -- OPERATIONS
+
+        void Read(
+            STREAM & stream
+            )
+        {
+            stream.ReadText( Name );
+            stream.ReadText( Value );
+            stream.ReadText( Format );
+        }
+    };
+}

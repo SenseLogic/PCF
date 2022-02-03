@@ -6,86 +6,89 @@
 
 // -- TYPES
 
-struct OBJECT
+namespace pcf
 {
-    // -- ATTRIBUTES
-
-    uint32_t
-        LinkCount,
-        PointerCount;
-
-    // -- CONSTRUCTORS
-
-    OBJECT(
-        )
+    struct OBJECT
     {
-        LinkCount = 0;
-        PointerCount = 0;
-    }
+        // -- ATTRIBUTES
 
-    // ~~
+        uint32_t
+            LinkCount,
+            PointerCount;
 
-    OBJECT(
-        const OBJECT & object
-        )
-    {
-    }
+        // -- CONSTRUCTORS
 
-    // -- DESTRUCTORS
-
-    virtual ~OBJECT(
-        )
-    {
-    }
-
-    // -- OPERATORS
-
-    void operator=(
-        const OBJECT & object
-        )
-    {
-    }
-
-    // -- OPERATIONS
-
-    void AddLink(
-        )
-    {
-        ++LinkCount;
-    }
-
-    // ~~
-
-    void RemoveLink(
-        )
-    {
-        if ( LinkCount > 1 )
-        {
-            --LinkCount;
-        }
-        else
+        OBJECT(
+            )
         {
             LinkCount = 0;
-
-            delete this;
+            PointerCount = 0;
         }
-    }
 
-    // ~~
+        // ~~
 
-    void AddPointer(
-        )
-    {
-        ++PointerCount;
-    }
+        OBJECT(
+            const OBJECT & object
+            )
+        {
+        }
 
-    // ~~
+        // -- DESTRUCTORS
 
-    void RemovePointer(
-        )
-    {
-        assert ( PointerCount > 1 );
+        virtual ~OBJECT(
+            )
+        {
+        }
 
-        --PointerCount;
-    }
-};
+        // -- OPERATORS
+
+        void operator=(
+            const OBJECT & object
+            )
+        {
+        }
+
+        // -- OPERATIONS
+
+        void AddLink(
+            )
+        {
+            ++LinkCount;
+        }
+
+        // ~~
+
+        void RemoveLink(
+            )
+        {
+            if ( LinkCount > 1 )
+            {
+                --LinkCount;
+            }
+            else
+            {
+                LinkCount = 0;
+
+                delete this;
+            }
+        }
+
+        // ~~
+
+        void AddPointer(
+            )
+        {
+            ++PointerCount;
+        }
+
+        // ~~
+
+        void RemovePointer(
+            )
+        {
+            assert ( PointerCount > 1 );
+
+            --PointerCount;
+        }
+    };
+}

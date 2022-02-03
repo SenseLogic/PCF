@@ -9,118 +9,129 @@
 
 // -- TYPES
 
-struct COMPONENT :
-    public OBJECT
+namespace pcf
 {
-    // -- ATTRIBUTES
-
-    string
-        Name;
-    double
-        Precision;
-    uint16_t
-        BitCount,
-        Compression;
-    double
-        MinimumValue,
-        OneOverPrecision;
-
-    // -- CONSTRUCTORS
-
-    COMPONENT(
-        ) :
-        OBJECT(),
-        Name(),
-        Precision( 0.0 ),
-        BitCount( 0 ),
-        Compression( COMPRESSION_None ),
-        MinimumValue( 0.0 ),
-        OneOverPrecision( 0.0 )
+    struct COMPONENT :
+        public OBJECT
     {
-    }
+        // -- ATTRIBUTES
 
-    // ~~
+        string
+            Name;
+        COMPRESSION
+            Compression;
+        uint16_t
+            BitCount;
+        double
+            Precision,
+            MinimumValue,
+            MaximumValue,
+            OneOverPrecision;
 
-    COMPONENT(
-        const COMPONENT & component
-        ) :
-        OBJECT( component ),
-        Name( component.Name ),
-        Precision( component.Precision ),
-        BitCount( component.BitCount ),
-        Compression( component.Compression ),
-        MinimumValue( component.MinimumValue ),
-        OneOverPrecision( component.OneOverPrecision )
-    {
-    }
+        // -- CONSTRUCTORS
 
-    // ~~
+        COMPONENT(
+            ) :
+            OBJECT(),
+            Name(),
+            Compression( COMPRESSION::None ),
+            BitCount( 0 ),
+            Precision( 0.0 ),
+            MinimumValue( 0.0 ),
+            MaximumValue( 0.0 ),
+            OneOverPrecision( 0.0 )
+        {
+        }
 
-    COMPONENT(
-        string name,
-        double precision = 1.0,
-        uint16_t bit_count = 8,
-        uint16_t compression = COMPRESSION_Discretization,
-        double minimum_value = 0.0
-        ) :
-        OBJECT(),
-        Name( name ),
-        Precision( precision ),
-        BitCount( bit_count ),
-        Compression( compression ),
-        MinimumValue( minimum_value ),
-        OneOverPrecision( 1.0 / precision )
-    {
-    }
+        // ~~
 
-    // -- DESTRUCTORS
+        COMPONENT(
+            const COMPONENT & component
+            ) :
+            OBJECT( component ),
+            Name( component.Name ),
+            Compression( component.Compression ),
+            BitCount( component.BitCount ),
+            Precision( component.Precision ),
+            MinimumValue( component.MinimumValue ),
+            MaximumValue( component.MaximumValue ),
+            OneOverPrecision( component.OneOverPrecision )
+        {
+        }
 
-    virtual ~COMPONENT(
-        )
-    {
-    }
+        // ~~
 
-    // -- OPERATORS
+        COMPONENT(
+            string name,
+            COMPRESSION compression = COMPRESSION::Discretization,
+            uint16_t bit_count = 8,
+            double precision = 1.0,
+            double minimum_value = 0.0,
+            double maximum_value = 0.0
+            ) :
+            OBJECT(),
+            Name( name ),
+            Compression( compression ),
+            BitCount( bit_count ),
+            Precision( precision ),
+            MinimumValue( minimum_value ),
+            MaximumValue( maximum_value ),
+            OneOverPrecision( 1.0 / precision )
+        {
+        }
 
-    COMPONENT & operator=(
-        const COMPONENT & component
-        )
-    {
-        Name = component.Name;
-        Precision = component.Precision;
-        BitCount = component.BitCount;
-        Compression = component.Compression;
-        MinimumValue = component.MinimumValue;
-        OneOverPrecision = component.OneOverPrecision;
+        // -- DESTRUCTORS
 
-        return *this;
-    }
+        virtual ~COMPONENT(
+            )
+        {
+        }
 
-    // -- INQUIRIES
+        // -- OPERATORS
 
-    void Write(
-        STREAM & stream
-        )
-    {
-        stream.WriteText( Name );
-        stream.WriteReal64( Precision );
-        stream.WriteNatural16( BitCount );
-        stream.WriteNatural16( Compression );
-        stream.WriteReal64( MinimumValue );
-        stream.WriteReal64( OneOverPrecision );
-    }
+        COMPONENT & operator=(
+            const COMPONENT & component
+            )
+        {
+            Name = component.Name;
+            Compression = component.Compression;
+            BitCount = component.BitCount;
+            Precision = component.Precision;
+            MinimumValue = component.MinimumValue;
+            MaximumValue = component.MaximumValue;
+            OneOverPrecision = component.OneOverPrecision;
 
-    // -- OPERATIONS
+            return *this;
+        }
 
-    void Read(
-        STREAM & stream
-        )
-    {
-        stream.ReadText( Name );
-        stream.ReadReal64( Precision );
-        stream.ReadNatural16( BitCount );
-        stream.ReadNatural16( Compression );
-        stream.ReadReal64( MinimumValue );
-        stream.ReadReal64( OneOverPrecision );
-    }
-};
+        // -- INQUIRIES
+
+        void Write(
+            STREAM & stream
+            )
+        {
+            stream.WriteText( Name );
+            stream.WriteNatural16( ( uint16_t )Compression );
+            stream.WriteNatural16( BitCount );
+            stream.WriteReal64( Precision );
+            stream.WriteReal64( MinimumValue );
+            stream.WriteReal64( MaximumValue );
+            stream.WriteReal64( OneOverPrecision );
+        }
+
+        // -- OPERATIONS
+
+        void Read(
+            STREAM & stream
+            )
+        {
+            stream.ReadText( Name );
+            stream.ReadNatural16( ( uint16_t & )Compression );
+            stream.ReadNatural16( BitCount );
+            stream.ReadReal64( Precision );
+            stream.ReadReal64( MinimumValue );
+            stream.ReadReal64( MaximumValue );
+            stream.ReadReal64( OneOverPrecision );
+        }
+    };
+}

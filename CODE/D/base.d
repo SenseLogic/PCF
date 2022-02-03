@@ -40,7 +40,7 @@ bool IsInteger(
     string text
     )
 {
-    long
+    ulong
         character_index;
 
     character_index = 0;
@@ -69,7 +69,7 @@ bool IsReal(
     string text
     )
 {
-    long
+    ulong
         character_index;
 
     character_index = 0;

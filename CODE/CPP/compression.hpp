@@ -1,9 +1,16 @@
 #pragma once
 
+// -- IMPORTS
+
+#include "base.hpp"
+
 // -- TYPES
 
-enum COMPRESSION
+namespace pcf
 {
-    COMPRESSION_None = 0,
-    COMPRESSION_Discretization = 1
-};
+    enum struct COMPRESSION : uint16_t
+    {
+        None = 0,
+        Discretization = 1
+    };
+}

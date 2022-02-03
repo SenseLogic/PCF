@@ -39,6 +39,26 @@ struct VECTOR_3
 
     // ~~
 
+    void SetNull(
+        )
+    {
+        X = 0.0;
+        Y = 0.0;
+        Z = 0.0;
+    }
+
+    // ~~
+
+    void SetUnit(
+        )
+    {
+        X = 1.0;
+        Y = 1.0;
+        Z = 1.0;
+    }
+
+    // ~~
+
     void SetVector(
         double x,
         double y,
@@ -59,6 +79,40 @@ struct VECTOR_3
         X = 1.0 / vector.X;
         Y = 1.0 / vector.Y;
         Z = 1.0 / vector.Z;
+    }
+
+    // ~~
+
+    void AddVector(
+        ref VECTOR_3 vector
+        )
+    {
+        X += vector.X;
+        Y += vector.Y;
+        Z += vector.Z;
+    }
+
+    // ~~
+
+    void AddScaledVector(
+        ref VECTOR_3 vector,
+        double factor
+        )
+    {
+        X += vector.X * factor;
+        Y += vector.Y * factor;
+        Z += vector.Z * factor;
+    }
+
+    // ~~
+
+    void MultiplyScalar(
+        double scalar
+        )
+    {
+        X *= scalar;
+        Y *= scalar;
+        Z *= scalar;
     }
 
     // ~~
@@ -125,8 +179,7 @@ struct VECTOR_3
         )
     {
         double
-            x,
-            y;
+            x;
 
         x = X;
         X = X * z_angle_cosinus - Y * z_angle_sinus;

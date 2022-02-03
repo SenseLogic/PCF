@@ -113,13 +113,13 @@ class BUFFER
             assert( component.Compression == COMPRESSION.Discretization );
 
             real_value = ( component_value - component.MinimumValue ) * component.OneOverPrecision;
-            natural_value = real_value.to!ulong() - MinimumNaturalValue;
+            assert( real_value >= -0.5 );
 
-            assert(
-                real_value >= 0.0
-                && ( ComponentBitCount == 64
-                     || natural_value < ( 1UL << ComponentBitCount ) )
-                );
+            natural_value = ( real_value + 0.5 ).to!ulong() - MinimumNaturalValue;
+import std.stdio;
+writeln( component_value, " => ", real_value, " => ", natural_value );
+writeln( component.Name, " : ", ComponentBitCount, " / ", component.BitCount );
+            assert( ComponentBitCount == 64 || natural_value < ( 1UL << ComponentBitCount ) );
 
             foreach ( component_bit_index; 0 .. ComponentBitCount )
             {

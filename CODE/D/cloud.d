@@ -34,6 +34,24 @@ class CLOUD
 
     // -- INQUIRIES
 
+    ulong GetPointCount(
+        )
+    {
+        ulong
+            point_count;
+
+        point_count = 0;
+
+        foreach ( scan; ScanArray )
+        {
+            point_count += scan.PointCount;
+        }
+
+        return point_count;
+    }
+
+    // ~~
+
     void Write(
         STREAM stream
         )
@@ -59,6 +77,43 @@ class CLOUD
         stream = new STREAM();
         stream.OpenOutputBinaryFile( output_file_path );
         stream.WriteObject( this );
+        stream.Close();
+    }
+
+    // ~~
+
+    void WritePtsFile(
+        string output_file_path
+        )
+    {
+        STREAM
+            stream;
+
+        stream = new STREAM();
+        stream.OpenOutputTextFile( output_file_path );
+        stream.WriteNaturalLine( GetPointCount() );
+
+        foreach ( scan; ScanArray )
+        {
+            foreach ( cell; scan.CellMap.byValue )
+            {
+                cell.SeekComponent( 0 );
+
+                foreach ( point_index; 0 .. cell.PointCount )
+                {
+                    stream.WriteRealLine(
+                        cell.GetComponentValue( ComponentArray, 0 ),
+                        cell.GetComponentValue( ComponentArray, 1 ),
+                        cell.GetComponentValue( ComponentArray, 2 ),
+                        cell.GetComponentValue( ComponentArray, 3 ),
+                        cell.GetComponentValue( ComponentArray, 4 ),
+                        cell.GetComponentValue( ComponentArray, 5 ),
+                        cell.GetComponentValue( ComponentArray, 6 )
+                        );
+                }
+            }
+        }
+
         stream.Close();
     }
 
@@ -151,9 +206,21 @@ class CLOUD
 
     // ~~
 
-    void ReadPtxFile(
+    void ReadPtsFile(
         string input_file_path,
-        COMPRESSION compression
+        COMPRESSION compression,
+        ushort position_bit_count = 8,
+        double position_precision = 0.001,
+        double position_minimum = 0.0,
+        double position_maximum = 0.0,
+        ushort intensity_bit_count = 12,
+        double intensity_precision = 1.0,
+        double intensity_minimum = -2048.0,
+        double intensity_maximum = 2047.0,
+        ushort color_bit_count = 8,
+        double color_precision = 1.0,
+        double color_minimum = 0.0,
+        double color_maximum = 255.0
         )
     {
         double
@@ -165,8 +232,6 @@ class CLOUD
             position_x,
             position_y,
             position_z;
-        string
-            line;
         CELL
             cell;
         STREAM
@@ -178,25 +243,116 @@ class CLOUD
 
         if ( compression == COMPRESSION.None )
         {
-            ComponentArray ~= new COMPONENT( "X", 0.0, 32, COMPRESSION.None );
-            ComponentArray ~= new COMPONENT( "Y", 0.0, 32, COMPRESSION.None );
-            ComponentArray ~= new COMPONENT( "Z", 0.0, 32, COMPRESSION.None );
-            ComponentArray ~= new COMPONENT( "I", 0.0, 32, COMPRESSION.None );
-            ComponentArray ~= new COMPONENT( "R", 0.0, 32, COMPRESSION.None );
-            ComponentArray ~= new COMPONENT( "G", 0.0, 32, COMPRESSION.None );
-            ComponentArray ~= new COMPONENT( "B", 0.0, 32, COMPRESSION.None );
+            ComponentArray ~= new COMPONENT( "X", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "Y", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "Z", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "I", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "R", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "G", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "B", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
         }
         else
         {
             assert( compression == COMPRESSION.Discretization );
 
-            ComponentArray ~= new COMPONENT( "X", 0.001 );
-            ComponentArray ~= new COMPONENT( "Y", 0.001 );
-            ComponentArray ~= new COMPONENT( "Z", 0.001 );
-            ComponentArray ~= new COMPONENT( "I", 1.0 / 255.0 );
-            ComponentArray ~= new COMPONENT( "R", 1.0 );
-            ComponentArray ~= new COMPONENT( "G", 1.0 );
-            ComponentArray ~= new COMPONENT( "B", 1.0 );
+            ComponentArray ~= new COMPONENT( "X", COMPRESSION.Discretization, position_bit_count, position_precision, position_minimum, position_maximum );
+            ComponentArray ~= new COMPONENT( "Y", COMPRESSION.Discretization, position_bit_count, position_precision, position_minimum, position_maximum );
+            ComponentArray ~= new COMPONENT( "Z", COMPRESSION.Discretization, position_bit_count, position_precision, position_minimum, position_maximum );
+            ComponentArray ~= new COMPONENT( "I", COMPRESSION.Discretization, intensity_bit_count, intensity_precision, intensity_minimum, intensity_maximum );
+            ComponentArray ~= new COMPONENT( "R", COMPRESSION.Discretization, color_bit_count, color_precision, color_minimum, color_maximum );
+            ComponentArray ~= new COMPONENT( "G", COMPRESSION.Discretization, color_bit_count, color_precision, color_minimum, color_maximum );
+            ComponentArray ~= new COMPONENT( "B", COMPRESSION.Discretization, color_bit_count, color_precision, color_minimum, color_maximum );
+        }
+
+        stream = new STREAM();
+        stream.OpenInputTextFile( input_file_path );
+
+        scan = new SCAN();
+
+        if ( stream.ReadNaturalLine( scan.PointCount ) )
+        {
+            scan.ColumnCount = scan.PointCount;
+            scan.RowCount = 1;
+
+            foreach ( point_index; 0 .. scan.PointCount )
+            {
+                stream.ReadRealLine( position_x, position_y, position_z, intensity, color_red, color_green, color_blue );
+
+                cell = scan.GetCell( ComponentArray, position_x, position_y, position_z );
+                cell.AddComponentValue( ComponentArray, 0, position_x );
+                cell.AddComponentValue( ComponentArray, 1, position_y );
+                cell.AddComponentValue( ComponentArray, 2, position_z );
+                cell.AddComponentValue( ComponentArray, 3, intensity );
+                cell.AddComponentValue( ComponentArray, 4, color_red );
+                cell.AddComponentValue( ComponentArray, 5, color_green );
+                cell.AddComponentValue( ComponentArray, 6, color_blue );
+                ++cell.PointCount;
+            }
+
+            ScanArray ~= scan;
+        }
+
+        stream.Close();
+    }
+
+    // ~~
+
+    void ReadPtxFile(
+        string input_file_path,
+        COMPRESSION compression,
+        ushort position_bit_count = 8,
+        double position_precision = 0.001,
+        double position_minimum = 0.0,
+        double position_maximum = 0.0,
+        ushort intensity_bit_count = 8,
+        double intensity_precision = 1.0 / 255.0,
+        double intensity_minimum = 0.0,
+        double intensity_maximum = 1.0,
+        ushort color_bit_count = 8,
+        double color_precision = 1.0,
+        double color_minimum = 0.0,
+        double color_maximum = 255.0
+        )
+    {
+        double
+            color_blue,
+            color_green,
+            intensity,
+            color_red,
+            position_w,
+            position_x,
+            position_y,
+            position_z;
+        CELL
+            cell;
+        STREAM
+            stream;
+        SCAN
+            scan;
+
+        ComponentArray = null;
+
+        if ( compression == COMPRESSION.None )
+        {
+            ComponentArray ~= new COMPONENT( "X", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "Y", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "Z", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "I", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "R", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "G", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+            ComponentArray ~= new COMPONENT( "B", COMPRESSION.None, 32, 0.0, 0.0, 0.0 );
+        }
+        else
+        {
+            assert( compression == COMPRESSION.Discretization );
+
+            ComponentArray ~= new COMPONENT( "X", COMPRESSION.Discretization, position_bit_count, position_precision, position_minimum, position_maximum );
+            ComponentArray ~= new COMPONENT( "Y", COMPRESSION.Discretization, position_bit_count, position_precision, position_minimum, position_maximum );
+            ComponentArray ~= new COMPONENT( "Z", COMPRESSION.Discretization, position_bit_count, position_precision, position_minimum, position_maximum );
+            ComponentArray ~= new COMPONENT( "I", COMPRESSION.Discretization, intensity_bit_count, intensity_precision, intensity_minimum, intensity_maximum );
+            ComponentArray ~= new COMPONENT( "R", COMPRESSION.Discretization, color_bit_count, color_precision, color_minimum, color_maximum );
+            ComponentArray ~= new COMPONENT( "G", COMPRESSION.Discretization, color_bit_count, color_precision, color_minimum, color_maximum );
+            ComponentArray ~= new COMPONENT( "B", COMPRESSION.Discretization, color_bit_count, color_precision, color_minimum, color_maximum );
         }
 
         stream = new STREAM();

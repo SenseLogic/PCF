@@ -3,6 +3,7 @@ module pcf.scan;
 // -- IMPORTS
 
 import pcf.cell;
+import pcf.cell_position_vector;
 import pcf.component;
 import pcf.compression;
 import pcf.image;
@@ -10,6 +11,7 @@ import pcf.property;
 import pcf.stream;
 import pcf.vector_3;
 import std.math: floor;
+import std.conv: to;
 
 // -- TYPES
 
@@ -32,7 +34,7 @@ class SCAN
         PropertyArray;
     IMAGE[]
         ImageArray;
-    CELL[ VECTOR_3 ]
+    CELL[ CELL_POSITION_VECTOR ]
         CellMap;
     static void delegate( SCAN )
         PreWriteDelegate,
@@ -61,7 +63,7 @@ class SCAN
         stream.WriteValue( ZAxisVector );
         stream.WriteObjectArray( PropertyArray );
         stream.WriteObjectArray( ImageArray );
-        stream.WriteObjectByValueMap!( CELL, VECTOR_3 )( CellMap );
+        stream.WriteObjectByValueMap( CellMap );
 
         if ( PostWriteDelegate !is null )
         {
@@ -111,7 +113,7 @@ class SCAN
         stream.ReadValue( ZAxisVector );
         stream.ReadObjectArray( PropertyArray );
         stream.ReadObjectArray( ImageArray );
-        stream.ReadObjectByValueMap!( CELL, VECTOR_3 )( CellMap );
+        stream.ReadObjectByValueMap( CellMap );
 
         if ( PostReadDelegate !is null )
         {
@@ -128,12 +130,12 @@ class SCAN
         double position_z
         )
     {
-        VECTOR_3
-            cell_position_vector;
         CELL
             cell;
         CELL
             * found_cell;
+        CELL_POSITION_VECTOR
+            cell_position_vector;
 
         if ( component_array[ 0 ].Compression == COMPRESSION.None )
         {
@@ -142,7 +144,7 @@ class SCAN
                 && component_array[ 2 ].Compression == COMPRESSION.None
                 );
 
-            cell_position_vector.SetVector( 0.0, 0.0, 0.0 );
+            cell_position_vector.SetVector( 0, 0, 0 );
         }
         else
         {
@@ -153,9 +155,9 @@ class SCAN
                 );
 
             cell_position_vector.SetVector(
-                ( position_x * component_array[ 0 ].OneOverPrecision ).floor() * component_array[ 0 ].Precision,
-                ( position_y * component_array[ 1 ].OneOverPrecision ).floor() * component_array[ 1 ].Precision,
-                ( position_z * component_array[ 2 ].OneOverPrecision ).floor() * component_array[ 2 ].Precision
+                ( position_x * component_array[ 0 ].OneOverPrecision ).floor().to!long() >> component_array[ 0 ].BitCount,
+                ( position_y * component_array[ 1 ].OneOverPrecision ).floor().to!long() >> component_array[ 1 ].BitCount,
+                ( position_z * component_array[ 2 ].OneOverPrecision ).floor().to!long() >> component_array[ 2 ].BitCount
                 );
         }
 

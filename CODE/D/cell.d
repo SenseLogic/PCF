@@ -2,10 +2,10 @@ module pcf.cell;
 
 // -- IMPORTS
 
-import pcf.component;
 import pcf.buffer;
+import pcf.cell_position_vector;
+import pcf.component;
 import pcf.stream;
-import pcf.vector_3;
 import std.container.array;
 import std.container.util;
 
@@ -17,7 +17,7 @@ class CELL
 
     ulong
         PointCount;
-    VECTOR_3
+    CELL_POSITION_VECTOR
         PositionVector;
     BUFFER[]
         BufferArray;
@@ -120,15 +120,15 @@ class CELL
     {
         if ( component_index == 0 )
         {
-            component_value -= PositionVector.X;
+            component_value -= ( PositionVector.X << component_array[ 0 ].BitCount ) * component_array[ 0 ].Precision;
         }
         else if ( component_index == 1 )
         {
-            component_value -= PositionVector.Y;
+            component_value -= ( PositionVector.Y << component_array[ 1 ].BitCount ) * component_array[ 1 ].Precision;
         }
         else if ( component_index == 2 )
         {
-            component_value -= PositionVector.Z;
+            component_value -= ( PositionVector.Z << component_array[ 2 ].BitCount ) * component_array[ 2 ].Precision;
         }
 
         BufferArray[ component_index ].AddComponentValue( component_array[ component_index ], component_value );
@@ -148,15 +148,15 @@ class CELL
 
         if ( component_index == 0 )
         {
-            component_value += PositionVector.X;
+            component_value += ( PositionVector.X << component_array[ 0 ].BitCount ) * component_array[ 0 ].Precision;
         }
         else if ( component_index == 1 )
         {
-            component_value += PositionVector.Y;
+            component_value += ( PositionVector.Y << component_array[ 1 ].BitCount ) * component_array[ 1 ].Precision;
         }
         else if ( component_index == 2 )
         {
-            component_value += PositionVector.Z;
+            component_value += ( PositionVector.Z << component_array[ 2 ].BitCount ) * component_array[ 2 ].Precision;
         }
 
         return component_value;

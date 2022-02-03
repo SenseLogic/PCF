@@ -3,5 +3,5 @@
 *.o
 *.obj
 *.pdb
-CODE/CPP/test
-CODE/D/test
+CODE/CPP/TEST/test
+CODE/D/TEST/test

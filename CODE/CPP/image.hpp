@@ -11,92 +11,95 @@
 
 // -- TYPES
 
-struct IMAGE :
-    public OBJECT
+namespace pcf
 {
-    // -- ATTRIBUTES
-
-    string
-        Name,
-        Role,
-        Format;
-    VECTOR_<LINK_<PROPERTY>>
-        PropertyVector;
-    VECTOR_<uint8_t>
-        ByteVector;
-
-    // -- CONSTRUCTORS
-
-    IMAGE(
-        ) :
-        OBJECT(),
-        Name(),
-        Role(),
-        Format(),
-        PropertyVector(),
-        ByteVector()
+    struct IMAGE :
+        public OBJECT
     {
-    }
+        // -- ATTRIBUTES
 
-    // ~~
+        string
+            Name,
+            Role,
+            Format;
+        VECTOR_<LINK_<PROPERTY>>
+            PropertyVector;
+        VECTOR_<uint8_t>
+            ByteVector;
 
-    IMAGE(
-        const IMAGE & image
-        ) :
-        OBJECT( image ),
-        Name( image.Name ),
-        Role( image.Role ),
-        Format( image.Format ),
-        PropertyVector( image.PropertyVector ),
-        ByteVector( image.ByteVector )
-    {
-    }
+        // -- CONSTRUCTORS
 
-    // -- DESTRUCTORS
+        IMAGE(
+            ) :
+            OBJECT(),
+            Name(),
+            Role(),
+            Format(),
+            PropertyVector(),
+            ByteVector()
+        {
+        }
 
-    virtual ~IMAGE(
-        )
-    {
-    }
+        // ~~
 
-    // ~~
+        IMAGE(
+            const IMAGE & image
+            ) :
+            OBJECT( image ),
+            Name( image.Name ),
+            Role( image.Role ),
+            Format( image.Format ),
+            PropertyVector( image.PropertyVector ),
+            ByteVector( image.ByteVector )
+        {
+        }
 
-    IMAGE & operator=(
-        const IMAGE & image
-        )
-    {
-        Name = image.Name;
-        Role = image.Role;
-        Format = image.Format;
-        PropertyVector = image.PropertyVector;
-        ByteVector = image.ByteVector;
+        // -- DESTRUCTORS
 
-        return *this;
-    }
+        virtual ~IMAGE(
+            )
+        {
+        }
 
-    // -- INQUIRIES
+        // ~~
 
-    void Write(
-        STREAM & stream
-        )
-    {
-        stream.WriteText( Name );
-        stream.WriteText( Role );
-        stream.WriteText( Format );
-        stream.WriteObjectVector( PropertyVector );
-        stream.WriteScalarVector( ByteVector );
-    }
+        IMAGE & operator=(
+            const IMAGE & image
+            )
+        {
+            Name = image.Name;
+            Role = image.Role;
+            Format = image.Format;
+            PropertyVector = image.PropertyVector;
+            ByteVector = image.ByteVector;
 
-    // -- OPERATIONS
+            return *this;
+        }
 
-    void Read(
-        STREAM & stream
-        )
-    {
-        stream.ReadText( Name );
-        stream.ReadText( Role );
-        stream.ReadText( Format );
-        stream.ReadObjectVector( PropertyVector );
-        stream.ReadScalarVector( ByteVector );
-    }
-};
+        // -- INQUIRIES
+
+        void Write(
+            STREAM & stream
+            )
+        {
+            stream.WriteText( Name );
+            stream.WriteText( Role );
+            stream.WriteText( Format );
+            stream.WriteObjectVector( PropertyVector );
+            stream.WriteScalarVector( ByteVector );
+        }
+
+        // -- OPERATIONS
+
+        void Read(
+            STREAM & stream
+            )
+        {
+            stream.ReadText( Name );
+            stream.ReadText( Role );
+            stream.ReadText( Format );
+            stream.ReadObjectVector( PropertyVector );
+            stream.ReadScalarVector( ByteVector );
+        }
+    };
+}
