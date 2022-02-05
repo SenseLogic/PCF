@@ -8,8 +8,8 @@ Point cloud serialization library.
 
 * Simplicity : uses simple data structures and a straightforward serialization format
 * Versatility : stores multiple scans with any number of components, images or properties
-* Compactness : minimizes the number of bits per component through spatial clustering
 * Portability : implemented both in C++ and D, without using any external dependencies
+* Compactness : minimizes the number of bits per component through spatial clustering
 
 ## Installation
 
