@@ -119,6 +119,24 @@ namespace pcf
             stream.WriteReal64( OneOverPrecision );
         }
 
+        // ~~
+
+        int64_t GetIntegerValue(
+            double component_value
+            )
+        {
+            return ( int64_t )floor( ( component_value - MinimumValue ) * OneOverPrecision );
+        }
+
+        // ~~
+
+        double GetRealValue(
+            int64_t integer_value
+            )
+        {
+            return MinimumValue + ( double )integer_value * Precision;
+        }
+
         // -- OPERATIONS
 
         void Read(

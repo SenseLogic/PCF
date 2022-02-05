@@ -29,11 +29,27 @@ class STREAM
 
     // ~~
 
+    void CloseOutputBinaryFile(
+        )
+    {
+        File_.close();
+    }
+
+    // ~~
+
     void OpenInputBinaryFile(
         string input_file_path
         )
     {
         File_ = File( input_file_path, "rb" );
+    }
+
+    // ~~
+
+    void CloseInputBinaryFile(
+        )
+    {
+        File_.close();
     }
 
     // ~~
@@ -535,11 +551,27 @@ class STREAM
 
     // ~~
 
+    void CloseOutputTextFile(
+        )
+    {
+        File_.close();
+    }
+
+    // ~~
+
     void OpenInputTextFile(
         string input_file_path
         )
     {
         File_ = File( input_file_path, "rt" );
+    }
+
+    // ~~
+
+    void CloseInputTextFile(
+        )
+    {
+        File_.close();
     }
 
     // ~~
@@ -820,13 +852,5 @@ class STREAM
         {
             return false;
         }
-    }
-
-    // ~~
-
-    void Close(
-        )
-    {
-        File_.close();
     }
 }

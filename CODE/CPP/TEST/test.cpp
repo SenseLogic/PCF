@@ -61,78 +61,85 @@ int main(
     char ** argument_array
     )
 {
-    CELL::PostWriteDelegate = &PrintCell;
-    CELL::PostReadDelegate = &PrintCell;
+    try
+    {
+        CELL::PostWriteFunction = &PrintCell;
+        CELL::PostReadFunction = &PrintCell;
 
-    Cloud = new CLOUD();
+        Cloud = new CLOUD();
 
-    puts( "Reading test.ptx" );
-    Cloud->ReadPtxFile( "IN/test.ptx", COMPRESSION::None );
+        puts( "Reading test.ptx" );
+        Cloud->ReadPtxFile( "IN/test.ptx", COMPRESSION::None );
 
-    puts( "Writing test_1.pts" );
-    Cloud->WritePtsFile( "OUT/test_1.pts" );
+        puts( "Writing test_1.pts" );
+        Cloud->WritePtsFile( "OUT/test_1.pts" );
 
-    puts( "Writing test_1.ptx" );
-    Cloud->WritePtxFile( "OUT/test_1.ptx" );
+        puts( "Writing test_1.ptx" );
+        Cloud->WritePtxFile( "OUT/test_1.ptx" );
 
-    puts( "Writing test_1.pcf" );
-    Cloud->WritePcfFile( "OUT/test_1.pcf" );
+        puts( "Writing test_1.pcf" );
+        Cloud->WritePcfFile( "OUT/test_1.pcf" );
 
-    Cloud = new CLOUD();
+        Cloud = new CLOUD();
 
-    puts( "Reading test_1.pcf" );
-    Cloud->ReadPcfFile( "OUT/test_1.pcf" );
+        puts( "Reading test_1.pcf" );
+        Cloud->ReadPcfFile( "OUT/test_1.pcf" );
 
-    puts( "Writing test_2.pts" );
-    Cloud->WritePtsFile( "OUT/test_2.pts" );
+        puts( "Writing test_2.pts" );
+        Cloud->WritePtsFile( "OUT/test_2.pts" );
 
-    puts( "Writing test_2.ptx" );
-    Cloud->WritePtxFile( "OUT/test_2.ptx" );
+        puts( "Writing test_2.ptx" );
+        Cloud->WritePtxFile( "OUT/test_2.ptx" );
 
-    puts( "Writing test_2.pcf" );
-    Cloud->WritePcfFile( "OUT/test_2.pcf" );
+        puts( "Writing test_2.pcf" );
+        Cloud->WritePcfFile( "OUT/test_2.pcf" );
 
-    Cloud = new CLOUD();
+        Cloud = new CLOUD();
 
-    puts( "Reading test.ptx" );
-    Cloud->ReadPtxFile( "IN/test.ptx", COMPRESSION::Discretization, 8, 0.1 );
+        puts( "Reading test.ptx" );
+        Cloud->ReadPtxFile( "IN/test.ptx", COMPRESSION::Discretization, 8, 0.1 );
 
-    puts( "Writing test_3.pts" );
-    Cloud->WritePtsFile( "OUT/test_3.pts" );
+        puts( "Writing test_3.pts" );
+        Cloud->WritePtsFile( "OUT/test_3.pts" );
 
-    puts( "Writing test_3.ptx" );
-    Cloud->WritePtxFile( "OUT/test_3.ptx" );
+        puts( "Writing test_3.ptx" );
+        Cloud->WritePtxFile( "OUT/test_3.ptx" );
 
-    puts( "Writing test_3.pcf" );
-    Cloud->WritePcfFile( "OUT/test_3.pcf" );
+        puts( "Writing test_3.pcf" );
+        Cloud->WritePcfFile( "OUT/test_3.pcf" );
 
-    Cloud = new CLOUD();
+        Cloud = new CLOUD();
 
-    puts( "Reading test_3.pcf" );
-    Cloud->ReadPcfFile( "OUT/test_3.pcf" );
+        puts( "Reading test_3.pcf" );
+        Cloud->ReadPcfFile( "OUT/test_3.pcf" );
 
-    puts( "Writing test_4.pts" );
-    Cloud->WritePtsFile( "OUT/test_4.pts" );
+        puts( "Writing test_4.pts" );
+        Cloud->WritePtsFile( "OUT/test_4.pts" );
 
-    puts( "Writing test_4.ptx" );
-    Cloud->WritePtxFile( "OUT/test_4.ptx" );
+        puts( "Writing test_4.ptx" );
+        Cloud->WritePtxFile( "OUT/test_4.ptx" );
 
-    puts( "Writing test_4.pcf" );
-    Cloud->WritePcfFile( "OUT/test_4.pcf" );
+        puts( "Writing test_4.pcf" );
+        Cloud->WritePcfFile( "OUT/test_4.pcf" );
 
-    Cloud = new CLOUD();
+        Cloud = new CLOUD();
 
-    puts( "Reading OUT/test_1.pts" );
-    Cloud->ReadPtsFile( "OUT/test_1.pts", COMPRESSION::Discretization, 8, 0.1 );
+        puts( "Reading OUT/test_1.pts" );
+        Cloud->ReadPtsFile( "OUT/test_1.pts", COMPRESSION::Discretization, 8, 0.1 );
 
-    puts( "Writing test_5.pts" );
-    Cloud->WritePtsFile( "OUT/test_5.pts" );
+        puts( "Writing test_5.pts" );
+        Cloud->WritePtsFile( "OUT/test_5.pts" );
 
-    puts( "Writing test_5.ptx" );
-    Cloud->WritePtxFile( "OUT/test_5.ptx" );
+        puts( "Writing test_5.ptx" );
+        Cloud->WritePtxFile( "OUT/test_5.ptx" );
 
-    puts( "Writing test_5.pcf" );
-    Cloud->WritePcfFile( "OUT/test_3.pcf" );
+        puts( "Writing test_5.pcf" );
+        Cloud->WritePcfFile( "OUT/test_3.pcf" );
+    }
+    catch ( const exception & exception_ )
+    {
+        cerr << exception_.what() << "\n";
+    }
 
     return 0;
 }

@@ -66,6 +66,30 @@ namespace pcf
 
         // ~~
 
+        bool operator==(
+            const VECTOR_3 & vector
+            ) const
+        {
+            return
+                X == vector.X
+                && Y == vector.Y
+                && Z == vector.Z;
+        }
+
+        // ~~
+
+        bool operator!=(
+            const VECTOR_3 & vector
+            ) const
+        {
+            return
+                X != vector.X
+                || Y != vector.Y
+                || Z != vector.Z;
+        }
+
+        // ~~
+
         bool operator<(
             const VECTOR_3 & vector
             ) const
@@ -75,9 +99,8 @@ namespace pcf
                 || ( X == vector.X
                      && Y < vector.Y )
                 || ( X == vector.X
-                     && Z == vector.Z
-                     && Y < vector.Y );
-
+                     && Y == vector.Y
+                     && Z < vector.Z );
         }
 
         // -- INQUIRIES

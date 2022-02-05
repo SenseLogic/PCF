@@ -3,6 +3,7 @@
 // -- IMPORTS
 
 #include "stream.hpp"
+#include "vector_3.hpp"
 
 // -- TYPES
 
@@ -72,6 +73,32 @@ namespace pcf
 
         // ~~
 
+        bool operator==(
+            const VECTOR_4 & vector
+            ) const
+        {
+            return
+                X == vector.X
+                && Y == vector.Y
+                && Z == vector.Z
+                && W == vector.W;
+        }
+
+        // ~~
+
+        bool operator!=(
+            const VECTOR_4 & vector
+            ) const
+        {
+            return
+                X != vector.X
+                || Y != vector.Y
+                || Z != vector.Z
+                || W != vector.W;
+        }
+
+        // ~~
+
         bool operator<(
             const VECTOR_4 & vector
             ) const
@@ -81,13 +108,12 @@ namespace pcf
                 || ( X == vector.X
                      && Y < vector.Y )
                 || ( X == vector.X
-                     && Z == vector.Z
-                     && Y < vector.Y )
-                || ( X == vector.X
-                     && Z == vector.Z
                      && Y == vector.Y
+                     && Z < vector.Z )
+                || ( X == vector.X
+                     && Y == vector.Y
+                     && Z == vector.Z
                      && W < vector.W );
-
         }
 
         // -- INQUIRIES
@@ -203,6 +229,33 @@ namespace pcf
             Y *= y_scaling;
             Z *= z_scaling;
             W *= w_scaling;
+        }
+
+        // ~~
+
+        void GetAxisVectors(
+            VECTOR_3 & x_axis_vector,
+            VECTOR_3 & y_axis_vector,
+            VECTOR_3 & z_axis_vector
+            )
+        {
+            x_axis_vector.SetVector(
+                1.0 - 2.0 * Y * Y - 2.0 * Z * Z,
+                2.0 * X * Y + 2.0 * Z * W,
+                2.0 * X * Z - 2.0 * Y * W
+                );
+
+            y_axis_vector.SetVector(
+                2.0 * X * Y - 2.0 * Z * W,
+                1.0 - 2.0 * X * X - 2.0 * Z * Z,
+                2.0 * Y * Z + 2.0 * X * W
+                );
+
+            z_axis_vector.SetVector(
+                2.0 * X * Z + 2.0 * Y * W,
+                2.0 * Y * Z - 2.0 * X * W,
+                1.0 - 2.0 * X * X - 2.0 * Y * Y
+                );
         }
     };
 }

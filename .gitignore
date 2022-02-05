@@ -4,4 +4,6 @@
 *.obj
 *.pdb
 CODE/CPP/TEST/test
+CODE/CPP/TOOL/pcf
 CODE/D/TEST/test
+CODE/D/TOOL/pcf

@@ -71,11 +71,12 @@ class BUFFER
 
     void AddComponentValue(
         COMPONENT component,
-        double component_value
+        double component_value,
+        long component_offset
         )
     {
-        double
-            real_value;
+        long
+            integer_value;
         ulong
             bit_index,
             byte_index,
@@ -112,13 +113,10 @@ class BUFFER
         {
             assert( component.Compression == COMPRESSION.Discretization );
 
-            real_value = ( component_value - component.MinimumValue ) * component.OneOverPrecision;
-            assert( real_value >= -0.5 );
+            integer_value = component.GetIntegerValue( component_value ) - ( component_offset << component.BitCount );
+            assert( integer_value >= MinimumNaturalValue.to!long() );
 
-            natural_value = ( real_value + 0.5 ).to!ulong() - MinimumNaturalValue;
-import std.stdio;
-writeln( component_value, " => ", real_value, " => ", natural_value );
-writeln( component.Name, " : ", ComponentBitCount, " / ", component.BitCount );
+            natural_value = integer_value.to!ulong() - MinimumNaturalValue;
             assert( ComponentBitCount == 64 || natural_value < ( 1UL << ComponentBitCount ) );
 
             foreach ( component_bit_index; 0 .. ComponentBitCount )
@@ -145,12 +143,12 @@ writeln( component.Name, " : ", ComponentBitCount, " / ", component.BitCount );
     // ~~
 
     double GetComponentValue(
-        COMPONENT component
+        COMPONENT component,
+        long component_offset
         )
     {
         double
-            component_value,
-            real_value;
+            component_value;
         ulong
             bit_index,
             byte_index,
@@ -203,8 +201,8 @@ writeln( component.Name, " : ", ComponentBitCount, " / ", component.BitCount );
                 }
             }
 
-            real_value = natural_value.to!double();
-            component_value = ( real_value * component.Precision ) + component.MinimumValue;
+            natural_value += MinimumNaturalValue;
+            component_value = component.GetRealValue( natural_value.to!long() + ( component_offset << component.BitCount ) );
         }
 
         ReadBitIndex += ComponentBitCount;

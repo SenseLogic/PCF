@@ -136,7 +136,7 @@ namespace pcf
 
             stream.OpenOutputBinaryFile( output_file_path );
             stream.WriteObject( *this );
-            stream.Close();
+            stream.CloseOutputBinaryFile();
         }
 
         // ~~
@@ -179,7 +179,7 @@ namespace pcf
                 }
             }
 
-            stream.Close();
+            stream.CloseOutputTextFile();
         }
 
         // ~~
@@ -232,7 +232,7 @@ namespace pcf
                 }
             }
 
-            stream.Close();
+            stream.CloseOutputTextFile();
         }
 
         // -- OPERATIONS
@@ -271,7 +271,7 @@ namespace pcf
 
             stream.OpenInputBinaryFile( input_file_path );
             stream.ReadObjectValue( *this );
-            stream.Close();
+            stream.CloseInputBinaryFile();
         }
 
         // ~~
@@ -298,7 +298,6 @@ namespace pcf
                 color_green,
                 intensity,
                 color_red,
-                position_w,
                 position_x,
                 position_y,
                 position_z;
@@ -365,7 +364,7 @@ namespace pcf
                 ScanVector.push_back( scan );
             }
 
-            stream.Close();
+            stream.CloseInputTextFile();
         }
 
         // ~~
@@ -475,7 +474,7 @@ namespace pcf
                 }
             }
 
-            stream.Close();
+            stream.CloseInputTextFile();
         }
     };
 }

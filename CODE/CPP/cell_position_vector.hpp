@@ -31,11 +31,11 @@ namespace pcf
         // ~~
 
         CELL_POSITION_VECTOR(
-            const CELL_POSITION_VECTOR & vector
+            const CELL_POSITION_VECTOR & cell_position_vector
             ) :
-            X( vector.X ),
-            Y( vector.Y ),
-            Z( vector.Z )
+            X( cell_position_vector.X ),
+            Y( cell_position_vector.Y ),
+            Z( cell_position_vector.Z )
         {
         }
 
@@ -55,30 +55,53 @@ namespace pcf
         // -- OPERATORS
 
         CELL_POSITION_VECTOR & operator=(
-            const CELL_POSITION_VECTOR & vector
+            const CELL_POSITION_VECTOR & cell_position_vector
             )
         {
-            X = vector.X;
-            Y = vector.Y;
-            Z = vector.Z;
+            X = cell_position_vector.X;
+            Y = cell_position_vector.Y;
+            Z = cell_position_vector.Z;
 
             return *this;
         }
 
         // ~~
 
-        bool operator<(
-            const CELL_POSITION_VECTOR & vector
+        bool operator==(
+            const CELL_POSITION_VECTOR & cell_position_vector
             ) const
         {
             return
-                X < vector.X
-                || ( X == vector.X
-                     && Y < vector.Y )
-                || ( X == vector.X
-                     && Z == vector.Z
-                     && Y < vector.Y );
+                X == cell_position_vector.X
+                && Y == cell_position_vector.Y
+                && Z == cell_position_vector.Z;
+        }
 
+        // ~~
+
+        bool operator!=(
+            const CELL_POSITION_VECTOR & cell_position_vector
+            ) const
+        {
+            return
+                X != cell_position_vector.X
+                || Y != cell_position_vector.Y
+                || Z != cell_position_vector.Z;
+        }
+
+        // ~~
+
+        bool operator<(
+            const CELL_POSITION_VECTOR & cell_position_vector
+            ) const
+        {
+            return
+                X < cell_position_vector.X
+                || ( X == cell_position_vector.X
+                     && Y < cell_position_vector.Y )
+                || ( X == cell_position_vector.X
+                     && Y == cell_position_vector.Y
+                     && Z < cell_position_vector.Z );
         }
 
         // -- INQUIRIES

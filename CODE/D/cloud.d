@@ -77,7 +77,7 @@ class CLOUD
         stream = new STREAM();
         stream.OpenOutputBinaryFile( output_file_path );
         stream.WriteObject( this );
-        stream.Close();
+        stream.CloseOutputBinaryFile();
     }
 
     // ~~
@@ -114,7 +114,7 @@ class CLOUD
             }
         }
 
-        stream.Close();
+        stream.CloseOutputTextFile();
     }
 
     // ~~
@@ -161,7 +161,7 @@ class CLOUD
             }
         }
 
-        stream.Close();
+        stream.CloseOutputTextFile();
     }
 
     // -- OPERATIONS
@@ -201,7 +201,7 @@ class CLOUD
         stream = new STREAM();
         stream.OpenInputBinaryFile( input_file_path );
         stream.ReadObjectValue( this );
-        stream.Close();
+        stream.CloseInputBinaryFile();
     }
 
     // ~~
@@ -228,7 +228,6 @@ class CLOUD
             color_green,
             intensity,
             color_red,
-            position_w,
             position_x,
             position_y,
             position_z;
@@ -292,7 +291,7 @@ class CLOUD
             ScanArray ~= scan;
         }
 
-        stream.Close();
+        stream.CloseInputTextFile();
     }
 
     // ~~
@@ -399,6 +398,6 @@ class CLOUD
             }
         }
 
-        stream.Close();
+        stream.CloseInputTextFile();
     }
 }

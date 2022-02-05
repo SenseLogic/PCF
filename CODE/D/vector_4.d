@@ -3,6 +3,7 @@ module pcf.vector_4;
 // -- IMPORTS
 
 import pcf.stream;
+import pcf.vector_3;
 
 // -- TYPES
 
@@ -65,12 +66,14 @@ struct VECTOR_4
     void SetVector(
         double x,
         double y,
-        double z
+        double z,
+        double w
         )
     {
         X = x;
         Y = y;
         Z = z;
+        W = w;
     }
 
     // ~~
@@ -125,5 +128,32 @@ struct VECTOR_4
         Y *= y_scaling;
         Z *= z_scaling;
         W *= w_scaling;
+    }
+
+    // ~~
+
+    void GetAxisVectors(
+        ref VECTOR_3 x_axis_vector,
+        ref VECTOR_3 y_axis_vector,
+        ref VECTOR_3 z_axis_vector
+        )
+    {
+        x_axis_vector.SetVector(
+            1.0 - 2.0 * Y * Y - 2.0 * Z * Z,
+            2.0 * X * Y + 2.0 * Z * W,
+            2.0 * X * Z - 2.0 * Y * W
+            );
+
+        y_axis_vector.SetVector(
+            2.0 * X * Y - 2.0 * Z * W,
+            1.0 - 2.0 * X * X - 2.0 * Z * Z,
+            2.0 * Y * Z + 2.0 * X * W
+            );
+
+        z_axis_vector.SetVector(
+            2.0 * X * Z + 2.0 * Y * W,
+            2.0 * Y * Z - 2.0 * X * W,
+            1.0 - 2.0 * X * X - 2.0 * Y * Y
+            );
     }
 }

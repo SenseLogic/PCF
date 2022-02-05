@@ -15,6 +15,7 @@
 #include "property.hpp"
 #include "vector_.hpp"
 #include "vector_3.hpp"
+#include "vector_4.hpp"
 
 // -- TYPES
 
@@ -25,7 +26,7 @@ namespace pcf
     {
         // -- TYPES
 
-        typedef void ( *DELEGATE )( SCAN & );
+        typedef void ( *FUNCTION )( SCAN & );
 
         // -- ATTRIBUTES
 
@@ -36,7 +37,10 @@ namespace pcf
             RowCount,
             PointCount;
         VECTOR_3
-            PositionVector,
+            PositionVector;
+        VECTOR_4
+            RotationVector;
+        VECTOR_3
             XAxisVector,
             YAxisVector,
             ZAxisVector;
@@ -46,11 +50,11 @@ namespace pcf
             ImageVector;
         MAP_<CELL_POSITION_VECTOR, LINK_<CELL>>
             CellMap;
-        static DELEGATE
-            PreWriteDelegate,
-            PostWriteDelegate,
-            PreReadDelegate,
-            PostReadDelegate;
+        static FUNCTION
+            PreWriteFunction,
+            PostWriteFunction,
+            PreReadFunction,
+            PostReadFunction;
 
         // -- CONSTRUCTORS
 
@@ -62,6 +66,7 @@ namespace pcf
             RowCount(),
             PointCount(),
             PositionVector( 0.0, 0.0, 0.0 ),
+            RotationVector( 0.0, 0.0, 0.0, 1.0 ),
             XAxisVector( 1.0, 0.0, 0.0 ),
             YAxisVector( 0.0, 1.0, 0.0 ),
             ZAxisVector( 0.0, 0.0, 1.0 ),
@@ -125,9 +130,9 @@ namespace pcf
             STREAM & stream
             )
         {
-            if ( PreWriteDelegate != nullptr )
+            if ( PreWriteFunction != nullptr )
             {
-                ( *PreWriteDelegate )( *this );
+                ( *PreWriteFunction )( *this );
             }
 
             stream.WriteText( Name );
@@ -135,6 +140,7 @@ namespace pcf
             stream.WriteNatural64( RowCount );
             stream.WriteNatural64( PointCount );
             stream.WriteValue( PositionVector );
+            stream.WriteValue( RotationVector );
             stream.WriteValue( XAxisVector );
             stream.WriteValue( YAxisVector );
             stream.WriteValue( ZAxisVector );
@@ -142,9 +148,9 @@ namespace pcf
             stream.WriteObjectVector( ImageVector );
             stream.WriteObjectByValueMap( CellMap );
 
-            if ( PostWriteDelegate != nullptr )
+            if ( PostWriteFunction != nullptr )
             {
-                ( *PostWriteDelegate )( *this );
+                ( *PostWriteFunction )( *this );
             }
         }
 
@@ -164,9 +170,9 @@ namespace pcf
             STREAM & stream
             )
         {
-            if ( PreReadDelegate != nullptr )
+            if ( PreReadFunction != nullptr )
             {
-                ( *PreReadDelegate )( *this );
+                ( *PreReadFunction )( *this );
             }
 
             stream.ReadText( Name );
@@ -174,6 +180,7 @@ namespace pcf
             stream.ReadNatural64( RowCount );
             stream.ReadNatural64( PointCount );
             stream.ReadValue( PositionVector );
+            stream.ReadValue( RotationVector );
             stream.ReadValue( XAxisVector );
             stream.ReadValue( YAxisVector );
             stream.ReadValue( ZAxisVector );
@@ -181,10 +188,18 @@ namespace pcf
             stream.ReadObjectVector( ImageVector );
             stream.ReadObjectByValueMap( CellMap );
 
-            if ( PostReadDelegate != nullptr )
+            if ( PostReadFunction != nullptr )
             {
-                ( *PostReadDelegate )( *this );
+                ( *PostReadFunction )( *this );
             }
+        }
+
+        // ~~
+
+        void SetAxisVectors(
+            )
+        {
+             RotationVector.GetAxisVectors( XAxisVector, YAxisVector, ZAxisVector );
         }
 
         // ~~
@@ -219,9 +234,9 @@ namespace pcf
                     );
 
                 cell_position_vector.SetVector(
-                    ( int64_t )floor( position_x * component_vector[ 0 ]->OneOverPrecision ) >> component_vector[ 0 ]->BitCount,
-                    ( int64_t )floor( position_y * component_vector[ 1 ]->OneOverPrecision ) >> component_vector[ 1 ]->BitCount,
-                    ( int64_t )floor( position_z * component_vector[ 2 ]->OneOverPrecision ) >> component_vector[ 2 ]->BitCount
+                    component_vector[ 0 ]->GetIntegerValue( position_x ) >> component_vector[ 0 ]->BitCount,
+                    component_vector[ 1 ]->GetIntegerValue( position_y ) >> component_vector[ 1 ]->BitCount,
+                    component_vector[ 2 ]->GetIntegerValue( position_z ) >> component_vector[ 2 ]->BitCount
                     );
             }
 
@@ -229,6 +244,8 @@ namespace pcf
 
             if ( found_cell != CellMap.end() )
             {
+                assert( found_cell->second.Address->PositionVector == cell_position_vector );
+
                 return found_cell->second.Address;
             }
             else

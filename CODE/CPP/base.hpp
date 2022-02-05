@@ -7,7 +7,10 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <fstream>
+#include <iostream>
 #include <string>
+#include <stdexcept>
 using namespace std;
 
 #include "vector_.hpp"

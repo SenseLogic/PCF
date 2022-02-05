@@ -123,11 +123,12 @@ namespace pcf
 
         void AddComponentValue(
             COMPONENT & component,
-            double component_value
+            double component_value,
+            int64_t component_offset
             )
         {
-            double
-                real_value;
+            int64_t
+                integer_value;
             uint16_t
                 byte_bit_index,
                 component_bit_index;
@@ -170,10 +171,10 @@ namespace pcf
             {
                 assert( component.Compression == COMPRESSION::Discretization );
 
-                real_value = ( component_value - component.MinimumValue ) * component.OneOverPrecision;
-                assert( real_value >= -0.5 );
+                integer_value = component.GetIntegerValue( component_value ) - ( component_offset << component.BitCount );;
+                assert( integer_value >= ( int64_t )MinimumNaturalValue );
 
-                natural_value = ( uint64_t )( real_value + 0.5 ) - MinimumNaturalValue;
+                natural_value = ( uint64_t )integer_value - MinimumNaturalValue;
                 assert( ComponentBitCount == 64 || natural_value < ( 1ULL << ComponentBitCount ) );
 
                 for ( component_bit_index = 0;
@@ -202,12 +203,12 @@ namespace pcf
         // ~~
 
         double GetComponentValue(
-            COMPONENT & component
+            COMPONENT & component,
+            int64_t component_offset
             )
         {
             double
-                component_value,
-                real_value;
+                component_value;
             uint16_t
                 byte_bit_index,
                 component_bit_index;
@@ -268,8 +269,8 @@ namespace pcf
                     }
                 }
 
-                real_value = ( double )natural_value;
-                component_value = ( real_value * component.Precision ) + component.MinimumValue;
+                natural_value += MinimumNaturalValue;
+                component_value = component.GetRealValue( ( int64_t )natural_value + ( component_offset << component.BitCount ) );
             }
 
             ReadBitIndex += ComponentBitCount;

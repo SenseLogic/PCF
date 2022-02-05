@@ -17,8 +17,10 @@ namespace pcf
     {
         // -- ATTRIBUTES
 
-        FILE
-            * File;
+        ofstream
+            OutputFileStream;
+        ifstream
+            InputFileStream;
         SCALAR
             Scalar;
 
@@ -26,7 +28,8 @@ namespace pcf
 
         STREAM(
             ) :
-            File( nullptr )
+            OutputFileStream(),
+            InputFileStream()
         {
         }
 
@@ -43,7 +46,15 @@ namespace pcf
             string output_file_path
             )
         {
-            File = fopen( output_file_path.c_str(), "wb" );
+            OutputFileStream.open( output_file_path, ofstream::out | ofstream::binary );
+        }
+
+        // ~~
+
+        void CloseOutputBinaryFile(
+            )
+        {
+            OutputFileStream.close();
         }
 
         // ~~
@@ -52,7 +63,15 @@ namespace pcf
             string input_file_path
             )
         {
-            File = fopen( input_file_path.c_str(), "rb" );
+            InputFileStream.open( input_file_path, ofstream::in | ofstream::binary );
+        }
+
+        // ~~
+
+        void CloseInputBinaryFile(
+            )
+        {
+            InputFileStream.close();
         }
 
         // ~~
@@ -62,7 +81,7 @@ namespace pcf
             )
         {
             Scalar.Boolean = boolean;
-            fwrite( Scalar.OneByteVector, 1, 1, File );
+            OutputFileStream.write( ( const char * )Scalar.OneByteVector, 1 );
         }
 
         // ~~
@@ -72,7 +91,7 @@ namespace pcf
             )
         {
             Scalar.Natural8 = natural;
-            fwrite( Scalar.OneByteVector, 1, 1, File );
+            OutputFileStream.write( ( const char * )Scalar.OneByteVector, 1 );
         }
 
         // ~~
@@ -121,7 +140,7 @@ namespace pcf
             )
         {
             Scalar.Integer8 = integer;
-            fwrite( Scalar.OneByteVector, 1, 1, File );
+            OutputFileStream.write( ( const char * )Scalar.OneByteVector, 1 );
         }
 
         // ~~
@@ -168,7 +187,7 @@ namespace pcf
             )
         {
             Scalar.Real32 = real;
-            fwrite( Scalar.FourByteVector, 4, 1, File );
+            OutputFileStream.write( ( const char * )Scalar.FourByteVector, 4 );
         }
 
         // ~~
@@ -178,7 +197,7 @@ namespace pcf
             )
         {
             Scalar.Real64 = real;
-            fwrite( Scalar.EightByteVector, 8, 1, File );
+            OutputFileStream.write( ( const char * )Scalar.EightByteVector, 8 );
         }
 
         // ~~
@@ -215,7 +234,7 @@ namespace pcf
 
             if ( character_count > 0 )
             {
-                fwrite( text.data(), character_count, 1, File );
+                OutputFileStream.write( text.data(), character_count );
             }
         }
 
@@ -234,7 +253,7 @@ namespace pcf
 
             if ( scalar_count > 0 )
             {
-                fwrite( scalar_vector.data(), scalar_count, sizeof( _SCALAR_ ), File );
+                OutputFileStream.write( ( const char * )scalar_vector.data(), scalar_count * sizeof( _SCALAR_ ) );
             }
         }
 
@@ -305,7 +324,7 @@ namespace pcf
             bool & boolean
             )
         {
-            fread( Scalar.OneByteVector, 1, 1, File );
+            InputFileStream.read( ( char * )Scalar.OneByteVector, 1 );
             boolean = Scalar.Boolean;
         }
 
@@ -315,7 +334,7 @@ namespace pcf
             uint8_t & natural
             )
         {
-            fread( Scalar.OneByteVector, 1, 1, File );
+            InputFileStream.read( ( char * )Scalar.OneByteVector, 1 );
             natural = Scalar.Natural8;
         }
 
@@ -361,7 +380,7 @@ namespace pcf
 
             do
             {
-                fread( Scalar.OneByteVector, 1, 1, File );
+                InputFileStream.read( ( char * )Scalar.OneByteVector, 1 );
                 byte_ = uint64_t( Scalar.Natural8 );
                 natural |= ( byte_ & 127 ) << bit_count;
                 bit_count += 7;
@@ -375,7 +394,7 @@ namespace pcf
             int8_t & integer
             )
         {
-            fread( Scalar.OneByteVector, 1, 1, File );
+            InputFileStream.read( ( char * )Scalar.OneByteVector, 1 );
             integer = Scalar.Integer8;
         }
 
@@ -432,7 +451,7 @@ namespace pcf
             float & real
             )
         {
-            fread( Scalar.FourByteVector, 4, 1, File );
+            InputFileStream.read( ( char * )Scalar.FourByteVector, 4 );
             real = Scalar.Real32;
         }
 
@@ -442,7 +461,7 @@ namespace pcf
             double & real
             )
         {
-            fread( Scalar.EightByteVector, 8, 1, File );
+            InputFileStream.read( ( char * )Scalar.EightByteVector, 8 );
             real = Scalar.Real64;
         }
 
@@ -491,7 +510,7 @@ namespace pcf
 
             if ( character_count > 0 )
             {
-                fread( ( void * )text.data(), character_count, 1, File );
+                InputFileStream.read( ( char * )text.data(), character_count );
             }
         }
 
@@ -510,7 +529,7 @@ namespace pcf
 
             if ( scalar_count > 0 )
             {
-                fread( ( void * )scalar_vector.data(), scalar_count, sizeof( _SCALAR_ ), File );
+                InputFileStream.read( ( char * )scalar_vector.data(), scalar_count * sizeof( _SCALAR_ ) );
             }
         }
 
@@ -594,7 +613,15 @@ namespace pcf
             const string & output_file_path
             )
         {
-            File = fopen( output_file_path.c_str(), "wt" );
+            OutputFileStream.open( output_file_path, ofstream::out );
+        }
+
+        // ~~
+
+        void CloseOutputTextFile(
+            )
+        {
+            OutputFileStream.close();
         }
 
         // ~~
@@ -603,7 +630,15 @@ namespace pcf
             const string & input_file_path
             )
         {
-            File = fopen( input_file_path.c_str(), "rt" );
+            InputFileStream.open( input_file_path, ofstream::in );
+        }
+
+        // ~~
+
+        void CloseInputTextFile(
+            )
+        {
+            InputFileStream.close();
         }
 
         // ~~
@@ -612,8 +647,8 @@ namespace pcf
             const string & line
             )
         {
-            fputs( line.c_str(), File );
-            fputs( "\n", File );
+            OutputFileStream.write( line.c_str(), line.length() );
+            OutputFileStream.write( "\n", 1 );
         }
 
         // ~~
@@ -715,24 +750,21 @@ namespace pcf
             string & line
             )
         {
-            char
-                line_character_array[ 2048 ];
             uint64_t
                 character_count;
 
-            if ( fgets( line_character_array, sizeof( line_character_array ), File ) != nullptr )
+            if ( getline( InputFileStream, line ) )
             {
-                character_count = strlen( line_character_array );
+                character_count = line.length();
 
                 while ( character_count > 0
-                        && line_character_array[ character_count - 1 ] >= 0
-                        && line_character_array[ character_count - 1 ] <= 32 )
+                        && line[ character_count - 1 ] >= 0
+                        && line[ character_count - 1 ] <= 32 )
                 {
                     --character_count;
                 }
 
-                line_character_array[ character_count ] = 0;
-                line = line_character_array;
+                line.resize( character_count );
             }
             else
             {
@@ -900,16 +932,6 @@ namespace pcf
             {
                 return false;
             }
-        }
-
-        // ~~
-
-        void Close(
-            )
-        {
-            fclose( File );
-
-            File = nullptr;
         }
     };
 }

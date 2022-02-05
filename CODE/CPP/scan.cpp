@@ -5,8 +5,8 @@ using namespace pcf;
 
 // -- ATTRIBUTES
 
-SCAN::DELEGATE
-    SCAN::PreWriteDelegate = nullptr,
-    SCAN::PostWriteDelegate = nullptr,
-    SCAN::PreReadDelegate = nullptr,
-    SCAN::PostReadDelegate = nullptr;
+SCAN::FUNCTION
+    SCAN::PreWriteFunction = nullptr,
+    SCAN::PostWriteFunction = nullptr,
+    SCAN::PreReadFunction = nullptr,
+    SCAN::PostReadFunction = nullptr;

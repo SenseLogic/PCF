@@ -5,8 +5,8 @@ using namespace pcf;
 
 // -- ATTRIBUTES
 
-CELL::DELEGATE
-    CELL::PreWriteDelegate = nullptr,
-    CELL::PostWriteDelegate = nullptr,
-    CELL::PreReadDelegate = nullptr,
-    CELL::PostReadDelegate = nullptr;
+CELL::FUNCTION
+    CELL::PreWriteFunction = nullptr,
+    CELL::PostWriteFunction = nullptr,
+    CELL::PreReadFunction = nullptr,
+    CELL::PostReadFunction = nullptr;

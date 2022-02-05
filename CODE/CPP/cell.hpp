@@ -20,7 +20,7 @@ namespace pcf
     {
         // -- TYPES
 
-        typedef void ( *DELEGATE )( CELL & );
+        typedef void ( *FUNCTION )( CELL & );
 
         // -- ATTRIBUTES
 
@@ -30,11 +30,11 @@ namespace pcf
             PositionVector;
         VECTOR_<LINK_<BUFFER>>
             BufferVector;
-        static DELEGATE
-            PreWriteDelegate,
-            PostWriteDelegate,
-            PreReadDelegate,
-            PostReadDelegate;
+        static FUNCTION
+            PreWriteFunction,
+            PostWriteFunction,
+            PreReadFunction,
+            PostReadFunction;
 
         // -- CONSTRUCTORS
 
@@ -101,18 +101,18 @@ namespace pcf
             STREAM & stream
             )
         {
-            if ( PreWriteDelegate != nullptr )
+            if ( PreWriteFunction != nullptr )
             {
-                ( *PreWriteDelegate )( *this );
+                ( *PreWriteFunction )( *this );
             }
 
             stream.WriteNatural64( PointCount );
             stream.WriteValue( PositionVector );
             stream.WriteObjectVector( BufferVector );
 
-            if ( PostWriteDelegate != nullptr )
+            if ( PostWriteFunction != nullptr )
             {
-                ( *PostWriteDelegate )( *this );
+                ( *PostWriteFunction )( *this );
             }
         }
 
@@ -130,18 +130,18 @@ namespace pcf
             STREAM & stream
             )
         {
-            if ( PreReadDelegate != nullptr )
+            if ( PreReadFunction != nullptr )
             {
-                ( *PreReadDelegate )( *this );
+                ( *PreReadFunction )( *this );
             }
 
             stream.ReadNatural64( PointCount );
             stream.ReadValue( PositionVector );
             stream.ReadObjectVector( BufferVector );
 
-            if ( PostReadDelegate != nullptr )
+            if ( PostReadFunction != nullptr )
             {
-                ( *PostReadDelegate )( *this );
+                ( *PostReadFunction )( *this );
             }
         }
 
@@ -161,26 +161,44 @@ namespace pcf
 
         // ~~
 
+        int64_t GetComponentOffset(
+            const VECTOR_<LINK_<COMPONENT>> & component_vector,
+            uint64_t component_index
+            )
+        {
+            if ( component_index <= 2
+                 && component_vector[ component_index ]->Compression == COMPRESSION::Discretization )
+            {
+                if ( component_index == 0 )
+                {
+                    return PositionVector.X;
+                }
+                else if ( component_index == 1 )
+                {
+                    return PositionVector.Y;
+                }
+                else if ( component_index == 2 )
+                {
+                    return PositionVector.Z;
+                }
+            }
+
+            return 0;
+        }
+
+        // ~~
+
         void AddComponentValue(
             const VECTOR_<LINK_<COMPONENT>> & component_vector,
             uint64_t component_index,
             double component_value
             )
         {
-            if ( component_index == 0 )
-            {
-                component_value -= ( PositionVector.X << component_vector[ 0 ]->BitCount ) * component_vector[ 0 ]->Precision;
-            }
-            else if ( component_index == 1 )
-            {
-                component_value -= ( PositionVector.Y << component_vector[ 1 ]->BitCount ) * component_vector[ 1 ]->Precision;
-            }
-            else if ( component_index == 2 )
-            {
-                component_value -= ( PositionVector.Z << component_vector[ 2 ]->BitCount ) * component_vector[ 2 ]->Precision;
-            }
-
-            BufferVector[ component_index ]->AddComponentValue( *component_vector[ component_index ], component_value );
+            BufferVector[ component_index ]->AddComponentValue(
+                *component_vector[ component_index ],
+                component_value,
+                GetComponentOffset( component_vector, component_index )
+                );
         }
 
         // ~~
@@ -190,25 +208,11 @@ namespace pcf
             uint64_t component_index
             )
         {
-            double
-                component_value;
-
-            component_value = BufferVector[ component_index ]->GetComponentValue( *component_vector[ component_index ] );
-
-            if ( component_index == 0 )
-            {
-                component_value += ( PositionVector.X << component_vector[ 0 ]->BitCount ) * component_vector[ 0 ]->Precision;
-            }
-            else if ( component_index == 1 )
-            {
-                component_value += ( PositionVector.Y << component_vector[ 1 ]->BitCount ) * component_vector[ 1 ]->Precision;
-            }
-            else if ( component_index == 2 )
-            {
-                component_value += ( PositionVector.Z << component_vector[ 2 ]->BitCount ) * component_vector[ 2 ]->Precision;
-            }
-
-            return component_value;
+            return
+                BufferVector[ component_index ]->GetComponentValue(
+                    *component_vector[ component_index ],
+                    GetComponentOffset( component_vector, component_index )
+                    );
         }
     };
 }

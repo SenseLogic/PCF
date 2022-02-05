@@ -2,6 +2,8 @@ module pcf.component;
 
 // -- IMPORTS
 
+import std.conv: to;
+import std.math: floor;
 import pcf.compression;
 import pcf.stream;
 
@@ -62,6 +64,24 @@ class COMPONENT
         stream.WriteReal64( MinimumValue );
         stream.WriteReal64( MaximumValue );
         stream.WriteReal64( OneOverPrecision );
+    }
+
+    // ~~
+
+    long GetIntegerValue(
+        double component_value
+        )
+    {
+        return ( ( component_value - MinimumValue ) * OneOverPrecision ).floor().to!long();
+    }
+
+    // ~~
+
+    double GetRealValue(
+        long integer_value
+        )
+    {
+        return MinimumValue + integer_value.to!double() * Precision;
     }
 
     // -- OPERATIONS
