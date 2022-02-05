@@ -15,7 +15,7 @@ Point cloud serialization library.
 
 ### C++ version
 
-Install g++ (Linux) or Visual C++ 2019 Community (Windows).
+Install a C++ compiler (g++, Visual C++ 2019 Community).
 
 Build the executable with the following command lines :
 
