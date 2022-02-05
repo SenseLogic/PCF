@@ -4,13 +4,27 @@
 
 Point cloud serialization library.
 
-## Features
+## Goals
 
-* Simple
-* Compact
-* Portable (C++, D)
+* Simplicity : uses straightforward data structures and a simple serialization format
+* Versatility : stores scans with any number of components, images or properties
+* Compactness : minimizes the number of bits per component through spatial clustering
+* Portability : implemented both in C++ and D, without using any external dependencies
 
 ## Installation
+
+### C++ version
+
+Install CMake and a C++ compiler (g++, Visual C++).
+
+Build the executable with the following command lines :
+
+```bash
+cd CODE/CPP/TOOL
+./make.sh
+```
+
+### D version
 
 Install the [DMD 2 compiler](https://dlang.org/download.html) (using the MinGW setup option on Windows).
 
