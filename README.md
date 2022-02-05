@@ -73,9 +73,7 @@ Reads a PCF point cloud file and writes a PTX point cloud file.
 ## Limitations
 
 * All scans share the same list of components.
-* The first three components are expected to :
-  * be the point coordinates;
-  * use the same compression method.
+* The first three components are expected to be the point coordinates and use the same compression method.
 * The point order is lost if the coordinate components are discretized.
 
 ## Author
