@@ -196,6 +196,14 @@ namespace pcf
 
         // ~~
 
+        void SetRotationVector(
+            )
+        {
+             RotationVector.SetFromAxisVectors( XAxisVector, YAxisVector, ZAxisVector );
+        }
+
+        // ~~
+
         void SetAxisVectors(
             )
         {

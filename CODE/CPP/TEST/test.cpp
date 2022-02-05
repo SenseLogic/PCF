@@ -22,11 +22,11 @@ void PrintCell(
         point_index;
 
     printf(
-        "Cell : %lld %lld %lld (%lld)\n",
-        cell.PositionVector.X,
-        cell.PositionVector.Y,
-        cell.PositionVector.Z,
-        cell.PointCount
+        "Cell : %s %s %s (%s)\n",
+        GetText( cell.PositionVector.X ).c_str(),
+        GetText( cell.PositionVector.Y ).c_str(),
+        GetText( cell.PositionVector.Z ).c_str(),
+        GetText( cell.PointCount ).c_str()
         );
 
     cell.SeekComponent( 0 );
@@ -36,8 +36,8 @@ void PrintCell(
           ++point_index )
     {
         printf(
-            "    [%lld]",
-            point_index
+            "    [%s]",
+            GetText( point_index ).c_str()
             );
 
         for ( buffer_index = 0;

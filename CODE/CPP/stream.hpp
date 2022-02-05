@@ -613,7 +613,7 @@ namespace pcf
             const string & output_file_path
             )
         {
-            OutputFileStream.open( output_file_path, ofstream::out );
+            OutputFileStream.open( output_file_path, ofstream::out | ofstream::binary );
         }
 
         // ~~
@@ -630,7 +630,7 @@ namespace pcf
             const string & input_file_path
             )
         {
-            InputFileStream.open( input_file_path, ofstream::in );
+            InputFileStream.open( input_file_path, ofstream::in | ofstream::binary );
         }
 
         // ~~

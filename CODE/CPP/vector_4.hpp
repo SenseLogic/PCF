@@ -240,22 +240,74 @@ namespace pcf
             )
         {
             x_axis_vector.SetVector(
-                1.0 - 2.0 * Y * Y - 2.0 * Z * Z,
-                2.0 * X * Y + 2.0 * Z * W,
-                2.0 * X * Z - 2.0 * Y * W
+                1.0 - 2.0 * ( Y * Y + Z * Z ),
+                2.0 * ( X * Y + W * Z ),
+                2.0 * ( X * Z - W * Y )
                 );
 
             y_axis_vector.SetVector(
-                2.0 * X * Y - 2.0 * Z * W,
-                1.0 - 2.0 * X * X - 2.0 * Z * Z,
-                2.0 * Y * Z + 2.0 * X * W
+                2.0 * ( X * Y - W * Z ),
+                1.0 - 2.0 * ( X * X + Z * Z ),
+                2.0 * ( Y * Z + W * X )
                 );
 
             z_axis_vector.SetVector(
-                2.0 * X * Z + 2.0 * Y * W,
-                2.0 * Y * Z - 2.0 * X * W,
-                1.0 - 2.0 * X * X - 2.0 * Y * Y
+                2.0 * ( X * Z + W * Y ),
+                2.0 * ( Y * Z - W * X ),
+                1.0 - 2.0 * ( X * X + Y * Y )
                 );
+        }
+
+        // ~~
+
+        void SetFromAxisVectors(
+            const VECTOR_3 & x_axis_vector,
+            const VECTOR_3 & y_axis_vector,
+            const VECTOR_3 & z_axis_vector
+            )
+        {
+            double
+                square_root,
+                trace;
+
+            trace = x_axis_vector.X + y_axis_vector.Y + z_axis_vector.Z;
+
+            if ( trace > 0 )
+            {
+                square_root = 0.5 / sqrt( trace+ 1.0 );
+
+                X = ( z_axis_vector.Y - y_axis_vector.Z ) * square_root;
+                Y = ( x_axis_vector.Z - z_axis_vector.X ) * square_root;
+                Z = ( y_axis_vector.X - x_axis_vector.Y ) * square_root;
+                W = 0.25 / square_root;
+            }
+            else if ( x_axis_vector.X > y_axis_vector.Y && x_axis_vector.X > z_axis_vector.Z )
+            {
+                square_root = 2.0 * sqrt( 1.0 + x_axis_vector.X - y_axis_vector.Y - z_axis_vector.Z );
+
+                X = 0.25 * square_root;
+                Y = ( x_axis_vector.Y + y_axis_vector.X ) / square_root;
+                Z = ( x_axis_vector.Z + z_axis_vector.X ) / square_root;
+                W = ( z_axis_vector.Y - y_axis_vector.Z ) / square_root;
+            }
+            else if ( y_axis_vector.Y > z_axis_vector.Z )
+            {
+                square_root = 2.0 * sqrt( 1.0 + y_axis_vector.Y - x_axis_vector.X - z_axis_vector.Z );
+
+                X = ( x_axis_vector.Y + y_axis_vector.X ) / square_root;
+                Y = 0.25 * square_root;
+                Z = ( y_axis_vector.Z + z_axis_vector.Y ) / square_root;
+                W = ( x_axis_vector.Z - z_axis_vector.X ) / square_root;
+            }
+            else
+            {
+                square_root = 2.0 * sqrt( 1.0 + z_axis_vector.Z - x_axis_vector.X - y_axis_vector.Y );
+
+                X = ( x_axis_vector.Z + z_axis_vector.X ) / square_root;
+                Y = ( y_axis_vector.Z + z_axis_vector.Y ) / square_root;
+                Z = 0.25 * square_root;
+                W = ( y_axis_vector.X - x_axis_vector.Y ) / square_root;
+            }
         }
     };
 }

@@ -546,7 +546,7 @@ class STREAM
         string output_file_path
         )
     {
-        File_ = File( output_file_path, "wt" );
+        File_ = File( output_file_path, "wb" );
     }
 
     // ~~
@@ -563,7 +563,7 @@ class STREAM
         string input_file_path
         )
     {
-        File_ = File( input_file_path, "rt" );
+        File_ = File( input_file_path, "rb" );
     }
 
     // ~~

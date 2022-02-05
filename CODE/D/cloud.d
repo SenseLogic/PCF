@@ -374,6 +374,7 @@ class CLOUD
                 stream.ReadRealLine( position_x, position_y, position_z, position_w );
 
                 scan.PointCount = scan.ColumnCount * scan.RowCount;
+                scan.SetRotationVector();
 
                 foreach ( point_index; 0 .. scan.PointCount )
                 {
