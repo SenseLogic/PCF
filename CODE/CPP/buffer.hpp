@@ -121,6 +121,15 @@ namespace pcf
 
         // ~~
 
+        void SetComponentIndex(
+            uint64_t component_index
+            )
+        {
+            ReadBitIndex = component_index * BitCount;
+        }
+
+        // ~~
+
         void AddComponentValue(
             COMPONENT & component,
             double component_value,

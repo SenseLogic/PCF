@@ -2,13 +2,14 @@ module pcf.cell;
 
 // -- IMPORTS
 
+import std.container.array;
+import std.container.util;
+import std.stdio : write, writeln;
 import pcf.buffer;
 import pcf.cell_position_vector;
 import pcf.component;
 import pcf.compression;
 import pcf.stream;
-import std.container.array;
-import std.container.util;
 
 // -- TYPES
 
@@ -83,6 +84,67 @@ class CELL
         }
     }
 
+    // ~~
+
+    long GetComponentOffset(
+        COMPONENT[] component_array,
+        ulong component_index
+        )
+    {
+        if ( component_index <= 2
+             && component_array[ component_index ].Compression == COMPRESSION.Discretization )
+        {
+            if ( component_index == 0 )
+            {
+                return PositionVector.X;
+            }
+            else if ( component_index == 1 )
+            {
+                return PositionVector.Y;
+            }
+            else if ( component_index == 2 )
+            {
+                return PositionVector.Z;
+            }
+        }
+
+        return 0;
+    }
+
+    // ~~
+
+    void Dump(
+        COMPONENT[] component_array,
+        string indentation = ""
+        )
+    {
+        double
+            component_value;
+
+        writeln( indentation, "PointCount : ", PointCount );
+        writeln( indentation, "PositionVector : ", PositionVector.X, " ", PositionVector.Y, " ", PositionVector.Z );
+
+        SetComponentIndex( 0 );
+
+        foreach ( point_index; 0 .. PointCount )
+        {
+            write( indentation, "Point[ ", point_index, " ] :" );
+
+            foreach ( component_index, buffer; BufferArray )
+            {
+                component_value
+                    = buffer.GetComponentValue(
+                          component_array[ component_index ],
+                          GetComponentOffset( component_array, component_index )
+                          );
+
+                write( " ", component_value );
+            }
+
+            writeln();
+        }
+    }
+
     // -- OPERATIONS
 
     void Clear(
@@ -124,43 +186,14 @@ class CELL
 
     // ~~
 
-    void SeekComponent(
+    void SetComponentIndex(
         ulong component_index
         )
     {
-        assert( component_index == 0 );
-
         foreach ( buffer; BufferArray )
         {
-            buffer.ReadBitIndex = 0;
+            buffer.SetComponentIndex( component_index );
         }
-    }
-
-    // ~~
-
-    long GetComponentOffset(
-        COMPONENT[] component_array,
-        ulong component_index
-        )
-    {
-        if ( component_index <= 2
-             && component_array[ component_index ].Compression == COMPRESSION.Discretization )
-        {
-            if ( component_index == 0 )
-            {
-                return PositionVector.X;
-            }
-            else if ( component_index == 1 )
-            {
-                return PositionVector.Y;
-            }
-            else if ( component_index == 2 )
-            {
-                return PositionVector.Z;
-            }
-        }
-
-        return 0;
     }
 
     // ~~

@@ -160,7 +160,7 @@ namespace pcf
                     LINK_<CELL>
                         & cell = cell_entry.second;
 
-                    cell->SeekComponent( 0 );
+                    cell->SetComponentIndex( 0 );
 
                     for ( point_index = 0;
                           point_index < cell->PointCount;
@@ -213,7 +213,7 @@ namespace pcf
                     LINK_<CELL>
                         & cell = cell_entry.second;
 
-                    cell->SeekComponent( 0 );
+                    cell->SetComponentIndex( 0 );
 
                     for ( point_index = 0;
                           point_index < cell->PointCount;

@@ -2,8 +2,9 @@ module pcf.component;
 
 // -- IMPORTS
 
-import std.conv: to;
-import std.math: floor;
+import std.conv : to;
+import std.math : floor;
+import std.stdio : writeln;
 import pcf.compression;
 import pcf.stream;
 
@@ -64,6 +65,21 @@ class COMPONENT
         stream.WriteReal64( MinimumValue );
         stream.WriteReal64( MaximumValue );
         stream.WriteReal64( OneOverPrecision );
+    }
+
+    // ~~
+
+    void Dump(
+        string indentation = ""
+        )
+    {
+        writeln( indentation, "Name : ", Name );
+        writeln( indentation, "Compression : ", Compression );
+        writeln( indentation, "BitCount : ", BitCount );
+        writeln( indentation, "Precision : ", Precision );
+        writeln( indentation, "MinimumValue : ", MinimumValue );
+        writeln( indentation, "MaximumValue : ", MaximumValue );
+        writeln( indentation, "OneOverPrecision : ", OneOverPrecision );
     }
 
     // ~~

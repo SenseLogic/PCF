@@ -2,10 +2,10 @@ module pcf.stream;
 
 // -- IMPORTS
 
+import std.stdio : File;
+import std.string : split, stripRight;
 import pcf.base;
 import pcf.scalar;
-import std.stdio : File;
-import std.string: split, stripRight;
 
 // -- TYPES
 

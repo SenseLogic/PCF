@@ -2,6 +2,7 @@ module pcf.scan;
 
 // -- IMPORTS
 
+import std.stdio : writeln;
 import pcf.cell;
 import pcf.cell_position_vector;
 import pcf.component;
@@ -86,6 +87,45 @@ class SCAN
         if ( PostWriteDelegate !is null )
         {
             PostWriteDelegate( this );
+        }
+    }
+
+    // ~~
+
+    void Dump(
+        COMPONENT[] component_array,
+        string indentation = ""
+        )
+    {
+        writeln( indentation, "Name : ", Name );
+        writeln( indentation, "ColumnCount : ", ColumnCount );
+        writeln( indentation, "RowCount : ", RowCount );
+        writeln( indentation, "PointCount : ", PointCount );
+        writeln( indentation, "PositionVector : ", PositionVector.X, " ", PositionVector.Y, " ", PositionVector.Z );
+        writeln( indentation, "RotationVector : ", RotationVector.X, " ", RotationVector.Y, " ", RotationVector.Z, " ", RotationVector.W );
+        writeln( indentation, "XAxisVector : ", XAxisVector.X, " ", XAxisVector.Y, " ", XAxisVector.Z );
+        writeln( indentation, "YAxisVector : ", YAxisVector.X, " ", YAxisVector.Y, " ", YAxisVector.Z );
+        writeln( indentation, "ZAxisVector : ", ZAxisVector.X, " ", ZAxisVector.Y, " ", ZAxisVector.Z );
+
+        foreach ( property_index, property; PropertyArray )
+        {
+            writeln( indentation, "Property[ ", property_index, " ] :" );
+
+            property.Dump( indentation ~ "    " );
+        }
+
+        foreach ( image_index, image; ImageArray )
+        {
+            writeln( indentation, "Image[ ", image_index, " ] :" );
+
+            image.Dump( indentation ~ "    " );
+        }
+
+        foreach( cell; CellMap.byValue() )
+        {
+            writeln( indentation, "Cell :" );
+
+            cell.Dump( component_array, indentation ~ "    " );
         }
     }
 

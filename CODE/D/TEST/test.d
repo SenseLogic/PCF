@@ -1,7 +1,7 @@
 // -- IMPORTS
 
 import std.conv : to;
-import std.stdio: write, writeln;
+import std.stdio : write, writeln;
 import pcf.base;
 import pcf.cell;
 import pcf.cloud;
@@ -30,7 +30,7 @@ void PrintCell(
         ")"
         );
 
-    cell.SeekComponent( 0 );
+    cell.SetComponentIndex( 0 );
 
     foreach ( point_index; 0 .. cell.PointCount )
     {

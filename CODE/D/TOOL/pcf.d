@@ -92,21 +92,30 @@ void main(
             Cloud = new CLOUD();
             Cloud.ReadPcfFile( argument_array[ 0 ] );
         }
+        else if ( option == "--dump"
+                  && argument_count == 0
+                  && Cloud !is null )
+        {
+            Cloud.Dump();
+        }
         else if ( option == "--write-pts"
                   && argument_count == 1
-                  && argument_array[ 0 ].endsWith( ".pts" ) )
+                  && argument_array[ 0 ].endsWith( ".pts" )
+                  && Cloud !is null )
         {
             Cloud.WritePtsFile( argument_array[ 0 ] );
         }
         else if ( option == "--write-ptx"
                   && argument_count == 1
-                  && argument_array[ 0 ].endsWith( ".ptx" ) )
+                  && argument_array[ 0 ].endsWith( ".ptx" )
+                  && Cloud !is null )
         {
             Cloud.WritePtxFile( argument_array[ 0 ] );
         }
         else if ( option == "--write-pcf"
                   && argument_count == 1
-                  && argument_array[ 0 ].endsWith( ".pcf" ) )
+                  && argument_array[ 0 ].endsWith( ".pcf" )
+                  && Cloud !is null )
         {
             Cloud.WritePcfFile( argument_array[ 0 ] );
         }
@@ -126,6 +135,7 @@ void main(
         writeln( "    --read-pts <file path> <position bit count> <position precision>" );
         writeln( "    --read-ptx <file path> <position bit count> <position precision>" );
         writeln( "    --read-pcf <file path>" );
+        writeln( "    --dump" );
         writeln( "    --write-pts <file path>" );
         writeln( "    --write-ptx <file path>" );
         writeln( "    --write-pcf <file path>" );

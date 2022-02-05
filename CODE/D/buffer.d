@@ -2,11 +2,11 @@ module pcf.buffer;
 
 // -- IMPORTS
 
+import std.conv : to;
 import pcf.component;
 import pcf.compression;
 import pcf.scalar;
 import pcf.stream;
-import std.conv: to;
 
 // -- TYPES
 
@@ -65,6 +65,15 @@ class BUFFER
         stream.ReadScalarArray( ByteArray );
 
         ReadBitIndex = 0;
+    }
+
+    // ~~
+
+    void SetComponentIndex(
+        ulong component_index
+        )
+    {
+        ReadBitIndex = component_index * BitCount;
     }
 
     // ~~

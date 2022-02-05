@@ -2,6 +2,7 @@ module pcf.image;
 
 // -- IMPORTS
 
+import std.stdio : writeln;
 import pcf.property;
 import pcf.stream;
 
@@ -31,6 +32,24 @@ class IMAGE
         stream.WriteText( Format );
         stream.WriteObjectArray( PropertyArray );
         stream.WriteScalarArray( ByteArray );
+    }
+
+    // ~~
+
+    void Dump(
+        string indentation = ""
+        )
+    {
+        writeln( indentation, "Name : ", Name );
+        writeln( indentation, "Role : ", Role );
+        writeln( indentation, "Format : ", Format );
+
+        foreach ( property_index, property; PropertyArray )
+        {
+            writeln( indentation, "Property[ ", property_index, " ] :" );
+
+            property.Dump( indentation ~ "    " );
+        }
     }
 
     // -- OPERATIONS

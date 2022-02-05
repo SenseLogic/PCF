@@ -147,15 +147,13 @@ namespace pcf
 
         // ~~
 
-        void SeekComponent(
+        void SetComponentIndex(
             uint64_t component_index
             )
         {
-            assert( component_index == 0 );
-
             for ( auto & buffer : BufferVector )
             {
-                buffer->ReadBitIndex = 0;
+                buffer->SetComponentIndex( component_index );
             }
         }
 

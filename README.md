@@ -47,6 +47,7 @@ pcf [options]
 --read-pts <file path> <position bit count> <position precision> : read a PTS point cloud file
 --read-ptx <file path> <position bit count> <position precision> : read a PTX point cloud file
 --read-pcf <file path : read a PCF point cloud file
+--dump : dump the point cloud
 --write-pts <file path : write a PTS point cloud file
 --write-ptx <file path : write a PTX point cloud file
 --write-pcf <file path : write a PCF point cloud file
@@ -55,16 +56,16 @@ pcf [options]
 ### Examples
 
 ```bash
-pcf --read-ptx cloud.ptx 8 0.001 --write-pcf cloud.pcf
+pcf --read-ptx cloud.ptx 8 0.001 --dump --write-pcf cloud.pcf
 ```
 
-Reads a PTX point cloud file and writes a PCF point cloud file.
+Reads a PTX point cloud file, dumps it, and writes a PCF point cloud file.
 
 ```bash
-pcf --read-pcf test.pcf --write-ptx test.ptx
+pcf --read-pcf test.pcf --dump --write-ptx test.ptx
 ```
 
-Reads a PCF point cloud file and writes a PTX point cloud file.
+Reads a PCF point cloud file, dumps it, and writes a PTX point cloud file.
 
 ## Version
 

@@ -2,6 +2,7 @@ module pcf.property;
 
 // -- IMPORTS
 
+import std.stdio : writeln;
 import pcf.stream;
 
 // -- TYPES
@@ -24,6 +25,17 @@ class PROPERTY
         stream.WriteText( Name );
         stream.WriteText( Value );
         stream.WriteText( Format );
+    }
+
+    // ~~
+
+    void Dump(
+        string indentation = ""
+        )
+    {
+        writeln( indentation, "Name : ", Name );
+        writeln( indentation, "Value : ", Value );
+        writeln( indentation, "Format : ", Format );
     }
 
     // -- OPERATIONS
