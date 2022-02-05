@@ -6,7 +6,7 @@ Point cloud serialization library.
 
 ## Goals
 
-* Simplicity : uses straightforward data structures and a simple serialization format
+* Simplicity : uses simple data structures and a straightforward serialization format
 * Versatility : stores scans with any number of components, images or properties
 * Compactness : minimizes the number of bits per component through spatial clustering
 * Portability : implemented both in C++ and D, without using any external dependencies
