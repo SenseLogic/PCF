@@ -132,21 +132,30 @@ int main(
                 Cloud = new CLOUD();
                 Cloud->ReadPcfFile( argument_array[ 0 ] );
             }
+            else if ( option == "--dump"
+                      && option_argument_count == 0
+                      && !Cloud.IsNull() )
+            {
+                Cloud->Dump();
+            }
             else if ( option == "--write-pts"
                       && option_argument_count == 1
-                      && HasSuffix( argument_array[ 0 ], ".pts" ) )
+                      && HasSuffix( argument_array[ 0 ], ".pts" )
+                      && !Cloud.IsNull() )
             {
                 Cloud->WritePtsFile( argument_array[ 0 ] );
             }
             else if ( option == "--write-ptx"
                       && option_argument_count == 1
-                      && HasSuffix( argument_array[ 0 ], ".ptx" ) )
+                      && HasSuffix( argument_array[ 0 ], ".ptx" )
+                      && !Cloud.IsNull() )
             {
                 Cloud->WritePtxFile( argument_array[ 0 ] );
             }
             else if ( option == "--write-pcf"
                       && option_argument_count == 1
-                      && HasSuffix( argument_array[ 0 ], ".pcf" ) )
+                      && HasSuffix( argument_array[ 0 ], ".pcf" )
+                      && !Cloud.IsNull() )
             {
                 Cloud->WritePcfFile( argument_array[ 0 ] );
             }

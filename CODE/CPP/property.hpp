@@ -65,9 +65,20 @@ namespace pcf
 
         // -- INQUIRIES
 
+        void Dump(
+            string indentation = ""
+            ) const
+        {
+            cout << indentation << "Name : " << Name << "\n";
+            cout << indentation << "Value : " << Value << "\n";
+            cout << indentation << "Format : " << Format << "\n";
+        }
+
+        // ~~
+
         void Write(
             STREAM & stream
-            )
+            ) const
         {
             stream.WriteText( Name );
             stream.WriteText( Value );

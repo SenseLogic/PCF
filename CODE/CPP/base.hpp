@@ -22,12 +22,7 @@ using namespace std;
         \
         if ( !( _condition_ ) ) \
         { \
-            printf( \
-                "%s(%d) : %s\n", \
-                __FILE__, \
-                __LINE__, \
-                #_condition_ \
-                ); \
+            cerr << __FILE__ << "(" << __LINE__ << ") : " << #_condition_ << "\n"; \
             exit( -1 ); \
         }
 #endif

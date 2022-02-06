@@ -53,6 +53,39 @@ class CLOUD
 
     // ~~
 
+    void Dump(
+        string indentation = ""
+        )
+    {
+        writeln( indentation, "Version : ", Version );
+        writeln( indentation, "Name : ", Name );
+        writeln( indentation, "IsLeftHanded : ", IsLeftHanded );
+        writeln( indentation, "IsZUp : ", IsZUp );
+
+        foreach ( component_index, component; ComponentArray )
+        {
+            writeln( indentation, "Component[", component_index, "] :" );
+
+            component.Dump( indentation ~ "    " );
+        }
+
+        foreach ( property_index, property; PropertyArray )
+        {
+            writeln( indentation, "Property[", property_index, "] :" );
+
+            property.Dump( indentation ~ "    " );
+        }
+
+        foreach ( scan_index, scan; ScanArray )
+        {
+            writeln( indentation, "Scan[", scan_index, "] :" );
+
+            scan.Dump( ComponentArray, indentation ~ "    " );
+        }
+    }
+
+    // ~~
+
     void Write(
         STREAM stream
         )
@@ -163,39 +196,6 @@ class CLOUD
         }
 
         stream.CloseOutputTextFile();
-    }
-
-    // ~~
-
-    void Dump(
-        string indentation = ""
-        )
-    {
-        writeln( indentation, "Version : ", Version );
-        writeln( indentation, "Name : ", Name );
-        writeln( indentation, "IsLeftHanded : ", IsLeftHanded );
-        writeln( indentation, "IsZUp : ", IsZUp );
-
-        foreach ( component_index, component; ComponentArray )
-        {
-            writeln( indentation, "Component[ ", component_index, " ] :" );
-
-            component.Dump( indentation ~ "    " );
-        }
-
-        foreach ( property_index, property; PropertyArray )
-        {
-            writeln( indentation, "Property[ ", property_index, " ] :" );
-
-            property.Dump( indentation ~ "    " );
-        }
-
-        foreach ( scan_index, scan; ScanArray )
-        {
-            writeln( indentation, "Scan[ ", scan_index, " ] :" );
-
-            scan.Dump( ComponentArray, indentation ~ "    " );
-        }
     }
 
     // -- OPERATIONS

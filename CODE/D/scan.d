@@ -50,7 +50,58 @@ class SCAN
         PreReadDelegate,
         PostReadDelegate;
 
+    // -- CONSTRUCTORS
+
+    this(
+        )
+    {
+        PositionVector.SetVector( 0.0, 0.0, 0.0 );
+        RotationVector.SetVector( 0.0, 0.0, 0.0, 1.0 );
+        XAxisVector.SetVector( 1.0, 0.0, 0.0 );
+        YAxisVector.SetVector( 0.0, 1.0, 0.0 );
+        ZAxisVector.SetVector( 0.0, 0.0, 1.0 );
+    }
+
     // -- INQUIRIES
+
+    void Dump(
+        COMPONENT[] component_array,
+        string indentation = ""
+        )
+    {
+        writeln( indentation, "Name : ", Name );
+        writeln( indentation, "ColumnCount : ", ColumnCount );
+        writeln( indentation, "RowCount : ", RowCount );
+        writeln( indentation, "PointCount : ", PointCount );
+        writeln( indentation, "PositionVector : ", GetText( PositionVector ) );
+        writeln( indentation, "RotationVector : ", GetText( RotationVector ) );
+        writeln( indentation, "XAxisVector : ", GetText( XAxisVector ) );
+        writeln( indentation, "YAxisVector : ", GetText( YAxisVector ) );
+        writeln( indentation, "ZAxisVector : ", GetText( ZAxisVector ) );
+
+        foreach ( property_index, property; PropertyArray )
+        {
+            writeln( indentation, "Property[", property_index, "] :" );
+
+            property.Dump( indentation ~ "    " );
+        }
+
+        foreach ( image_index, image; ImageArray )
+        {
+            writeln( indentation, "Image[", image_index, "] :" );
+
+            image.Dump( indentation ~ "    " );
+        }
+
+        foreach ( cell_position_vector, cell; CellMap )
+        {
+            writeln( indentation, "Cell[", GetText( cell_position_vector ), "] :" );
+
+            cell.Dump( component_array, indentation ~ "    " );
+        }
+    }
+
+    // ~~
 
     void Write(
         STREAM stream
@@ -88,57 +139,6 @@ class SCAN
         {
             PostWriteDelegate( this );
         }
-    }
-
-    // ~~
-
-    void Dump(
-        COMPONENT[] component_array,
-        string indentation = ""
-        )
-    {
-        writeln( indentation, "Name : ", Name );
-        writeln( indentation, "ColumnCount : ", ColumnCount );
-        writeln( indentation, "RowCount : ", RowCount );
-        writeln( indentation, "PointCount : ", PointCount );
-        writeln( indentation, "PositionVector : ", PositionVector.X, " ", PositionVector.Y, " ", PositionVector.Z );
-        writeln( indentation, "RotationVector : ", RotationVector.X, " ", RotationVector.Y, " ", RotationVector.Z, " ", RotationVector.W );
-        writeln( indentation, "XAxisVector : ", XAxisVector.X, " ", XAxisVector.Y, " ", XAxisVector.Z );
-        writeln( indentation, "YAxisVector : ", YAxisVector.X, " ", YAxisVector.Y, " ", YAxisVector.Z );
-        writeln( indentation, "ZAxisVector : ", ZAxisVector.X, " ", ZAxisVector.Y, " ", ZAxisVector.Z );
-
-        foreach ( property_index, property; PropertyArray )
-        {
-            writeln( indentation, "Property[ ", property_index, " ] :" );
-
-            property.Dump( indentation ~ "    " );
-        }
-
-        foreach ( image_index, image; ImageArray )
-        {
-            writeln( indentation, "Image[ ", image_index, " ] :" );
-
-            image.Dump( indentation ~ "    " );
-        }
-
-        foreach( cell; CellMap.byValue() )
-        {
-            writeln( indentation, "Cell :" );
-
-            cell.Dump( component_array, indentation ~ "    " );
-        }
-    }
-
-    // -- CONSTRUCTORS
-
-    this(
-        )
-    {
-        PositionVector.SetVector( 0.0, 0.0, 0.0 );
-        RotationVector.SetVector( 0.0, 0.0, 0.0, 1.0 );
-        XAxisVector.SetVector( 1.0, 0.0, 0.0 );
-        YAxisVector.SetVector( 0.0, 1.0, 0.0 );
-        ZAxisVector.SetVector( 0.0, 0.0, 1.0 );
     }
 
     // -- OPERATIONS

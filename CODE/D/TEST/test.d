@@ -2,8 +2,9 @@
 
 import std.conv : to;
 import std.stdio : write, writeln;
-import pcf.base;
+import pcf.base : GetText;
 import pcf.cell;
+import pcf.cell_position_vector : GetText;
 import pcf.cloud;
 import pcf.compression;
 
@@ -18,37 +19,20 @@ void PrintCell(
     CELL cell
     )
 {
-    writeln(
-        "Cell : ",
-        cell.PositionVector.X,
-        " ",
-        cell.PositionVector.Y,
-        " ",
-        cell.PositionVector.Z,
-        " (",
-        cell.PointCount,
-        ")"
-        );
+    writeln( "Cell : ", GetText( cell.PositionVector ), " (", cell.PointCount, ")" );
 
     cell.SetComponentIndex( 0 );
 
     foreach ( point_index; 0 .. cell.PointCount )
     {
-        write(
-            "    [",
-            point_index.to!string(),
-            "]"
-            );
+        write( "    [", point_index, "]" );
 
         foreach ( buffer_index; 0 .. cell.BufferArray.length )
         {
-            write(
-                " ",
-                cell.GetComponentValue( Cloud.ComponentArray, buffer_index ).GetText()
-                );
+            write( " ", cell.GetComponentValue( Cloud.ComponentArray, buffer_index ).GetText() );
         }
 
-        writeln( "" );
+        writeln();
     }
 }
 

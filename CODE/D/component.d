@@ -49,25 +49,10 @@ class COMPONENT
         Precision = precision;
         MinimumValue = minimum_value;
         MaximumValue = maximum_value;
-        OneOverPrecision = 1.0 / precision;
+        OneOverPrecision = ( precision > 0.0 ) ? 1.0 / precision : 0.0;
     }
 
     // -- INQUIRIES
-
-    void Write(
-        STREAM stream
-        )
-    {
-        stream.WriteText( Name );
-        stream.WriteNatural16( Compression );
-        stream.WriteNatural16( BitCount );
-        stream.WriteReal64( Precision );
-        stream.WriteReal64( MinimumValue );
-        stream.WriteReal64( MaximumValue );
-        stream.WriteReal64( OneOverPrecision );
-    }
-
-    // ~~
 
     void Dump(
         string indentation = ""
@@ -80,6 +65,21 @@ class COMPONENT
         writeln( indentation, "MinimumValue : ", MinimumValue );
         writeln( indentation, "MaximumValue : ", MaximumValue );
         writeln( indentation, "OneOverPrecision : ", OneOverPrecision );
+    }
+
+    // ~~
+
+    void Write(
+        STREAM stream
+        )
+    {
+        stream.WriteText( Name );
+        stream.WriteNatural16( Compression );
+        stream.WriteNatural16( BitCount );
+        stream.WriteReal64( Precision );
+        stream.WriteReal64( MinimumValue );
+        stream.WriteReal64( MaximumValue );
+        stream.WriteReal64( OneOverPrecision );
     }
 
     // ~~

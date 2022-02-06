@@ -3,6 +3,7 @@ module pcf.vector_4;
 // -- IMPORTS
 
 import core.math: sqrt;
+import pcf.base : GetText;
 import pcf.stream;
 import pcf.vector_3;
 
@@ -209,4 +210,13 @@ struct VECTOR_4
             W = ( y_axis_vector.X - x_axis_vector.Y ) / square_root;
         }
     }
+}
+
+// -- FUNCTIONS
+
+string GetText(
+    ref VECTOR_4 vector
+    )
+{
+    return GetText( vector.X ) ~ " " ~ GetText( vector.Y ) ~ " " ~ GetText( vector.Z ) ~ " " ~ GetText( vector.W );
 }

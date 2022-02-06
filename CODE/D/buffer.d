@@ -3,6 +3,7 @@ module pcf.buffer;
 // -- IMPORTS
 
 import std.conv : to;
+import std.stdio : writeln;
 import pcf.component;
 import pcf.compression;
 import pcf.scalar;
@@ -42,6 +43,17 @@ class BUFFER
     }
 
     // -- INQUIRIES
+
+    void Dump(
+        string indentation = ""
+        )
+    {
+        writeln( indentation, "MinimumNaturalValue : ", MinimumNaturalValue );
+        writeln( indentation, "ComponentBitCount : ", ComponentBitCount );
+        writeln( indentation, "BitCount : ", BitCount );
+    }
+
+    // ~~
 
     void Write(
         STREAM stream

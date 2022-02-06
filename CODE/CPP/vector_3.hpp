@@ -312,4 +312,13 @@ namespace pcf
                 );
         }
     };
+
+    // -- FUNCTIONS
+
+    inline string GetText(
+        const VECTOR_3 & vector
+        )
+    {
+        return GetText( vector.X ) + " " + GetText( vector.Y ) + " " + GetText( vector.Z );
+    }
 }

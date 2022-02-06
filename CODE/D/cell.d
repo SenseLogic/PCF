@@ -55,37 +55,6 @@ class CELL
 
     // -- INQUIRIES
 
-    void Write(
-        STREAM stream
-        )
-    {
-        if ( PreWriteFunction !is null )
-        {
-            PreWriteFunction( this );
-        }
-
-        if ( PreWriteDelegate !is null )
-        {
-            PreWriteDelegate( this );
-        }
-
-        stream.WriteNatural64( PointCount );
-        stream.WriteValue( PositionVector );
-        stream.WriteObjectArray( BufferArray );
-
-        if ( PostWriteFunction !is null )
-        {
-            PostWriteFunction( this );
-        }
-
-        if ( PostWriteDelegate !is null )
-        {
-            PostWriteDelegate( this );
-        }
-    }
-
-    // ~~
-
     long GetComponentOffset(
         COMPONENT[] component_array,
         ulong component_index
@@ -122,13 +91,20 @@ class CELL
             component_value;
 
         writeln( indentation, "PointCount : ", PointCount );
-        writeln( indentation, "PositionVector : ", PositionVector.X, " ", PositionVector.Y, " ", PositionVector.Z );
+        writeln( indentation, "PositionVector : ", GetText( PositionVector ) );
+
+        foreach ( buffer_index, buffer; BufferArray )
+        {
+            writeln( indentation, "Buffer[", buffer_index, "] :" );
+
+            buffer.Dump( indentation ~ "    " );
+        }
 
         SetComponentIndex( 0 );
 
         foreach ( point_index; 0 .. PointCount )
         {
-            write( indentation, "Point[ ", point_index, " ] :" );
+            write( indentation, "Point[", point_index, "] :" );
 
             foreach ( component_index, buffer; BufferArray )
             {
@@ -142,6 +118,37 @@ class CELL
             }
 
             writeln();
+        }
+    }
+
+    // ~~
+
+    void Write(
+        STREAM stream
+        )
+    {
+        if ( PreWriteFunction !is null )
+        {
+            PreWriteFunction( this );
+        }
+
+        if ( PreWriteDelegate !is null )
+        {
+            PreWriteDelegate( this );
+        }
+
+        stream.WriteNatural64( PointCount );
+        stream.WriteValue( PositionVector );
+        stream.WriteObjectArray( BufferArray );
+
+        if ( PostWriteFunction !is null )
+        {
+            PostWriteFunction( this );
+        }
+
+        if ( PostWriteDelegate !is null )
+        {
+            PostWriteDelegate( this );
         }
     }
 

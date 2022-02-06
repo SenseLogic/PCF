@@ -112,6 +112,14 @@ namespace pcf
             return Address;
         }
 
+        // -- INQUIRIES
+
+        bool IsNull(
+            ) const
+        {
+            return Address == nullptr;
+        }
+
         // -- OPERATIONS
 
         void SetNull(

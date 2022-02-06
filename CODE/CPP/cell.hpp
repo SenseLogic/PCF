@@ -97,6 +97,84 @@ namespace pcf
 
         // -- INQUIRIES
 
+        int64_t GetComponentOffset(
+            const VECTOR_<LINK_<COMPONENT>> & component_vector,
+            uint64_t component_index
+            ) const
+        {
+            if ( component_index <= 2
+                 && component_vector[ component_index ]->Compression == COMPRESSION::Discretization )
+            {
+                if ( component_index == 0 )
+                {
+                    return PositionVector.X;
+                }
+                else if ( component_index == 1 )
+                {
+                    return PositionVector.Y;
+                }
+                else if ( component_index == 2 )
+                {
+                    return PositionVector.Z;
+                }
+            }
+
+            return 0;
+        }
+
+        // ~~
+
+        void Dump(
+            const VECTOR_<LINK_<COMPONENT>> & component_vector,
+            string indentation = ""
+            )
+        {
+            double
+                component_value;
+            uint64_t
+                buffer_index,
+                component_index,
+                point_index;
+
+            cout << indentation << "PointCount : " << PointCount << "\n";
+            cout << indentation << "PositionVector : " << GetText( PositionVector ) << "\n";
+
+            for ( buffer_index = 0;
+                  buffer_index < BufferVector.size();
+                  ++buffer_index )
+            {
+                cout << indentation << "Buffer[" << buffer_index << "] :" << "\n";
+
+                BufferVector[ buffer_index ]->Dump( indentation + "    " );
+            }
+
+            SetComponentIndex( 0 );
+
+            for ( point_index = 0;
+                  point_index < PointCount;
+                  ++point_index )
+            {
+                cout << indentation << "Point[" << point_index << "] :";
+
+                for ( component_index = 0;
+                      component_index < BufferVector.size();
+                      ++component_index )
+                {
+                    component_value
+                        = BufferVector[ component_index ]->GetComponentValue(
+                              *component_vector[ component_index ],
+                              GetComponentOffset( component_vector, component_index )
+                              );
+
+                    cout << " " << component_value;
+                }
+
+                cout << "\n";
+            }
+        }
+
+        // ~~
+
         void Write(
             STREAM & stream
             )
@@ -155,33 +233,6 @@ namespace pcf
             {
                 buffer->SetComponentIndex( component_index );
             }
-        }
-
-        // ~~
-
-        int64_t GetComponentOffset(
-            const VECTOR_<LINK_<COMPONENT>> & component_vector,
-            uint64_t component_index
-            )
-        {
-            if ( component_index <= 2
-                 && component_vector[ component_index ]->Compression == COMPRESSION::Discretization )
-            {
-                if ( component_index == 0 )
-                {
-                    return PositionVector.X;
-                }
-                else if ( component_index == 1 )
-                {
-                    return PositionVector.Y;
-                }
-                else if ( component_index == 2 )
-                {
-                    return PositionVector.Z;
-                }
-            }
-
-            return 0;
         }
 
         // ~~

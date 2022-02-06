@@ -95,6 +95,17 @@ namespace pcf
 
         // -- INQUIRIES
 
+        void Dump(
+            string indentation = ""
+            ) const
+        {
+            cout << indentation << "MinimumNaturalValue : " << MinimumNaturalValue << "\n";
+            cout << indentation << "ComponentBitCount : " << ComponentBitCount << "\n";
+            cout << indentation << "BitCount : " << BitCount << "\n";
+        }
+
+        // ~~
+
         void Write(
             STREAM & stream
             )

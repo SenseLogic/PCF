@@ -2,6 +2,7 @@ module pcf.vector_3;
 
 // -- IMPORTS
 
+import pcf.base : GetText;
 import pcf.stream;
 
 // -- TYPES
@@ -222,4 +223,13 @@ struct VECTOR_3
             translation_vector.Z
             );
     }
+}
+
+// -- FUNCTIONS
+
+string GetText(
+    ref VECTOR_3 vector
+    )
+{
+    return GetText( vector.X ) ~ " " ~ GetText( vector.Y ) ~ " " ~ GetText( vector.Z );
 }

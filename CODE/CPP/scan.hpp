@@ -126,6 +126,53 @@ namespace pcf
 
         // -- INQUIRIES
 
+        void Dump(
+            const VECTOR_<LINK_<COMPONENT>> & component_vector,
+            string indentation = ""
+            ) const
+        {
+            uint64_t
+                image_index,
+                property_index;
+
+            cout << indentation << "Name : " << Name << "\n";
+            cout << indentation << "ColumnCount : " << ColumnCount << "\n";
+            cout << indentation << "RowCount : " << RowCount << "\n";
+            cout << indentation << "PointCount : " << PointCount << "\n";
+            cout << indentation << "PositionVector : " << GetText( PositionVector ) << "\n";
+            cout << indentation << "RotationVector : " << GetText( RotationVector ) << "\n";
+            cout << indentation << "XAxisVector : " << GetText( XAxisVector ) << "\n";
+            cout << indentation << "YAxisVector : " << GetText( YAxisVector ) << "\n";
+            cout << indentation << "ZAxisVector : " << GetText( ZAxisVector ) << "\n";
+
+            for ( property_index = 0;
+                  property_index < PropertyVector.size();
+                  ++property_index )
+            {
+                cout << indentation << "Property[" << property_index << "] :" << "\n";
+
+                PropertyVector[ property_index ]->Dump( indentation + "    " );
+            }
+
+            for ( image_index = 0;
+                  image_index < ImageVector.size();
+                  ++image_index )
+            {
+                cout << indentation << "Image[" << image_index << "] :" << "\n";
+
+                ImageVector[ image_index ]->Dump( indentation + "    " );
+            }
+
+            for ( auto & cell_entry : CellMap )
+            {
+                cout << indentation << "Cell[" << GetText( cell_entry.first ) << "] :" << "\n";
+
+                cell_entry.second->Dump( component_vector, indentation + "    " );
+            }
+        }
+
+        // ~~
+
         void Write(
             STREAM & stream
             )

@@ -95,7 +95,7 @@ namespace pcf
         // -- INQUIRIES
 
         uint64_t GetPointCount(
-            )
+            ) const
         {
             uint64_t
                 point_count;
@@ -108,6 +108,50 @@ namespace pcf
             }
 
             return point_count;
+        }
+
+        // ~~
+
+        void Dump(
+            string indentation = ""
+            ) const
+        {
+            uint64_t
+                component_index,
+                property_index,
+                scan_index;
+
+            cout << indentation << "Version : " << Version << "\n";
+            cout << indentation << "Name : " << Name << "\n";
+            cout << indentation << "IsLeftHanded : " << IsLeftHanded << "\n";
+            cout << indentation << "IsZUp : " << IsZUp << "\n";
+
+            for ( component_index = 0;
+                  component_index < ComponentVector.size();
+                  ++component_index )
+            {
+                cout << indentation << "Component[" << component_index << "] :" << "\n";
+
+                ComponentVector[ component_index ]->Dump( indentation + "    " );
+            }
+
+            for ( property_index = 0;
+                  property_index < PropertyVector.size();
+                  ++property_index )
+            {
+                cout << indentation << "Property[" << property_index << "] :" << "\n";
+
+                PropertyVector[ property_index ]->Dump( indentation + "    " );
+            }
+
+            for ( scan_index = 0;
+                  scan_index < ScanVector.size();
+                  ++scan_index )
+            {
+                cout << indentation << "Scan[" << scan_index << "] :" << "\n";
+
+                ScanVector[ scan_index ]->Dump( ComponentVector, indentation + "    " );
+            }
         }
 
         // ~~

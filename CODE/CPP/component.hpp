@@ -76,7 +76,7 @@ namespace pcf
             Precision( precision ),
             MinimumValue( minimum_value ),
             MaximumValue( maximum_value ),
-            OneOverPrecision( 1.0 / precision )
+            OneOverPrecision( ( precision > 0.0 ) ? 1.0 / precision : 0.0 )
         {
         }
 
@@ -106,9 +106,24 @@ namespace pcf
 
         // -- INQUIRIES
 
+        void Dump(
+            string indentation = ""
+            ) const
+        {
+            cout << indentation << "Name : " << Name << "\n";
+            cout << indentation << "Compression : " << ( uint16_t )Compression << "\n";
+            cout << indentation << "BitCount : " << BitCount << "\n";
+            cout << indentation << "Precision : " << Precision << "\n";
+            cout << indentation << "MinimumValue : " << MinimumValue << "\n";
+            cout << indentation << "MaximumValue : " << MaximumValue << "\n";
+            cout << indentation << "OneOverPrecision : " << OneOverPrecision << "\n";
+        }
+
+        // ~~
+
         void Write(
             STREAM & stream
-            )
+            ) const
         {
             stream.WriteText( Name );
             stream.WriteNatural16( ( uint16_t )Compression );
@@ -123,7 +138,7 @@ namespace pcf
 
         int64_t GetIntegerValue(
             double component_value
-            )
+            ) const
         {
             return ( int64_t )floor( ( component_value - MinimumValue ) * OneOverPrecision );
         }
@@ -132,7 +147,7 @@ namespace pcf
 
         double GetRealValue(
             int64_t integer_value
-            )
+            ) const
         {
             return MinimumValue + ( double )integer_value * Precision;
         }

@@ -78,6 +78,29 @@ namespace pcf
 
         // -- INQUIRIES
 
+        void Dump(
+            string indentation = ""
+            ) const
+        {
+            uint64_t
+                property_index;
+
+            cout << indentation << "Name : " << Name << "\n";
+            cout << indentation << "Role : " << Role << "\n";
+            cout << indentation << "Format : " << Format << "\n";
+
+            for ( property_index = 0;
+                  property_index < PropertyVector.size();
+                  ++property_index )
+            {
+                cout << indentation << "Property[" << property_index << "] :" << "\n";
+
+                PropertyVector[ property_index ]->Dump( indentation + "    " );
+            }
+        }
+
+        // ~~
+
         void Write(
             STREAM & stream
             )

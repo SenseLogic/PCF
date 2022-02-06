@@ -18,17 +18,6 @@ class PROPERTY
 
     // -- INQUIRIES
 
-    void Write(
-        STREAM stream
-        )
-    {
-        stream.WriteText( Name );
-        stream.WriteText( Value );
-        stream.WriteText( Format );
-    }
-
-    // ~~
-
     void Dump(
         string indentation = ""
         )
@@ -36,6 +25,17 @@ class PROPERTY
         writeln( indentation, "Name : ", Name );
         writeln( indentation, "Value : ", Value );
         writeln( indentation, "Format : ", Format );
+    }
+
+    // ~~
+
+    void Write(
+        STREAM stream
+        )
+    {
+        stream.WriteText( Name );
+        stream.WriteText( Value );
+        stream.WriteText( Format );
     }
 
     // -- OPERATIONS

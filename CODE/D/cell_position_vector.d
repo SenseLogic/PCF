@@ -2,6 +2,7 @@ module pcf.cell_position_vector;
 
 // -- IMPORTS
 
+import pcf.base : GetText;
 import pcf.stream;
 
 // -- TYPES
@@ -49,4 +50,13 @@ struct CELL_POSITION_VECTOR
         Y = y;
         Z = z;
     }
+}
+
+// -- FUNCTIONS
+
+string GetText(
+    ref CELL_POSITION_VECTOR cell_position_vector
+    )
+{
+    return GetText( cell_position_vector.X ) ~ " " ~ GetText( cell_position_vector.Y ) ~ " " ~ GetText( cell_position_vector.Z );
 }

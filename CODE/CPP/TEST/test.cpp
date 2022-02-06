@@ -21,13 +21,7 @@ void PrintCell(
         buffer_index,
         point_index;
 
-    printf(
-        "Cell : %s %s %s (%s)\n",
-        GetText( cell.PositionVector.X ).c_str(),
-        GetText( cell.PositionVector.Y ).c_str(),
-        GetText( cell.PositionVector.Z ).c_str(),
-        GetText( cell.PointCount ).c_str()
-        );
+    cout << "Cell : " << GetText( cell.PositionVector ) << " (" << cell.PointCount << ")\n";
 
     cell.SetComponentIndex( 0 );
 
@@ -35,22 +29,16 @@ void PrintCell(
           point_index < cell.PointCount;
           ++point_index )
     {
-        printf(
-            "    [%s]",
-            GetText( point_index ).c_str()
-            );
+        cout << "    [" << point_index << "]";
 
         for ( buffer_index = 0;
               buffer_index < cell.BufferVector.size();
               ++buffer_index )
         {
-            printf(
-                " %s",
-                GetText( cell.GetComponentValue( Cloud->ComponentVector, buffer_index ) ).c_str()
-                );
+            cout << " " << GetText( cell.GetComponentValue( Cloud->ComponentVector, buffer_index ) );
         }
 
-        printf( "\n" );
+        cout << "\n";
     }
 }
 

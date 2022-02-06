@@ -139,4 +139,14 @@ namespace pcf
             Z = z;
         }
     };
+
+    // -- FUNCTIONS
+
+    inline string GetText(
+        const CELL_POSITION_VECTOR & cell_position_vector
+        )
+    {
+        return GetText( cell_position_vector.X ) + " " + GetText( cell_position_vector.Y ) + " " + GetText( cell_position_vector.Z );
+    }
 }
+
