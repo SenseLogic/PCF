@@ -110,7 +110,7 @@ void main(
     if ( argument_array.length > 0 )
     {
         writeln( "Usage :" );
-        writeln( "    pcf [ options ]" );
+        writeln( "    pcf [options]" );
         writeln( "Options :" );
         writeln( "    --read-pts <file path> <position bit count> <position precision>" );
         writeln( "    --read-ptx <file path> <position bit count> <position precision>" );

@@ -119,7 +119,7 @@ int main(
     {
         cout
             << "Usage :\n"
-            << "    pcf [ options ]\n"
+            << "    pcf [options]\n"
             << "Options :\n"
             << "    --read-pts <file path> <position bit count> <position precision>\n"
             << "    --read-ptx <file path> <position bit count> <position precision>\n"
