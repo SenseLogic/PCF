@@ -69,7 +69,7 @@ Reads a PCF point cloud file, dumps it, and writes a PTX point cloud file.
 
 ## Version
 
-0.1
+0.3
 
 ## Limitations
 
