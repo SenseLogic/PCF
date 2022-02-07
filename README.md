@@ -1,8 +1,8 @@
 ![](https://github.com/senselogic/PCF/blob/master/LOGO/pcf.png)
 
-# PCF : Point Cloud Format
+# PCF
 
-Point cloud serialization library.
+Point cloud file format library and converter.
 
 ## Goals
 
