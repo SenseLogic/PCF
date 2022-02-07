@@ -4,14 +4,26 @@
 #include "cell.hpp"
 #include "cloud.hpp"
 #include "compression.hpp"
+#include "scan.hpp"
 using namespace pcf;
 
 // -- VARIABLES
 
+SCAN
+    * Scan;
 LINK_<CLOUD>
     Cloud;
 
 // -- FUNCTIONS
+
+void SetScan(
+    SCAN & scan
+    )
+{
+    Scan = &scan;
+}
+
+// ~~
 
 void PrintCell(
     CELL & cell
@@ -35,7 +47,7 @@ void PrintCell(
               buffer_index < cell.BufferVector.size();
               ++buffer_index )
         {
-            cout << " " << GetText( cell.GetComponentValue( Cloud->ComponentVector, buffer_index ) );
+            cout << " " << GetText( cell.GetComponentValue( Scan->ComponentVector, buffer_index ) );
         }
 
         cout << "\n";
@@ -51,6 +63,8 @@ int main(
 {
     try
     {
+        SCAN::PreWriteFunction = &SetScan;
+        SCAN::PreReadFunction = &SetScan;
         CELL::PostWriteFunction = &PrintCell;
         CELL::PostReadFunction = &PrintCell;
 

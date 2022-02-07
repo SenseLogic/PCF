@@ -20,7 +20,7 @@ namespace pcf
         // -- ATTIBUTES
 
         uint64_t
-            MinimumNaturalValue;
+            BaseValue;
         uint16_t
             ComponentBitCount;
         uint64_t
@@ -35,7 +35,7 @@ namespace pcf
         BUFFER(
             ) :
             OBJECT(),
-            MinimumNaturalValue( 0 ),
+            BaseValue( 0 ),
             ComponentBitCount( 0 ),
             BitCount( 0 ),
             ByteVector(),
@@ -49,7 +49,7 @@ namespace pcf
             const BUFFER & buffer
             ) :
             OBJECT( buffer ),
-            MinimumNaturalValue( buffer.MinimumNaturalValue ),
+            BaseValue( buffer.BaseValue ),
             ComponentBitCount( buffer.ComponentBitCount ),
             BitCount( buffer.BitCount ),
             ByteVector( buffer.ByteVector ),
@@ -63,7 +63,7 @@ namespace pcf
             const COMPONENT & component
             ) :
             OBJECT(),
-            MinimumNaturalValue( 0 ),
+            BaseValue( 0 ),
             ComponentBitCount( component.BitCount ),
             BitCount( 0 ),
             ByteVector(),
@@ -84,7 +84,7 @@ namespace pcf
             const BUFFER & buffer
             )
         {
-            MinimumNaturalValue = buffer.MinimumNaturalValue;
+            BaseValue = buffer.BaseValue;
             ComponentBitCount = buffer.ComponentBitCount;
             BitCount = buffer.BitCount;
             ByteVector = buffer.ByteVector;
@@ -99,7 +99,7 @@ namespace pcf
             string indentation = ""
             ) const
         {
-            cout << indentation << "MinimumNaturalValue : " << MinimumNaturalValue << "\n";
+            cout << indentation << "BaseValue : " << BaseValue << "\n";
             cout << indentation << "ComponentBitCount : " << ComponentBitCount << "\n";
             cout << indentation << "BitCount : " << BitCount << "\n";
         }
@@ -110,7 +110,7 @@ namespace pcf
             STREAM & stream
             )
         {
-            stream.WriteNatural64( MinimumNaturalValue );
+            stream.WriteNatural64( BaseValue );
             stream.WriteNatural16( ComponentBitCount );
             stream.WriteNatural64( BitCount );
             stream.WriteScalarVector( ByteVector );
@@ -122,7 +122,7 @@ namespace pcf
             STREAM & stream
             )
         {
-            stream.ReadNatural64( MinimumNaturalValue );
+            stream.ReadNatural64( BaseValue );
             stream.ReadNatural16( ComponentBitCount );
             stream.ReadNatural64( BitCount );
             stream.ReadScalarVector( ByteVector );
@@ -191,10 +191,10 @@ namespace pcf
             {
                 assert( component.Compression == COMPRESSION::Discretization );
 
-                integer_value = component.GetIntegerValue( component_value ) - ( component_offset << component.BitCount );;
-                assert( integer_value >= ( int64_t )MinimumNaturalValue );
+                integer_value = component.GetIntegerValue( component_value ) - ( component_offset << component.BitCount );
+                assert( integer_value >= ( int64_t )BaseValue );
 
-                natural_value = ( uint64_t )integer_value - MinimumNaturalValue;
+                natural_value = ( uint64_t )integer_value - BaseValue;
                 assert( ComponentBitCount == 64 || natural_value < ( 1ULL << ComponentBitCount ) );
 
                 for ( component_bit_index = 0;
@@ -289,7 +289,7 @@ namespace pcf
                     }
                 }
 
-                natural_value += MinimumNaturalValue;
+                natural_value += BaseValue;
                 component_value = component.GetRealValue( ( int64_t )natural_value + ( component_offset << component.BitCount ) );
             }
 

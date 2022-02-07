@@ -44,6 +44,8 @@ namespace pcf
             XAxisVector,
             YAxisVector,
             ZAxisVector;
+        VECTOR_<LINK_<COMPONENT>>
+            ComponentVector;
         VECTOR_<LINK_<PROPERTY>>
             PropertyVector;
         VECTOR_<LINK_<IMAGE>>
@@ -70,6 +72,7 @@ namespace pcf
             XAxisVector( 1.0, 0.0, 0.0 ),
             YAxisVector( 0.0, 1.0, 0.0 ),
             ZAxisVector( 0.0, 0.0, 1.0 ),
+            ComponentVector(),
             PropertyVector(),
             ImageVector(),
             CellMap()
@@ -90,6 +93,7 @@ namespace pcf
             XAxisVector( scan.XAxisVector ),
             YAxisVector( scan.YAxisVector ),
             ZAxisVector( scan.ZAxisVector ),
+            ComponentVector( scan.ComponentVector ),
             PropertyVector( scan.PropertyVector ),
             ImageVector( scan.ImageVector ),
             CellMap( scan.CellMap )
@@ -117,6 +121,7 @@ namespace pcf
             XAxisVector = scan.XAxisVector;
             YAxisVector = scan.YAxisVector;
             ZAxisVector = scan.ZAxisVector;
+            ComponentVector = scan.ComponentVector;
             PropertyVector = scan.PropertyVector;
             ImageVector = scan.ImageVector;
             CellMap = scan.CellMap;
@@ -127,11 +132,11 @@ namespace pcf
         // -- INQUIRIES
 
         void Dump(
-            const VECTOR_<LINK_<COMPONENT>> & component_vector,
             string indentation = ""
             ) const
         {
             uint64_t
+                component_index,
                 image_index,
                 property_index;
 
@@ -144,6 +149,15 @@ namespace pcf
             cout << indentation << "XAxisVector : " << GetText( XAxisVector ) << "\n";
             cout << indentation << "YAxisVector : " << GetText( YAxisVector ) << "\n";
             cout << indentation << "ZAxisVector : " << GetText( ZAxisVector ) << "\n";
+
+            for ( component_index = 0;
+                  component_index < ComponentVector.size();
+                  ++component_index )
+            {
+                cout << indentation << "Component[" << component_index << "] :" << "\n";
+
+                ComponentVector[ component_index ]->Dump( indentation + "    " );
+            }
 
             for ( property_index = 0;
                   property_index < PropertyVector.size();
@@ -167,7 +181,7 @@ namespace pcf
             {
                 cout << indentation << "Cell[" << GetText( cell_entry.first ) << "] :" << "\n";
 
-                cell_entry.second->Dump( component_vector, indentation + "    " );
+                cell_entry.second->Dump( ComponentVector, indentation + "    " );
             }
         }
 
@@ -191,6 +205,7 @@ namespace pcf
             stream.WriteValue( XAxisVector );
             stream.WriteValue( YAxisVector );
             stream.WriteValue( ZAxisVector );
+            stream.WriteObjectVector( ComponentVector );
             stream.WriteObjectVector( PropertyVector );
             stream.WriteObjectVector( ImageVector );
             stream.WriteObjectByValueMap( CellMap );
@@ -206,6 +221,7 @@ namespace pcf
         void Clear(
             )
         {
+            ComponentVector.clear();
             PropertyVector.clear();
             ImageVector.clear();
             CellMap.clear();
@@ -231,6 +247,7 @@ namespace pcf
             stream.ReadValue( XAxisVector );
             stream.ReadValue( YAxisVector );
             stream.ReadValue( ZAxisVector );
+            stream.ReadObjectVector( ComponentVector );
             stream.ReadObjectVector( PropertyVector );
             stream.ReadObjectVector( ImageVector );
             stream.ReadObjectByValueMap( CellMap );
@@ -260,7 +277,6 @@ namespace pcf
         // ~~
 
         CELL * GetCell(
-            const VECTOR_<LINK_<COMPONENT>> & component_vector,
             double position_x,
             double position_y,
             double position_z
@@ -271,11 +287,11 @@ namespace pcf
             LINK_<CELL>
                 cell;
 
-            if ( component_vector[ 0 ]->Compression == COMPRESSION::None )
+            if ( ComponentVector[ 0 ]->Compression == COMPRESSION::None )
             {
                 assert(
-                    component_vector[ 1 ]->Compression == COMPRESSION::None
-                    && component_vector[ 2 ]->Compression == COMPRESSION::None
+                    ComponentVector[ 1 ]->Compression == COMPRESSION::None
+                    && ComponentVector[ 2 ]->Compression == COMPRESSION::None
                     );
 
                 cell_position_vector.SetVector( 0, 0, 0 );
@@ -283,15 +299,15 @@ namespace pcf
             else
             {
                 assert(
-                    component_vector[ 0 ]->Compression == COMPRESSION::Discretization
-                    && component_vector[ 1 ]->Compression == COMPRESSION::Discretization
-                    && component_vector[ 2 ]->Compression == COMPRESSION::Discretization
+                    ComponentVector[ 0 ]->Compression == COMPRESSION::Discretization
+                    && ComponentVector[ 1 ]->Compression == COMPRESSION::Discretization
+                    && ComponentVector[ 2 ]->Compression == COMPRESSION::Discretization
                     );
 
                 cell_position_vector.SetVector(
-                    component_vector[ 0 ]->GetIntegerValue( position_x ) >> component_vector[ 0 ]->BitCount,
-                    component_vector[ 1 ]->GetIntegerValue( position_y ) >> component_vector[ 1 ]->BitCount,
-                    component_vector[ 2 ]->GetIntegerValue( position_z ) >> component_vector[ 2 ]->BitCount
+                    ComponentVector[ 0 ]->GetIntegerValue( position_x ) >> ComponentVector[ 0 ]->BitCount,
+                    ComponentVector[ 1 ]->GetIntegerValue( position_y ) >> ComponentVector[ 1 ]->BitCount,
+                    ComponentVector[ 2 ]->GetIntegerValue( position_z ) >> ComponentVector[ 2 ]->BitCount
                     );
             }
 
@@ -305,7 +321,7 @@ namespace pcf
             }
             else
             {
-                cell = new CELL( component_vector );
+                cell = new CELL( ComponentVector );
                 cell->PositionVector = cell_position_vector;
 
                 CellMap[ cell_position_vector ] = cell;

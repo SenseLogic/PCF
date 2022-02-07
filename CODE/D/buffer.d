@@ -16,7 +16,7 @@ class BUFFER
     // -- ATTIBUTES
 
     ulong
-        MinimumNaturalValue;
+        BaseValue;
     ushort
         ComponentBitCount;
     ulong
@@ -48,7 +48,7 @@ class BUFFER
         string indentation = ""
         )
     {
-        writeln( indentation, "MinimumNaturalValue : ", MinimumNaturalValue );
+        writeln( indentation, "BaseValue : ", BaseValue );
         writeln( indentation, "ComponentBitCount : ", ComponentBitCount );
         writeln( indentation, "BitCount : ", BitCount );
     }
@@ -59,7 +59,7 @@ class BUFFER
         STREAM stream
         )
     {
-        stream.WriteNatural64( MinimumNaturalValue );
+        stream.WriteNatural64( BaseValue );
         stream.WriteNatural16( ComponentBitCount );
         stream.WriteNatural64( BitCount );
         stream.WriteScalarArray( ByteArray );
@@ -71,7 +71,7 @@ class BUFFER
         STREAM stream
         )
     {
-        stream.ReadNatural64( MinimumNaturalValue );
+        stream.ReadNatural64( BaseValue );
         stream.ReadNatural16( ComponentBitCount );
         stream.ReadNatural64( BitCount );
         stream.ReadScalarArray( ByteArray );
@@ -135,9 +135,9 @@ class BUFFER
             assert( component.Compression == COMPRESSION.Discretization );
 
             integer_value = component.GetIntegerValue( component_value ) - ( component_offset << component.BitCount );
-            assert( integer_value >= MinimumNaturalValue.to!long() );
+            assert( integer_value >= BaseValue.to!long() );
 
-            natural_value = integer_value.to!ulong() - MinimumNaturalValue;
+            natural_value = integer_value.to!ulong() - BaseValue;
             assert( ComponentBitCount == 64 || natural_value < ( 1UL << ComponentBitCount ) );
 
             foreach ( component_bit_index; 0 .. ComponentBitCount )
@@ -222,7 +222,7 @@ class BUFFER
                 }
             }
 
-            natural_value += MinimumNaturalValue;
+            natural_value += BaseValue;
             component_value = component.GetRealValue( natural_value.to!long() + ( component_offset << component.BitCount ) );
         }
 

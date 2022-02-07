@@ -31,6 +31,88 @@ using namespace std;
 
 namespace pcf
 {
+    inline void PrintError(
+        string message
+        )
+    {
+        cerr << "*** ERROR : " << message << "\n";
+    }
+
+    // ~~
+
+    inline void Abort(
+        string message
+        )
+    {
+        PrintError( message );
+
+        exit( -1 );
+    }
+
+    // ~~
+
+    inline bool HasPrefix(
+        const char * text_character_array,
+        const char * prefix_character_array
+        )
+    {
+        uint64_t
+            prefix_character_count,
+            text_character_count;
+
+        text_character_count = strlen( text_character_array );
+        prefix_character_count = strlen( prefix_character_array );
+
+        return
+            text_character_count >= prefix_character_count
+            && !strncmp( text_character_array, prefix_character_array, prefix_character_count );
+    }
+
+    // ~~
+
+    inline bool HasPrefix(
+        const string & text,
+        const string & prefix
+        )
+    {
+        return
+            text.length() >= prefix.length()
+            && !text.compare( 0, prefix.length(), prefix );
+    }
+
+    // ~~
+
+    inline bool HasSuffix(
+        const char * text_character_array,
+        const char * suffix_character_array
+        )
+    {
+        uint64_t
+            suffix_character_count,
+            text_character_count;
+
+        text_character_count = strlen( text_character_array );
+        suffix_character_count = strlen( suffix_character_array );
+
+        return
+            text_character_count >= suffix_character_count
+            && !strcmp( text_character_array + text_character_count - suffix_character_count, suffix_character_array );
+    }
+
+    // ~~
+
+    inline bool HasSuffix(
+        const string & text,
+        const string & suffix
+        )
+    {
+        return
+            text.length() >= suffix.length()
+            && !text.compare( text.length() - suffix.length(), suffix.length(), suffix );
+    }
+
+    // ~~
+
     inline VECTOR_<string> Split(
         const string & text,
         const char separator_character

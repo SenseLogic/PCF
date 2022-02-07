@@ -12,64 +12,6 @@ LINK_<CLOUD>
 
 // -- FUNCTIONS
 
-void PrintError(
-    string message
-    )
-{
-    cerr << "*** ERROR : " << message << "\n";
-}
-
-// ~~
-
-void Abort(
-    string message
-    )
-{
-    PrintError( message );
-
-    exit( -1 );
-}
-
-// ~~
-
-bool HasPrefix(
-    const char * text_character_array,
-    const char * prefix_character_array
-    )
-{
-    int
-        prefix_character_count,
-        text_character_count;
-
-    text_character_count = strlen( text_character_array );
-    prefix_character_count = strlen( prefix_character_array );
-
-    return
-        text_character_count >= prefix_character_count
-        && !strncmp( text_character_array, prefix_character_array, prefix_character_count );
-}
-
-// ~~
-
-bool HasSuffix(
-    const char * text_character_array,
-    const char * suffix_character_array
-    )
-{
-    int
-        suffix_character_count,
-        text_character_count;
-
-    text_character_count = strlen( text_character_array );
-    suffix_character_count = strlen( suffix_character_array );
-
-    return
-        text_character_count >= suffix_character_count
-        && !strcmp( text_character_array + text_character_count - suffix_character_count, suffix_character_array );
-}
-
-// ~~
-
 int main(
     int argument_count,
     char ** argument_array

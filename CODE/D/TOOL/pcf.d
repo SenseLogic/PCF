@@ -2,10 +2,10 @@ module pcf.pcf;
 
 // -- IMPORTS
 
-import core.stdc.stdlib : exit;
 import std.conv : to;
 import std.stdio : writeln;
 import std.string : endsWith, startsWith;
+import pcf.base;
 import pcf.cloud;
 import pcf.compression;
 
@@ -15,26 +15,6 @@ CLOUD
     Cloud;
 
 // -- FUNCTIONS
-
-void PrintError(
-    string message
-    )
-{
-    writeln( "*** ERROR : ", message );
-}
-
-// ~~
-
-void Abort(
-    string message
-    )
-{
-    PrintError( message );
-
-    exit( -1 );
-}
-
-// ~~
 
 void main(
     string[] argument_array

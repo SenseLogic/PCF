@@ -24,6 +24,7 @@ namespace pcf
             BitCount;
         double
             Precision,
+            BaseValue,
             MinimumValue,
             MaximumValue,
             OneOverPrecision;
@@ -37,6 +38,7 @@ namespace pcf
             Compression( COMPRESSION::None ),
             BitCount( 0 ),
             Precision( 0.0 ),
+            BaseValue( 0.0 ),
             MinimumValue( 0.0 ),
             MaximumValue( 0.0 ),
             OneOverPrecision( 0.0 )
@@ -53,6 +55,7 @@ namespace pcf
             Compression( component.Compression ),
             BitCount( component.BitCount ),
             Precision( component.Precision ),
+            BaseValue( component.BaseValue ),
             MinimumValue( component.MinimumValue ),
             MaximumValue( component.MaximumValue ),
             OneOverPrecision( component.OneOverPrecision )
@@ -66,6 +69,7 @@ namespace pcf
             COMPRESSION compression = COMPRESSION::Discretization,
             uint16_t bit_count = 8,
             double precision = 1.0,
+            double base_value = 0.0,
             double minimum_value = 0.0,
             double maximum_value = 0.0
             ) :
@@ -74,6 +78,7 @@ namespace pcf
             Compression( compression ),
             BitCount( bit_count ),
             Precision( precision ),
+            BaseValue( base_value ),
             MinimumValue( minimum_value ),
             MaximumValue( maximum_value ),
             OneOverPrecision( ( precision > 0.0 ) ? 1.0 / precision : 0.0 )
@@ -97,6 +102,7 @@ namespace pcf
             Compression = component.Compression;
             BitCount = component.BitCount;
             Precision = component.Precision;
+            BaseValue = component.BaseValue;
             MinimumValue = component.MinimumValue;
             MaximumValue = component.MaximumValue;
             OneOverPrecision = component.OneOverPrecision;
@@ -114,6 +120,7 @@ namespace pcf
             cout << indentation << "Compression : " << ( uint16_t )Compression << "\n";
             cout << indentation << "BitCount : " << BitCount << "\n";
             cout << indentation << "Precision : " << Precision << "\n";
+            cout << indentation << "BaseValue : " << BaseValue << "\n";
             cout << indentation << "MinimumValue : " << MinimumValue << "\n";
             cout << indentation << "MaximumValue : " << MaximumValue << "\n";
             cout << indentation << "OneOverPrecision : " << OneOverPrecision << "\n";
@@ -129,6 +136,7 @@ namespace pcf
             stream.WriteNatural16( ( uint16_t )Compression );
             stream.WriteNatural16( BitCount );
             stream.WriteReal64( Precision );
+            stream.WriteReal64( BaseValue );
             stream.WriteReal64( MinimumValue );
             stream.WriteReal64( MaximumValue );
             stream.WriteReal64( OneOverPrecision );
@@ -140,7 +148,7 @@ namespace pcf
             double component_value
             ) const
         {
-            return ( int64_t )floor( ( component_value - MinimumValue ) * OneOverPrecision );
+            return ( int64_t )floor( ( component_value - BaseValue ) * OneOverPrecision );
         }
 
         // ~~
@@ -149,7 +157,7 @@ namespace pcf
             int64_t integer_value
             ) const
         {
-            return MinimumValue + ( double )integer_value * Precision;
+            return BaseValue + ( double )integer_value * Precision;
         }
 
         // -- OPERATIONS
@@ -162,6 +170,7 @@ namespace pcf
             stream.ReadNatural16( ( uint16_t & )Compression );
             stream.ReadNatural16( BitCount );
             stream.ReadReal64( Precision );
+            stream.ReadReal64( BaseValue );
             stream.ReadReal64( MinimumValue );
             stream.ReadReal64( MaximumValue );
             stream.ReadReal64( OneOverPrecision );

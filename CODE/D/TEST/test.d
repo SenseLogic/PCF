@@ -7,13 +7,25 @@ import pcf.cell;
 import pcf.cell_position_vector : GetText;
 import pcf.cloud;
 import pcf.compression;
+import pcf.scan;
 
 // -- VARIABLES
 
+SCAN
+    Scan;
 CLOUD
     Cloud;
 
 // -- FUNCTIONS
+
+void SetScan(
+    SCAN scan
+    )
+{
+    Scan = scan;
+}
+
+// ~~
 
 void PrintCell(
     CELL cell
@@ -29,7 +41,7 @@ void PrintCell(
 
         foreach ( buffer_index; 0 .. cell.BufferArray.length )
         {
-            write( " ", cell.GetComponentValue( Cloud.ComponentArray, buffer_index ).GetText() );
+            write( " ", cell.GetComponentValue( Scan.ComponentArray, buffer_index ).GetText() );
         }
 
         writeln();
@@ -42,6 +54,8 @@ void main(
     string[] argument_array
     )
 {
+    SCAN.PreWriteFunction = &SetScan;
+    SCAN.PreReadFunction = &SetScan;
     CELL.PostWriteFunction = &PrintCell;
     CELL.PostReadFunction = &PrintCell;
 

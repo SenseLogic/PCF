@@ -48,9 +48,9 @@ pcf [options]
 --read-ptx <file path> <position bit count> <position precision> : read a PTX point cloud file
 --read-pcf <file path : read a PCF point cloud file
 --dump : dump the point cloud
---write-pts <file path : write a PTS point cloud file
---write-ptx <file path : write a PTX point cloud file
---write-pcf <file path : write a PCF point cloud file
+--write-pts <file path> : write a PTS point cloud file
+--write-ptx <file path> : write a PTX point cloud file
+--write-pcf <file path> : write a PCF point cloud file
 ```
 
 ### Examples

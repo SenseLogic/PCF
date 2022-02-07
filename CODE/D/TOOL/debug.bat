@@ -3,3 +3,4 @@ dmd -debug -g -gf -gs -m64 -ofpcf.exe pcf.d ../base.d ../buffer.d ../cell.d ../c
 del /q pcf.obj
 del /q pcf.ilk
 del /q pcf.pdb
+pause

@@ -2,10 +2,32 @@ module pcf.base;
 
 // -- IMPORTS
 
+import core.stdc.stdlib : exit;
 import std.conv : to;
+import std.stdio : writeln;
 import std.string : endsWith, format, indexOf;
 
 // -- FUNCTIONS
+
+void PrintError(
+    string message
+    )
+{
+    writeln( "*** ERROR : ", message );
+}
+
+// ~~
+
+void Abort(
+    string message
+    )
+{
+    PrintError( message );
+
+    exit( -1 );
+}
+
+// ~~
 
 string RemoveTrailingZeros(
     string text

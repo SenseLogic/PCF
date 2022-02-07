@@ -30,8 +30,6 @@ namespace pcf
         bool
             IsLeftHanded,
             IsZUp;
-        VECTOR_<LINK_<COMPONENT>>
-            ComponentVector;
         VECTOR_<LINK_<PROPERTY>>
             PropertyVector;
         VECTOR_<LINK_<SCAN>>
@@ -46,7 +44,6 @@ namespace pcf
             Name(),
             IsLeftHanded( false ),
             IsZUp( false ),
-            ComponentVector(),
             PropertyVector(),
             ScanVector()
         {
@@ -62,7 +59,6 @@ namespace pcf
             Name( cloud.Name ),
             IsLeftHanded( cloud.IsLeftHanded ),
             IsZUp( cloud.IsZUp ),
-            ComponentVector( cloud.ComponentVector ),
             PropertyVector( cloud.PropertyVector ),
             ScanVector( cloud.ScanVector )
         {
@@ -85,7 +81,6 @@ namespace pcf
             Name = cloud.Name;
             IsLeftHanded = cloud.IsLeftHanded;
             IsZUp = cloud.IsZUp;
-            ComponentVector = cloud.ComponentVector;
             PropertyVector = cloud.PropertyVector;
             ScanVector = cloud.ScanVector;
 
@@ -117,7 +112,6 @@ namespace pcf
             ) const
         {
             uint64_t
-                component_index,
                 property_index,
                 scan_index;
 
@@ -125,15 +119,6 @@ namespace pcf
             cout << indentation << "Name : " << Name << "\n";
             cout << indentation << "IsLeftHanded : " << IsLeftHanded << "\n";
             cout << indentation << "IsZUp : " << IsZUp << "\n";
-
-            for ( component_index = 0;
-                  component_index < ComponentVector.size();
-                  ++component_index )
-            {
-                cout << indentation << "Component[" << component_index << "] :" << "\n";
-
-                ComponentVector[ component_index ]->Dump( indentation + "    " );
-            }
 
             for ( property_index = 0;
                   property_index < PropertyVector.size();
@@ -150,7 +135,7 @@ namespace pcf
             {
                 cout << indentation << "Scan[" << scan_index << "] :" << "\n";
 
-                ScanVector[ scan_index ]->Dump( ComponentVector, indentation + "    " );
+                ScanVector[ scan_index ]->Dump( indentation + "    " );
             }
         }
 
@@ -164,7 +149,6 @@ namespace pcf
             stream.WriteText( Name );
             stream.WriteBoolean( IsLeftHanded );
             stream.WriteBoolean( IsZUp );
-            stream.WriteObjectVector( ComponentVector );
             stream.WriteObjectVector( PropertyVector );
             stream.WriteObjectVector( ScanVector );
         }
@@ -211,13 +195,13 @@ namespace pcf
                           ++point_index )
                     {
                         stream.WriteRealLine(
-                            cell->GetComponentValue( ComponentVector, 0 ),
-                            cell->GetComponentValue( ComponentVector, 1 ),
-                            cell->GetComponentValue( ComponentVector, 2 ),
-                            cell->GetComponentValue( ComponentVector, 3 ),
-                            cell->GetComponentValue( ComponentVector, 4 ),
-                            cell->GetComponentValue( ComponentVector, 5 ),
-                            cell->GetComponentValue( ComponentVector, 6 )
+                            cell->GetComponentValue( scan->ComponentVector, 0 ),
+                            cell->GetComponentValue( scan->ComponentVector, 1 ),
+                            cell->GetComponentValue( scan->ComponentVector, 2 ),
+                            cell->GetComponentValue( scan->ComponentVector, 3 ),
+                            cell->GetComponentValue( scan->ComponentVector, 4 ),
+                            cell->GetComponentValue( scan->ComponentVector, 5 ),
+                            cell->GetComponentValue( scan->ComponentVector, 6 )
                             );
                     }
                 }
@@ -264,13 +248,13 @@ namespace pcf
                           ++point_index )
                     {
                         stream.WriteRealLine(
-                            cell->GetComponentValue( ComponentVector, 0 ),
-                            cell->GetComponentValue( ComponentVector, 1 ),
-                            cell->GetComponentValue( ComponentVector, 2 ),
-                            cell->GetComponentValue( ComponentVector, 3 ),
-                            cell->GetComponentValue( ComponentVector, 4 ),
-                            cell->GetComponentValue( ComponentVector, 5 ),
-                            cell->GetComponentValue( ComponentVector, 6 )
+                            cell->GetComponentValue( scan->ComponentVector, 0 ),
+                            cell->GetComponentValue( scan->ComponentVector, 1 ),
+                            cell->GetComponentValue( scan->ComponentVector, 2 ),
+                            cell->GetComponentValue( scan->ComponentVector, 3 ),
+                            cell->GetComponentValue( scan->ComponentVector, 4 ),
+                            cell->GetComponentValue( scan->ComponentVector, 5 ),
+                            cell->GetComponentValue( scan->ComponentVector, 6 )
                             );
                     }
                 }
@@ -284,7 +268,6 @@ namespace pcf
         void Clear(
             )
         {
-            ComponentVector.clear();
             PropertyVector.clear();
             ScanVector.clear();
         }
@@ -299,7 +282,6 @@ namespace pcf
             stream.ReadText( Name );
             stream.ReadBoolean( IsLeftHanded );
             stream.ReadBoolean( IsZUp );
-            stream.ReadObjectVector( ComponentVector );
             stream.ReadObjectVector( PropertyVector );
             stream.ReadObjectVector( ScanVector );
         }
@@ -354,34 +336,32 @@ namespace pcf
             LINK_<SCAN>
                 scan;
 
-            ComponentVector.clear();
+            stream.OpenInputTextFile( input_file_path );
+
+            scan = new SCAN();
 
             if ( compression == COMPRESSION::None )
             {
-                ComponentVector.push_back( new COMPONENT( "X", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "Y", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "Z", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "I", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "R", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "G", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "B", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
+                scan->ComponentVector.push_back( new COMPONENT( "X", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                scan->ComponentVector.push_back( new COMPONENT( "Y", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                scan->ComponentVector.push_back( new COMPONENT( "Z", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                scan->ComponentVector.push_back( new COMPONENT( "I", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                scan->ComponentVector.push_back( new COMPONENT( "R", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                scan->ComponentVector.push_back( new COMPONENT( "G", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                scan->ComponentVector.push_back( new COMPONENT( "B", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
             }
             else
             {
                 assert( compression == COMPRESSION::Discretization );
 
-                ComponentVector.push_back( new COMPONENT( "X", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "Y", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "Z", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "I", COMPRESSION::Discretization, intensity_bit_count, intensity_precision, intensity_minimum, intensity_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "R", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "G", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "B", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_maximum ) );
+                scan->ComponentVector.push_back( new COMPONENT( "X", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_minimum, position_maximum ) );
+                scan->ComponentVector.push_back( new COMPONENT( "Y", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_minimum, position_maximum ) );
+                scan->ComponentVector.push_back( new COMPONENT( "Z", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_minimum, position_maximum ) );
+                scan->ComponentVector.push_back( new COMPONENT( "I", COMPRESSION::Discretization, intensity_bit_count, intensity_precision, intensity_minimum, intensity_minimum, intensity_maximum ) );
+                scan->ComponentVector.push_back( new COMPONENT( "R", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_minimum, color_maximum ) );
+                scan->ComponentVector.push_back( new COMPONENT( "G", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_minimum, color_maximum ) );
+                scan->ComponentVector.push_back( new COMPONENT( "B", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_minimum, color_maximum ) );
             }
-
-            stream.OpenInputTextFile( input_file_path );
-
-            scan = new SCAN();
 
             if ( stream.ReadNaturalLine( scan->PointCount ) )
             {
@@ -394,14 +374,14 @@ namespace pcf
                 {
                     stream.ReadRealLine( position_x, position_y, position_z, intensity, color_red, color_green, color_blue );
 
-                    cell = scan->GetCell( ComponentVector, position_x, position_y, position_z );
-                    cell->AddComponentValue( ComponentVector, 0, position_x );
-                    cell->AddComponentValue( ComponentVector, 1, position_y );
-                    cell->AddComponentValue( ComponentVector, 2, position_z );
-                    cell->AddComponentValue( ComponentVector, 3, intensity );
-                    cell->AddComponentValue( ComponentVector, 4, color_red );
-                    cell->AddComponentValue( ComponentVector, 5, color_green );
-                    cell->AddComponentValue( ComponentVector, 6, color_blue );
+                    cell = scan->GetCell( position_x, position_y, position_z );
+                    cell->AddComponentValue( scan->ComponentVector, 0, position_x );
+                    cell->AddComponentValue( scan->ComponentVector, 1, position_y );
+                    cell->AddComponentValue( scan->ComponentVector, 2, position_z );
+                    cell->AddComponentValue( scan->ComponentVector, 3, intensity );
+                    cell->AddComponentValue( scan->ComponentVector, 4, color_red );
+                    cell->AddComponentValue( scan->ComponentVector, 5, color_green );
+                    cell->AddComponentValue( scan->ComponentVector, 6, color_blue );
                     ++cell->PointCount;
                 }
 
@@ -448,36 +428,34 @@ namespace pcf
             LINK_<SCAN>
                 scan;
 
-            ComponentVector.clear();
-
-            if ( compression == COMPRESSION::None )
-            {
-                ComponentVector.push_back( new COMPONENT( "X", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "Y", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "Z", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "I", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "R", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "G", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-                ComponentVector.push_back( new COMPONENT( "B", COMPRESSION::None, 32, 0.0, 0.0, 0.0 ) );
-            }
-            else
-            {
-                assert( compression == COMPRESSION::Discretization );
-
-                ComponentVector.push_back( new COMPONENT( "X", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "Y", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "Z", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "I", COMPRESSION::Discretization, intensity_bit_count, intensity_precision, intensity_minimum, intensity_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "R", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "G", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_maximum ) );
-                ComponentVector.push_back( new COMPONENT( "B", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_maximum ) );
-            }
-
             stream.OpenInputTextFile( input_file_path );
 
             for ( ; ; )
             {
                 scan = new SCAN();
+
+                if ( compression == COMPRESSION::None )
+                {
+                    scan->ComponentVector.push_back( new COMPONENT( "X", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "Y", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "Z", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "I", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "R", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "G", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "B", COMPRESSION::None, 32, 0.0, 0.0, 0.0, 0.0 ) );
+                }
+                else
+                {
+                    assert( compression == COMPRESSION::Discretization );
+
+                    scan->ComponentVector.push_back( new COMPONENT( "X", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_minimum, position_maximum ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "Y", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_minimum, position_maximum ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "Z", COMPRESSION::Discretization, position_bit_count, position_precision, position_minimum, position_minimum, position_maximum ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "I", COMPRESSION::Discretization, intensity_bit_count, intensity_precision, intensity_minimum, intensity_minimum, intensity_maximum ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "R", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_minimum, color_maximum ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "G", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_minimum, color_maximum ) );
+                    scan->ComponentVector.push_back( new COMPONENT( "B", COMPRESSION::Discretization, color_bit_count, color_precision, color_minimum, color_minimum, color_maximum ) );
+                }
 
                 if ( stream.ReadNaturalLine( scan->ColumnCount ) )
                 {
@@ -499,14 +477,14 @@ namespace pcf
                     {
                         stream.ReadRealLine( position_x, position_y, position_z, intensity, color_red, color_green, color_blue );
 
-                        cell = scan->GetCell( ComponentVector, position_x, position_y, position_z );
-                        cell->AddComponentValue( ComponentVector, 0, position_x );
-                        cell->AddComponentValue( ComponentVector, 1, position_y );
-                        cell->AddComponentValue( ComponentVector, 2, position_z );
-                        cell->AddComponentValue( ComponentVector, 3, intensity );
-                        cell->AddComponentValue( ComponentVector, 4, color_red );
-                        cell->AddComponentValue( ComponentVector, 5, color_green );
-                        cell->AddComponentValue( ComponentVector, 6, color_blue );
+                        cell = scan->GetCell( position_x, position_y, position_z );
+                        cell->AddComponentValue( scan->ComponentVector, 0, position_x );
+                        cell->AddComponentValue( scan->ComponentVector, 1, position_y );
+                        cell->AddComponentValue( scan->ComponentVector, 2, position_z );
+                        cell->AddComponentValue( scan->ComponentVector, 3, intensity );
+                        cell->AddComponentValue( scan->ComponentVector, 4, color_red );
+                        cell->AddComponentValue( scan->ComponentVector, 5, color_green );
+                        cell->AddComponentValue( scan->ComponentVector, 6, color_blue );
                         ++cell->PointCount;
                     }
 

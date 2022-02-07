@@ -1,9 +1,7 @@
-*.exe
 *.ilk
 *.o
 *.obj
 *.pdb
-CODE/CPP/TEST/test
-CODE/CPP/TOOL/pcf
-CODE/D/TEST/test
-CODE/D/TOOL/pcf
+CODE/**/*.exe
+CODE/**/test
+CODE/**/pcf
