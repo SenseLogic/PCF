@@ -8,7 +8,7 @@ Point cloud file format.
 
 * Simplicity : uses simple data structures and a straightforward serialization format.
 * Versatility : stores multiple scans with any number of components, properties and images.
-* Portability : implemented both in C++ and D, without using any external dependencies.
+* Portability : implemented in both C++ and D, without using any external dependencies.
 * Compactness : minimizes the number of bits per component through spatial clustering.
 
 ## Installation
