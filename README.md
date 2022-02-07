@@ -15,7 +15,7 @@ Point cloud file format.
 
 ### C++ version
 
-Install a C++ compiler (g++, Visual C++ 2019 Community).
+Install g++ or Visual C++ 2019 Community.
 
 Build the executable with the following command lines :
 
