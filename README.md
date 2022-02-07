@@ -2,7 +2,7 @@
 
 # PCF
 
-Point cloud file format library and converter.
+Point cloud file format.
 
 ## Goals
 
