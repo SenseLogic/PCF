@@ -117,8 +117,8 @@ namespace pcf
 
             cout << indentation << "Version : " << Version << "\n";
             cout << indentation << "Name : " << Name << "\n";
-            cout << indentation << "IsLeftHanded : " << IsLeftHanded << "\n";
-            cout << indentation << "IsZUp : " << IsZUp << "\n";
+            cout << indentation << "IsLeftHanded : " << GetText( IsLeftHanded ) << "\n";
+            cout << indentation << "IsZUp : " << GetText( IsZUp ) << "\n";
 
             for ( property_index = 0;
                   property_index < PropertyVector.size();

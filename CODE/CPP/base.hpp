@@ -182,6 +182,17 @@ namespace pcf
 
     // ~~
 
+    inline bool IsBoolean(
+        string text
+        )
+    {
+        return
+            text == "false"
+            || text == "true";
+    }
+
+    // ~~
+
     inline bool IsInteger(
         string text
         )
@@ -253,6 +264,15 @@ namespace pcf
 
     // ~~
 
+    inline bool GetBoolean(
+        string text
+        )
+    {
+        return text == "true";
+    }
+
+    // ~~
+
     inline uint64_t GetNatural64(
         string text
         )
@@ -296,6 +316,22 @@ namespace pcf
         else
         {
             return stod( text );
+        }
+    }
+
+    // ~~
+
+    inline string GetText(
+        bool boolean
+        )
+    {
+        if ( boolean )
+        {
+            return "true";
+        }
+        else
+        {
+            return "false";
         }
     }
 
