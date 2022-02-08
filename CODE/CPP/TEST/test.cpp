@@ -126,8 +126,8 @@ int main(
 
         Cloud = new CLOUD();
 
-        puts( "Reading OUT/test_1.pts" );
-        Cloud->ReadPtsFile( "OUT/test_1.pts", COMPRESSION::Discretization, 8, 0.1 );
+        puts( "Reading test_4.pcf" );
+        Cloud->ReadPcfFile( "OUT/test_4.pcf" );
 
         puts( "Writing test_5.pts" );
         Cloud->WritePtsFile( "OUT/test_5.pts" );
@@ -136,7 +136,21 @@ int main(
         Cloud->WritePtxFile( "OUT/test_5.ptx" );
 
         puts( "Writing test_5.pcf" );
-        Cloud->WritePcfFile( "OUT/test_3.pcf" );
+        Cloud->WritePcfFile( "OUT/test_5.pcf" );
+
+        Cloud = new CLOUD();
+
+        puts( "Reading OUT/test_1.pts" );
+        Cloud->ReadPtsFile( "OUT/test_1.pts", COMPRESSION::Discretization, 8, 0.1 );
+
+        puts( "Writing test_6.pts" );
+        Cloud->WritePtsFile( "OUT/test_6.pts" );
+
+        puts( "Writing test_6.ptx" );
+        Cloud->WritePtxFile( "OUT/test_6.ptx" );
+
+        puts( "Writing test_6.pcf" );
+        Cloud->WritePcfFile( "OUT/test_6.pcf" );
     }
     catch ( const exception & exception_ )
     {

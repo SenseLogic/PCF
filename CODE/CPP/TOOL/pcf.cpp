@@ -47,6 +47,8 @@ int main(
                  && option_argument_count == 3
                  && HasSuffix( argument_array[ 0 ], ".pts" ) )
             {
+                cout << "Reading PTS file : " << argument_array[ 0 ] << "\n";
+
                 Cloud = new CLOUD();
                 Cloud->ReadPtsFile(
                     argument_array[ 0 ],
@@ -59,6 +61,8 @@ int main(
                       && option_argument_count == 3
                       && HasSuffix( argument_array[ 0 ], ".ptx" ) )
             {
+                cout << "Reading PTX file : " << argument_array[ 0 ] << "\n";
+
                 Cloud = new CLOUD();
                 Cloud->ReadPtxFile(
                     argument_array[ 0 ],
@@ -71,6 +75,8 @@ int main(
                       && option_argument_count == 1
                       && HasSuffix( argument_array[ 0 ], ".pcf" ) )
             {
+                cout << "Reading PCF file : " << argument_array[ 0 ] << "\n";
+
                 Cloud = new CLOUD();
                 Cloud->ReadPcfFile( argument_array[ 0 ] );
             }
@@ -85,6 +91,8 @@ int main(
                       && HasSuffix( argument_array[ 0 ], ".pts" )
                       && !Cloud.IsNull() )
             {
+                cout << "Writing PTS file : " << argument_array[ 0 ] << "\n";
+
                 Cloud->WritePtsFile( argument_array[ 0 ] );
             }
             else if ( option == "--write-ptx"
@@ -92,6 +100,8 @@ int main(
                       && HasSuffix( argument_array[ 0 ], ".ptx" )
                       && !Cloud.IsNull() )
             {
+                cout << "Writing PTX file : " << argument_array[ 0 ] << "\n";
+
                 Cloud->WritePtxFile( argument_array[ 0 ] );
             }
             else if ( option == "--write-pcf"
@@ -99,6 +109,8 @@ int main(
                       && HasSuffix( argument_array[ 0 ], ".pcf" )
                       && !Cloud.IsNull() )
             {
+                cout << "Writing PCF file : " << argument_array[ 0 ] << "\n";
+
                 Cloud->WritePcfFile( argument_array[ 0 ] );
             }
             else

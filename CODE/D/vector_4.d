@@ -28,6 +28,7 @@ struct VECTOR_4
         stream.WriteReal64( X );
         stream.WriteReal64( Y );
         stream.WriteReal64( Z );
+        stream.WriteReal64( W );
     }
 
     // -- OPERATIONS
@@ -39,6 +40,7 @@ struct VECTOR_4
         stream.ReadReal64( X );
         stream.ReadReal64( Y );
         stream.ReadReal64( Z );
+        stream.ReadReal64( W );
     }
 
     // ~~

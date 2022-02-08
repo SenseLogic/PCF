@@ -117,8 +117,8 @@ void main(
 
     Cloud = new CLOUD();
 
-    writeln( "Reading OUT/test_1.pts" );
-    Cloud.ReadPtsFile( "OUT/test_1.pts", COMPRESSION.Discretization, 8, 0.1 );
+    writeln( "Reading test_4.pcf" );
+    Cloud.ReadPcfFile( "OUT/test_4.pcf" );
 
     writeln( "Writing test_5.pts" );
     Cloud.WritePtsFile( "OUT/test_5.pts" );
@@ -127,5 +127,19 @@ void main(
     Cloud.WritePtxFile( "OUT/test_5.ptx" );
 
     writeln( "Writing test_5.pcf" );
-    Cloud.WritePcfFile( "OUT/test_3.pcf" );
+    Cloud.WritePcfFile( "OUT/test_5.pcf" );
+
+    Cloud = new CLOUD();
+
+    writeln( "Reading OUT/test_1.pts" );
+    Cloud.ReadPtsFile( "OUT/test_1.pts", COMPRESSION.Discretization, 8, 0.1 );
+
+    writeln( "Writing test_6.pts" );
+    Cloud.WritePtsFile( "OUT/test_6.pts" );
+
+    writeln( "Writing test_6.ptx" );
+    Cloud.WritePtxFile( "OUT/test_6.ptx" );
+
+    writeln( "Writing test_6.pcf" );
+    Cloud.WritePcfFile( "OUT/test_6.pcf" );
 }

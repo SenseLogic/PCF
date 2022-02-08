@@ -45,6 +45,8 @@ void main(
              && argument_count == 3
              && argument_array[ 0 ].endsWith( ".pts" ) )
         {
+            writeln( "Reading PTS file : ", argument_array[ 0 ] );
+
             Cloud = new CLOUD();
             Cloud.ReadPtsFile(
                 argument_array[ 0 ],
@@ -57,6 +59,8 @@ void main(
                   && argument_count == 3
                   && argument_array[ 0 ].endsWith( ".ptx" ) )
         {
+            writeln( "Reading PTX file : ", argument_array[ 0 ] );
+
             Cloud = new CLOUD();
             Cloud.ReadPtxFile(
                 argument_array[ 0 ],
@@ -69,6 +73,8 @@ void main(
                   && argument_count == 1
                   && argument_array[ 0 ].endsWith( ".pcf" ) )
         {
+            writeln( "Reading PCF file : ", argument_array[ 0 ] );
+
             Cloud = new CLOUD();
             Cloud.ReadPcfFile( argument_array[ 0 ] );
         }
@@ -83,6 +89,8 @@ void main(
                   && argument_array[ 0 ].endsWith( ".pts" )
                   && Cloud !is null )
         {
+            writeln( "Writing PTS file : ", argument_array[ 0 ] );
+
             Cloud.WritePtsFile( argument_array[ 0 ] );
         }
         else if ( option == "--write-ptx"
@@ -90,6 +98,8 @@ void main(
                   && argument_array[ 0 ].endsWith( ".ptx" )
                   && Cloud !is null )
         {
+            writeln( "Writing PTX file : ", argument_array[ 0 ] );
+
             Cloud.WritePtxFile( argument_array[ 0 ] );
         }
         else if ( option == "--write-pcf"
@@ -97,6 +107,8 @@ void main(
                   && argument_array[ 0 ].endsWith( ".pcf" )
                   && Cloud !is null )
         {
+            writeln( "Writing PCF file : ", argument_array[ 0 ] );
+
             Cloud.WritePcfFile( argument_array[ 0 ] );
         }
         else
