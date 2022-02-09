@@ -121,18 +121,16 @@ class CLOUD
         {
             foreach ( cell; scan.CellMap.byValue )
             {
-                cell.SetComponentIndex( 0 );
-
                 foreach ( point_index; 0 .. cell.PointCount )
                 {
                     stream.WriteRealLine(
-                        cell.GetComponentValue( scan.ComponentArray, 0 ),
-                        cell.GetComponentValue( scan.ComponentArray, 1 ),
-                        cell.GetComponentValue( scan.ComponentArray, 2 ),
-                        cell.GetComponentValue( scan.ComponentArray, 3 ),
-                        cell.GetComponentValue( scan.ComponentArray, 4 ),
-                        cell.GetComponentValue( scan.ComponentArray, 5 ),
-                        cell.GetComponentValue( scan.ComponentArray, 6 )
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 0 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 1 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 2 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 3 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 4 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 5 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 6 )
                         );
                 }
             }
@@ -168,18 +166,16 @@ class CLOUD
 
             foreach ( cell; scan.CellMap.byValue )
             {
-                cell.SetComponentIndex( 0 );
-
                 foreach ( point_index; 0 .. cell.PointCount )
                 {
                     stream.WriteRealLine(
-                        cell.GetComponentValue( scan.ComponentArray, 0 ),
-                        cell.GetComponentValue( scan.ComponentArray, 1 ),
-                        cell.GetComponentValue( scan.ComponentArray, 2 ),
-                        cell.GetComponentValue( scan.ComponentArray, 3 ),
-                        cell.GetComponentValue( scan.ComponentArray, 4 ),
-                        cell.GetComponentValue( scan.ComponentArray, 5 ),
-                        cell.GetComponentValue( scan.ComponentArray, 6 )
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 0 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 1 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 2 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 3 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 4 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 5 ),
+                        cell.GetComponentValue( point_index, scan.ComponentArray, 6 )
                         );
                 }
             }

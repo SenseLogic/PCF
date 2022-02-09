@@ -33,15 +33,13 @@ void PrintCell(
 {
     writeln( "Cell : ", GetText( cell.PositionVector ), " (", cell.PointCount, ")" );
 
-    cell.SetComponentIndex( 0 );
-
     foreach ( point_index; 0 .. cell.PointCount )
     {
         write( "    [", point_index, "]" );
 
         foreach ( buffer_index; 0 .. cell.BufferArray.length )
         {
-            write( " ", cell.GetComponentValue( Scan.ComponentArray, buffer_index ).GetText() );
+            write( " ", cell.GetComponentValue( point_index, Scan.ComponentArray, buffer_index ).GetText() );
         }
 
         writeln();

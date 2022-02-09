@@ -27,8 +27,6 @@ namespace pcf
             BitCount;
         VECTOR_<uint8_t>
             ByteVector;
-        uint64_t
-            ReadBitIndex;
 
         // -- CONSTRUCTORS
 
@@ -38,8 +36,7 @@ namespace pcf
             BaseValue( 0 ),
             ComponentBitCount( 0 ),
             BitCount( 0 ),
-            ByteVector(),
-            ReadBitIndex( 0 )
+            ByteVector()
         {
         }
 
@@ -52,8 +49,7 @@ namespace pcf
             BaseValue( buffer.BaseValue ),
             ComponentBitCount( buffer.ComponentBitCount ),
             BitCount( buffer.BitCount ),
-            ByteVector( buffer.ByteVector ),
-            ReadBitIndex( buffer.ReadBitIndex )
+            ByteVector( buffer.ByteVector )
         {
         }
 
@@ -66,8 +62,7 @@ namespace pcf
             BaseValue( 0 ),
             ComponentBitCount( component.BitCount ),
             BitCount( 0 ),
-            ByteVector(),
-            ReadBitIndex( 0 )
+            ByteVector()
         {
         }
 
@@ -88,7 +83,6 @@ namespace pcf
             ComponentBitCount = buffer.ComponentBitCount;
             BitCount = buffer.BitCount;
             ByteVector = buffer.ByteVector;
-            ReadBitIndex = buffer.ReadBitIndex;
 
             return *this;
         }
@@ -126,17 +120,6 @@ namespace pcf
             stream.ReadNatural16( ComponentBitCount );
             stream.ReadNatural64( BitCount );
             stream.ReadScalarVector( ByteVector );
-
-            ReadBitIndex = 0;
-        }
-
-        // ~~
-
-        void SetComponentIndex(
-            uint64_t component_index
-            )
-        {
-            ReadBitIndex = component_index * BitCount;
         }
 
         // ~~
@@ -223,6 +206,7 @@ namespace pcf
         // ~~
 
         double GetComponentValue(
+            uint64_t point_index,
             COMPONENT & component,
             int64_t component_offset
             )
@@ -242,7 +226,7 @@ namespace pcf
 
             if ( component.Compression == COMPRESSION::None )
             {
-                byte_index = ReadBitIndex >> 3;
+                byte_index = ( point_index * ComponentBitCount ) >> 3;
 
                 if ( ComponentBitCount == 32 )
                 {
@@ -279,7 +263,7 @@ namespace pcf
                       component_bit_index < ComponentBitCount;
                       ++component_bit_index )
                 {
-                    bit_index = ReadBitIndex + component_bit_index;
+                    bit_index = ( point_index * ComponentBitCount ) + component_bit_index;
                     byte_index = bit_index >> 3;
                     byte_bit_index = bit_index & 7;
 
@@ -292,8 +276,6 @@ namespace pcf
                 natural_value += BaseValue;
                 component_value = component.GetRealValue( ( int64_t )natural_value + ( component_offset << component.BitCount ) );
             }
-
-            ReadBitIndex += ComponentBitCount;
 
             return component_value;
         }

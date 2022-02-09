@@ -100,8 +100,6 @@ class CELL
             buffer.Dump( indentation ~ "    " );
         }
 
-        SetComponentIndex( 0 );
-
         foreach ( point_index; 0 .. PointCount )
         {
             write( indentation, "Point[", point_index, "] :" );
@@ -110,6 +108,7 @@ class CELL
             {
                 component_value
                     = buffer.GetComponentValue(
+                          point_index,
                           component_array[ component_index ],
                           GetComponentOffset( component_array, component_index )
                           );
@@ -193,18 +192,6 @@ class CELL
 
     // ~~
 
-    void SetComponentIndex(
-        ulong component_index
-        )
-    {
-        foreach ( buffer; BufferArray )
-        {
-            buffer.SetComponentIndex( component_index );
-        }
-    }
-
-    // ~~
-
     void AddComponentValue(
         COMPONENT[] component_array,
         ulong component_index,
@@ -221,12 +208,14 @@ class CELL
     // ~~
 
     double GetComponentValue(
+        ulong point_index,
         COMPONENT[] component_array,
         ulong component_index
         )
     {
         return
             BufferArray[ component_index ].GetComponentValue(
+                point_index,
                 component_array[ component_index ],
                 GetComponentOffset( component_array, component_index )
                 );

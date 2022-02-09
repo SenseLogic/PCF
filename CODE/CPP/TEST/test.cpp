@@ -35,8 +35,6 @@ void PrintCell(
 
     cout << "Cell : " << GetText( cell.PositionVector ) << " (" << cell.PointCount << ")\n";
 
-    cell.SetComponentIndex( 0 );
-
     for ( point_index = 0;
           point_index < cell.PointCount;
           ++point_index )
@@ -47,7 +45,7 @@ void PrintCell(
               buffer_index < cell.BufferVector.size();
               ++buffer_index )
         {
-            cout << " " << GetText( cell.GetComponentValue( Scan->ComponentVector, buffer_index ) );
+            cout << " " << GetText( cell.GetComponentValue( point_index, Scan->ComponentVector, buffer_index ) );
         }
 
         cout << "\n";

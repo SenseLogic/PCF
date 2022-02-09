@@ -23,8 +23,6 @@ class BUFFER
         BitCount;
     ubyte[]
         ByteArray;
-    ulong
-        ReadBitIndex;
 
     // -- CONSTRUCTORS
 
@@ -75,17 +73,6 @@ class BUFFER
         stream.ReadNatural16( ComponentBitCount );
         stream.ReadNatural64( BitCount );
         stream.ReadScalarArray( ByteArray );
-
-        ReadBitIndex = 0;
-    }
-
-    // ~~
-
-    void SetComponentIndex(
-        ulong component_index
-        )
-    {
-        ReadBitIndex = component_index * BitCount;
     }
 
     // ~~
@@ -164,6 +151,7 @@ class BUFFER
     // ~~
 
     double GetComponentValue(
+        ulong point_index,
         COMPONENT component,
         long component_offset
         )
@@ -181,7 +169,7 @@ class BUFFER
 
         if ( component.Compression == COMPRESSION.None )
         {
-            byte_index = ReadBitIndex >> 3;
+            byte_index = ( point_index * ComponentBitCount ) >> 3;
 
             if ( ComponentBitCount == 32 )
             {
@@ -212,7 +200,7 @@ class BUFFER
 
             foreach ( component_bit_index; 0 .. ComponentBitCount )
             {
-                bit_index = ReadBitIndex + component_bit_index;
+                bit_index = point_index * ComponentBitCount + component_bit_index;
                 byte_index = bit_index >> 3;
                 byte_bit_index = bit_index & 7;
 
@@ -225,8 +213,6 @@ class BUFFER
             natural_value += BaseValue;
             component_value = component.GetRealValue( natural_value.to!long() + ( component_offset << component.BitCount ) );
         }
-
-        ReadBitIndex += ComponentBitCount;
 
         return component_value;
     }

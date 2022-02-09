@@ -188,20 +188,18 @@ namespace pcf
                     LINK_<CELL>
                         & cell = cell_entry.second;
 
-                    cell->SetComponentIndex( 0 );
-
                     for ( point_index = 0;
                           point_index < cell->PointCount;
                           ++point_index )
                     {
                         stream.WriteRealLine(
-                            cell->GetComponentValue( scan->ComponentVector, 0 ),
-                            cell->GetComponentValue( scan->ComponentVector, 1 ),
-                            cell->GetComponentValue( scan->ComponentVector, 2 ),
-                            cell->GetComponentValue( scan->ComponentVector, 3 ),
-                            cell->GetComponentValue( scan->ComponentVector, 4 ),
-                            cell->GetComponentValue( scan->ComponentVector, 5 ),
-                            cell->GetComponentValue( scan->ComponentVector, 6 )
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 0 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 1 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 2 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 3 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 4 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 5 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 6 )
                             );
                     }
                 }
@@ -241,20 +239,18 @@ namespace pcf
                     LINK_<CELL>
                         & cell = cell_entry.second;
 
-                    cell->SetComponentIndex( 0 );
-
                     for ( point_index = 0;
                           point_index < cell->PointCount;
                           ++point_index )
                     {
                         stream.WriteRealLine(
-                            cell->GetComponentValue( scan->ComponentVector, 0 ),
-                            cell->GetComponentValue( scan->ComponentVector, 1 ),
-                            cell->GetComponentValue( scan->ComponentVector, 2 ),
-                            cell->GetComponentValue( scan->ComponentVector, 3 ),
-                            cell->GetComponentValue( scan->ComponentVector, 4 ),
-                            cell->GetComponentValue( scan->ComponentVector, 5 ),
-                            cell->GetComponentValue( scan->ComponentVector, 6 )
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 0 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 1 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 2 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 3 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 4 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 5 ),
+                            cell->GetComponentValue( point_index, scan->ComponentVector, 6 )
                             );
                     }
                 }

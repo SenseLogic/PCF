@@ -171,6 +171,30 @@ namespace pcf
 
         // ~~
 
+        void SetZUpCartesianVector(
+            double radius,
+            double azimuth_angle,
+            double elevation_angle
+            )
+        {
+            double
+                azimuth_angle_cosinus,
+                azimuth_angle_sinus,
+                elevation_angle_cosinus,
+                elevation_angle_sinus;
+
+            azimuth_angle_cosinus = cos( azimuth_angle );
+            azimuth_angle_sinus = sin( azimuth_angle );
+            elevation_angle_cosinus = cos( elevation_angle );
+            elevation_angle_sinus = sin( elevation_angle );
+
+            X = radius * azimuth_angle_cosinus * elevation_angle_sinus;
+            Y = radius * azimuth_angle_sinus * elevation_angle_sinus;
+            Z = radius * elevation_angle_cosinus;
+        }
+
+        // ~~
+
         void AddVector(
             const VECTOR_3 & vector
             )

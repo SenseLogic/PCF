@@ -148,8 +148,6 @@ namespace pcf
                 BufferVector[ buffer_index ]->Dump( indentation + "    " );
             }
 
-            SetComponentIndex( 0 );
-
             for ( point_index = 0;
                   point_index < PointCount;
                   ++point_index )
@@ -162,6 +160,7 @@ namespace pcf
                 {
                     component_value
                         = BufferVector[ component_index ]->GetComponentValue(
+                              point_index,
                               *component_vector[ component_index ],
                               GetComponentOffset( component_vector, component_index )
                               );
@@ -225,18 +224,6 @@ namespace pcf
 
         // ~~
 
-        void SetComponentIndex(
-            uint64_t component_index
-            )
-        {
-            for ( auto & buffer : BufferVector )
-            {
-                buffer->SetComponentIndex( component_index );
-            }
-        }
-
-        // ~~
-
         void AddComponentValue(
             const VECTOR_<LINK_<COMPONENT>> & component_vector,
             uint64_t component_index,
@@ -253,12 +240,14 @@ namespace pcf
         // ~~
 
         double GetComponentValue(
+            uint64_t point_index,
             const VECTOR_<LINK_<COMPONENT>> & component_vector,
             uint64_t component_index
             )
         {
             return
                 BufferVector[ component_index ]->GetComponentValue(
+                    point_index,
                     *component_vector[ component_index ],
                     GetComponentOffset( component_vector, component_index )
                     );
