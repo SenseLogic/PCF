@@ -6,8 +6,8 @@ Point cloud file format.
 
 ## Goals
 
-* Simplicity : uses simple data structures and a straightforward serialization format.
-* Performance : uses a binary format to be able to quickly read and write huge point clouds.
+* Simplicity : uses simple data structures with direct access to the point components.
+* Performance : can quickly read and write huge point clouds in plain binary format.
 * Compactness : minimizes the number of bits per component through spatial clustering.
 * Versatility : stores multiple scans with any number of components, properties and images.
 * Portability : implemented in both C++ and D, without using any external dependencies.
