@@ -24,8 +24,8 @@ class CLOUD
     string
         Name;
     bool
-        IsLeftHanded,
-        IsZUp;
+        XIsRight,
+        ZIsUp;
     PROPERTY[]
         PropertyArray;
     SCAN[]
@@ -57,8 +57,8 @@ class CLOUD
     {
         writeln( indentation, "Version : ", Version );
         writeln( indentation, "Name : ", Name );
-        writeln( indentation, "IsLeftHanded : ", IsLeftHanded );
-        writeln( indentation, "IsZUp : ", IsZUp );
+        writeln( indentation, "XIsRight : ", XIsRight );
+        writeln( indentation, "ZIsUp : ", ZIsUp );
 
         foreach ( property_index, property; PropertyArray )
         {
@@ -83,8 +83,8 @@ class CLOUD
     {
         stream.WriteNatural32( Version );
         stream.WriteText( Name );
-        stream.WriteBoolean( IsLeftHanded );
-        stream.WriteBoolean( IsZUp );
+        stream.WriteBoolean( XIsRight );
+        stream.WriteBoolean( ZIsUp );
         stream.WriteObjectArray( PropertyArray );
         stream.WriteObjectArray( ScanArray );
     }
@@ -201,8 +201,8 @@ class CLOUD
     {
         stream.ReadNatural32( Version );
         stream.ReadText( Name );
-        stream.ReadBoolean( IsLeftHanded );
-        stream.ReadBoolean( IsZUp );
+        stream.ReadBoolean( XIsRight );
+        stream.ReadBoolean( ZIsUp );
         stream.ReadObjectArray( PropertyArray );
         stream.ReadObjectArray( ScanArray );
     }

@@ -171,10 +171,41 @@ namespace pcf
 
         // ~~
 
-        void SetZUpCartesianVector(
-            double radius,
+        void SetFromCylindricalPosition(
+            double distance,
             double azimuth_angle,
-            double elevation_angle
+            double elevation,
+            bool z_is_up
+            )
+        {
+            double
+                azimuth_angle_cosinus,
+                azimuth_angle_sinus;
+
+            azimuth_angle_cosinus = cos( azimuth_angle );
+            azimuth_angle_sinus = sin( azimuth_angle );
+
+            if ( z_is_up )
+            {
+                X = distance * azimuth_angle_cosinus;
+                Y = distance * azimuth_angle_sinus;
+                Z = distance * elevation;
+            }
+            else
+            {
+                X = distance * azimuth_angle_cosinus;
+                Y = distance * elevation;
+                Z = distance * azimuth_angle_sinus;
+            }
+        }
+
+        // ~~
+
+        void SetFromSphericalPosition(
+            double distance,
+            double azimuth_angle,
+            double elevation_angle,
+            bool z_is_up
             )
         {
             double
@@ -188,9 +219,18 @@ namespace pcf
             elevation_angle_cosinus = cos( elevation_angle );
             elevation_angle_sinus = sin( elevation_angle );
 
-            X = radius * azimuth_angle_cosinus * elevation_angle_sinus;
-            Y = radius * azimuth_angle_sinus * elevation_angle_sinus;
-            Z = radius * elevation_angle_cosinus;
+            if ( z_is_up )
+            {
+                X = distance * elevation_angle_cosinus * azimuth_angle_cosinus;
+                Y = distance * elevation_angle_cosinus * azimuth_angle_sinus;
+                Z = distance * elevation_angle_sinus;
+            }
+            else
+            {
+                X = distance * elevation_angle_cosinus * azimuth_angle_cosinus;
+                Y = distance * elevation_angle_sinus;
+                Z = distance * elevation_angle_cosinus * azimuth_angle_sinus;
+            }
         }
 
         // ~~
@@ -327,6 +367,35 @@ namespace pcf
             RotateAroundY(
                 rotation_cosinus_vector.Y,
                 rotation_sinus_vector.Y
+                );
+
+            Translate(
+                translation_vector.X,
+                translation_vector.Y,
+                translation_vector.Z
+                );
+        }
+
+        // ~~
+
+        void Transform(
+            const VECTOR_3 & translation_vector,
+            const VECTOR_3 & rotated_x_axis_vector,
+            const VECTOR_3 & rotated_y_axis_vector,
+            const VECTOR_3 & rotated_z_axis_vector,
+            const VECTOR_3 & scaling_vector
+            )
+        {
+            Scale(
+                scaling_vector.X,
+                scaling_vector.Y,
+                scaling_vector.Z
+                );
+
+            SetVector(
+                X * rotated_x_axis_vector.X + Y * rotated_y_axis_vector.X + Z * rotated_z_axis_vector.X,
+                X * rotated_x_axis_vector.Y + Y * rotated_y_axis_vector.Y + Z * rotated_z_axis_vector.Y,
+                X * rotated_x_axis_vector.Z + Y * rotated_y_axis_vector.Z + Z * rotated_z_axis_vector.Z
                 );
 
             Translate(

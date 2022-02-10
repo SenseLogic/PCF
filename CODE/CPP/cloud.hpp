@@ -28,8 +28,8 @@ namespace pcf
         string
             Name;
         bool
-            IsLeftHanded,
-            IsZUp;
+            XIsRight,
+            ZIsUp;
         VECTOR_<LINK_<PROPERTY>>
             PropertyVector;
         VECTOR_<LINK_<SCAN>>
@@ -42,8 +42,8 @@ namespace pcf
             OBJECT(),
             Version( 0 ),
             Name(),
-            IsLeftHanded( false ),
-            IsZUp( false ),
+            XIsRight( false ),
+            ZIsUp( false ),
             PropertyVector(),
             ScanVector()
         {
@@ -57,8 +57,8 @@ namespace pcf
             OBJECT( cloud ),
             Version( cloud.Version ),
             Name( cloud.Name ),
-            IsLeftHanded( cloud.IsLeftHanded ),
-            IsZUp( cloud.IsZUp ),
+            XIsRight( cloud.XIsRight ),
+            ZIsUp( cloud.ZIsUp ),
             PropertyVector( cloud.PropertyVector ),
             ScanVector( cloud.ScanVector )
         {
@@ -79,8 +79,8 @@ namespace pcf
         {
             Version = cloud.Version;
             Name = cloud.Name;
-            IsLeftHanded = cloud.IsLeftHanded;
-            IsZUp = cloud.IsZUp;
+            XIsRight = cloud.XIsRight;
+            ZIsUp = cloud.ZIsUp;
             PropertyVector = cloud.PropertyVector;
             ScanVector = cloud.ScanVector;
 
@@ -117,8 +117,8 @@ namespace pcf
 
             cout << indentation << "Version : " << Version << "\n";
             cout << indentation << "Name : " << Name << "\n";
-            cout << indentation << "IsLeftHanded : " << GetText( IsLeftHanded ) << "\n";
-            cout << indentation << "IsZUp : " << GetText( IsZUp ) << "\n";
+            cout << indentation << "XIsRight : " << GetText( XIsRight ) << "\n";
+            cout << indentation << "ZIsUp : " << GetText( ZIsUp ) << "\n";
 
             for ( property_index = 0;
                   property_index < PropertyVector.size();
@@ -147,8 +147,8 @@ namespace pcf
         {
             stream.WriteNatural32( Version );
             stream.WriteText( Name );
-            stream.WriteBoolean( IsLeftHanded );
-            stream.WriteBoolean( IsZUp );
+            stream.WriteBoolean( XIsRight );
+            stream.WriteBoolean( ZIsUp );
             stream.WriteObjectVector( PropertyVector );
             stream.WriteObjectVector( ScanVector );
         }
@@ -276,8 +276,8 @@ namespace pcf
         {
             stream.ReadNatural32( Version );
             stream.ReadText( Name );
-            stream.ReadBoolean( IsLeftHanded );
-            stream.ReadBoolean( IsZUp );
+            stream.ReadBoolean( XIsRight );
+            stream.ReadBoolean( ZIsUp );
             stream.ReadObjectVector( PropertyVector );
             stream.ReadObjectVector( ScanVector );
         }
