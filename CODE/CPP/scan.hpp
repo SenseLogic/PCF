@@ -216,6 +216,28 @@ namespace pcf
             }
         }
 
+        // ~~
+
+        uint64_t GetComponentIndex(
+            string component_name
+            )
+        {
+            uint64_t
+                component_index;
+
+            for ( component_index = 0;
+                  component_index < ComponentVector.size();
+                  ++component_index )
+            {
+                if ( ComponentVector[ component_index ]->Name == component_name )
+                {
+                    return component_index;
+                }
+            }
+
+            return -1;
+        }
+
         // -- OPERATIONS
 
         void Clear(

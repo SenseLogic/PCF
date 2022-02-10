@@ -150,6 +150,23 @@ class SCAN
         }
     }
 
+    // ~~
+
+    ulong GetComponentIndex(
+        string component_name
+        )
+    {
+        foreach ( component_index, component; ComponentArray )
+        {
+            if ( component.Name == component_name )
+            {
+                return component_index;
+            }
+        }
+
+        return -1;
+    }
+
     // -- OPERATIONS
 
     void Clear(
