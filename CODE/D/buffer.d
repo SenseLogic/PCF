@@ -42,17 +42,6 @@ class BUFFER
 
     // -- INQUIRIES
 
-    void Dump(
-        string indentation = ""
-        )
-    {
-        writeln( indentation, "BaseValue : ", BaseValue );
-        writeln( indentation, "ComponentBitCount : ", ComponentBitCount );
-        writeln( indentation, "BitCount : ", BitCount );
-    }
-
-    // ~~
-
     void Write(
         STREAM stream
         )
@@ -63,19 +52,18 @@ class BUFFER
         stream.WriteScalarArray( ByteArray );
     }
 
-    // -- OPERATIONS
+    // ~~
 
-    void Read(
-        STREAM stream
+    void Dump(
+        string indentation = ""
         )
     {
-        stream.ReadNatural64( BaseValue );
-        stream.ReadNatural16( ComponentBitCount );
-        stream.ReadNatural64( BitCount );
-        stream.ReadScalarArray( ByteArray );
+        writeln( indentation, "BaseValue : ", BaseValue );
+        writeln( indentation, "ComponentBitCount : ", ComponentBitCount );
+        writeln( indentation, "BitCount : ", BitCount );
     }
 
-    // ~~
+    // -- OPERATIONS
 
     void AddComponentValue(
         COMPONENT component,
@@ -215,5 +203,17 @@ class BUFFER
         }
 
         return component_value;
+    }
+
+    // ~~
+
+    void Read(
+        STREAM stream
+        )
+    {
+        stream.ReadNatural64( BaseValue );
+        stream.ReadNatural16( ComponentBitCount );
+        stream.ReadNatural64( BitCount );
+        stream.ReadScalarArray( ByteArray );
     }
 }

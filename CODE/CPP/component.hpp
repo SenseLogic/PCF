@@ -112,18 +112,20 @@ namespace pcf
 
         // -- INQUIRIES
 
-        void Dump(
-            string indentation = ""
+        int64_t GetIntegerValue(
+            double component_value
             ) const
         {
-            cout << indentation << "Name : " << Name << "\n";
-            cout << indentation << "Compression : " << ( uint16_t )Compression << "\n";
-            cout << indentation << "BitCount : " << BitCount << "\n";
-            cout << indentation << "Precision : " << Precision << "\n";
-            cout << indentation << "BaseValue : " << BaseValue << "\n";
-            cout << indentation << "MinimumValue : " << MinimumValue << "\n";
-            cout << indentation << "MaximumValue : " << MaximumValue << "\n";
-            cout << indentation << "OneOverPrecision : " << OneOverPrecision << "\n";
+            return ( int64_t )floor( ( component_value - BaseValue ) * OneOverPrecision );
+        }
+
+        // ~~
+
+        double GetRealValue(
+            int64_t integer_value
+            ) const
+        {
+            return BaseValue + ( double )integer_value * Precision;
         }
 
         // ~~
@@ -144,20 +146,18 @@ namespace pcf
 
         // ~~
 
-        int64_t GetIntegerValue(
-            double component_value
+        void Dump(
+            string indentation = ""
             ) const
         {
-            return ( int64_t )floor( ( component_value - BaseValue ) * OneOverPrecision );
-        }
-
-        // ~~
-
-        double GetRealValue(
-            int64_t integer_value
-            ) const
-        {
-            return BaseValue + ( double )integer_value * Precision;
+            cout << indentation << "Name : " << Name << "\n";
+            cout << indentation << "Compression : " << ( uint16_t )Compression << "\n";
+            cout << indentation << "BitCount : " << BitCount << "\n";
+            cout << indentation << "Precision : " << Precision << "\n";
+            cout << indentation << "BaseValue : " << BaseValue << "\n";
+            cout << indentation << "MinimumValue : " << MinimumValue << "\n";
+            cout << indentation << "MaximumValue : " << MaximumValue << "\n";
+            cout << indentation << "OneOverPrecision : " << OneOverPrecision << "\n";
         }
 
         // -- OPERATIONS

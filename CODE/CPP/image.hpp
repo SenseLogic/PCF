@@ -78,6 +78,19 @@ namespace pcf
 
         // -- INQUIRIES
 
+        void Write(
+            STREAM & stream
+            )
+        {
+            stream.WriteText( Name );
+            stream.WriteText( Role );
+            stream.WriteText( Format );
+            stream.WriteObjectVector( PropertyVector );
+            stream.WriteScalarVector( ByteVector );
+        }
+
+        // ~~
+
         void Dump(
             string indentation = ""
             ) const
@@ -97,19 +110,6 @@ namespace pcf
 
                 PropertyVector[ property_index ]->Dump( indentation + "    " );
             }
-        }
-
-        // ~~
-
-        void Write(
-            STREAM & stream
-            )
-        {
-            stream.WriteText( Name );
-            stream.WriteText( Role );
-            stream.WriteText( Format );
-            stream.WriteObjectVector( PropertyVector );
-            stream.WriteScalarVector( ByteVector );
         }
 
         // -- OPERATIONS

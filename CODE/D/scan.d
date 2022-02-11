@@ -66,47 +66,33 @@ class SCAN
 
     // -- INQUIRIES
 
-    void Dump(
-        string indentation = ""
+    long GetComponentIndex(
+        string component_name
         )
     {
-        writeln( indentation, "Name : ", Name );
-        writeln( indentation, "ColumnCount : ", ColumnCount );
-        writeln( indentation, "RowCount : ", RowCount );
-        writeln( indentation, "PointCount : ", PointCount );
-        writeln( indentation, "PositionVector : ", GetText( PositionVector ) );
-        writeln( indentation, "RotationVector : ", GetText( RotationVector ) );
-        writeln( indentation, "XAxisVector : ", GetText( XAxisVector ) );
-        writeln( indentation, "YAxisVector : ", GetText( YAxisVector ) );
-        writeln( indentation, "ZAxisVector : ", GetText( ZAxisVector ) );
-
         foreach ( component_index, component; ComponentArray )
         {
-            writeln( indentation, "Component[", component_index, "] :" );
-
-            component.Dump( indentation ~ "    " );
+            if ( component.Name == component_name )
+            {
+                return component_index;
+            }
         }
 
-        foreach ( property_index, property; PropertyArray )
-        {
-            writeln( indentation, "Property[", property_index, "] :" );
+        return -1;
+    }
 
-            property.Dump( indentation ~ "    " );
-        }
+    // ~~
 
-        foreach ( image_index, image; ImageArray )
-        {
-            writeln( indentation, "Image[", image_index, "] :" );
-
-            image.Dump( indentation ~ "    " );
-        }
-
-        foreach ( cell_position_vector, cell; CellMap )
-        {
-            writeln( indentation, "Cell[", GetText( cell_position_vector ), "] :" );
-
-            cell.Dump( ComponentArray, indentation ~ "    " );
-        }
+    void TransformPositionVector(
+        ref VECTOR_3 position_vector
+        )
+    {
+        position_vector.ApplyTranslationRotationScalingTransform(
+            PositionVector,
+            XAxisVector,
+            YAxisVector,
+            ZAxisVector
+            );
     }
 
     // ~~
@@ -152,19 +138,47 @@ class SCAN
 
     // ~~
 
-    ulong GetComponentIndex(
-        string component_name
+    void Dump(
+        string indentation = ""
         )
     {
+        writeln( indentation, "Name : ", Name );
+        writeln( indentation, "ColumnCount : ", ColumnCount );
+        writeln( indentation, "RowCount : ", RowCount );
+        writeln( indentation, "PointCount : ", PointCount );
+        writeln( indentation, "PositionVector : ", GetText( PositionVector ) );
+        writeln( indentation, "RotationVector : ", GetText( RotationVector ) );
+        writeln( indentation, "XAxisVector : ", GetText( XAxisVector ) );
+        writeln( indentation, "YAxisVector : ", GetText( YAxisVector ) );
+        writeln( indentation, "ZAxisVector : ", GetText( ZAxisVector ) );
+
         foreach ( component_index, component; ComponentArray )
         {
-            if ( component.Name == component_name )
-            {
-                return component_index;
-            }
+            writeln( indentation, "Component[", component_index, "] :" );
+
+            component.Dump( indentation ~ "    " );
         }
 
-        return -1;
+        foreach ( property_index, property; PropertyArray )
+        {
+            writeln( indentation, "Property[", property_index, "] :" );
+
+            property.Dump( indentation ~ "    " );
+        }
+
+        foreach ( image_index, image; ImageArray )
+        {
+            writeln( indentation, "Image[", image_index, "] :" );
+
+            image.Dump( indentation ~ "    " );
+        }
+
+        foreach ( cell_position_vector, cell; CellMap )
+        {
+            writeln( indentation, "Cell[", GetText( cell_position_vector ), "] :" );
+
+            cell.Dump( ComponentArray, indentation ~ "    " );
+        }
     }
 
     // -- OPERATIONS
@@ -176,47 +190,6 @@ class SCAN
         PropertyArray.destroy();
         ImageArray.destroy();
         CellMap.destroy();
-    }
-
-    // ~~
-
-    void Read(
-        STREAM stream
-        )
-    {
-        if ( PreReadFunction !is null )
-        {
-            PreReadFunction( this );
-        }
-
-        if ( PreReadDelegate !is null )
-        {
-            PreReadDelegate( this );
-        }
-
-        stream.ReadText( Name );
-        stream.ReadNatural64( ColumnCount );
-        stream.ReadNatural64( RowCount );
-        stream.ReadNatural64( PointCount );
-        stream.ReadValue( PositionVector );
-        stream.ReadValue( RotationVector );
-        stream.ReadValue( XAxisVector );
-        stream.ReadValue( YAxisVector );
-        stream.ReadValue( ZAxisVector );
-        stream.ReadObjectArray( ComponentArray );
-        stream.ReadObjectArray( PropertyArray );
-        stream.ReadObjectArray( ImageArray );
-        stream.ReadObjectByValueMap( CellMap );
-
-        if ( PostReadFunction !is null )
-        {
-            PostReadFunction( this );
-        }
-
-        if ( PostReadDelegate !is null )
-        {
-            PostReadDelegate( this );
-        }
     }
 
     // ~~
@@ -290,6 +263,47 @@ class SCAN
             CellMap[ cell_position_vector ] = cell;
 
             return cell;
+        }
+    }
+
+    // ~~
+
+    void Read(
+        STREAM stream
+        )
+    {
+        if ( PreReadFunction !is null )
+        {
+            PreReadFunction( this );
+        }
+
+        if ( PreReadDelegate !is null )
+        {
+            PreReadDelegate( this );
+        }
+
+        stream.ReadText( Name );
+        stream.ReadNatural64( ColumnCount );
+        stream.ReadNatural64( RowCount );
+        stream.ReadNatural64( PointCount );
+        stream.ReadValue( PositionVector );
+        stream.ReadValue( RotationVector );
+        stream.ReadValue( XAxisVector );
+        stream.ReadValue( YAxisVector );
+        stream.ReadValue( ZAxisVector );
+        stream.ReadObjectArray( ComponentArray );
+        stream.ReadObjectArray( PropertyArray );
+        stream.ReadObjectArray( ImageArray );
+        stream.ReadObjectByValueMap( CellMap );
+
+        if ( PostReadFunction !is null )
+        {
+            PostReadFunction( this );
+        }
+
+        if ( PostReadDelegate !is null )
+        {
+            PostReadDelegate( this );
         }
     }
 }

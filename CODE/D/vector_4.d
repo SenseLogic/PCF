@@ -33,18 +33,6 @@ struct VECTOR_4
 
     // -- OPERATIONS
 
-    void Read(
-        STREAM stream
-        )
-    {
-        stream.ReadReal64( X );
-        stream.ReadReal64( Y );
-        stream.ReadReal64( Z );
-        stream.ReadReal64( W );
-    }
-
-    // ~~
-
     void SetNull(
         )
     {
@@ -211,6 +199,18 @@ struct VECTOR_4
             Z = 0.25 * square_root;
             W = ( y_axis_vector.X - x_axis_vector.Y ) / square_root;
         }
+    }
+
+    // ~~
+
+    void Read(
+        STREAM stream
+        )
+    {
+        stream.ReadReal64( X );
+        stream.ReadReal64( Y );
+        stream.ReadReal64( Z );
+        stream.ReadReal64( W );
     }
 }
 

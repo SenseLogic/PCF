@@ -3,7 +3,7 @@ module pcf.vector_3;
 // -- IMPORTS
 
 import pcf.base : GetText;
-import std.math : cos, sin;
+import std.math : cos, sin, sqrt;
 import pcf.stream;
 
 // -- TYPES
@@ -19,6 +19,24 @@ struct VECTOR_3
 
     // -- INQUIRIES
 
+    double GetDistance(
+        ref VECTOR_3 position_vector
+        )
+    {
+        double
+            x_distance,
+            y_distance,
+            z_distance;
+
+        x_distance = position_vector.X - X;
+        y_distance = position_vector.Y - Y;
+        z_distance = position_vector.Z - Z;
+
+        return sqrt( x_distance * x_distance + y_distance * y_distance + z_distance * z_distance );
+    }
+
+    // ~~
+
     void Write(
         STREAM stream
         )
@@ -29,17 +47,6 @@ struct VECTOR_3
     }
 
     // -- OPERATIONS
-
-    void Read(
-        STREAM stream
-        )
-    {
-        stream.ReadReal64( X );
-        stream.ReadReal64( Y );
-        stream.ReadReal64( Z );
-    }
-
-    // ~~
 
     void SetNull(
         )
@@ -254,7 +261,7 @@ struct VECTOR_3
 
     // ~~
 
-    void Transform(
+    void ApplyTranslationRotationScalingTransform(
         ref VECTOR_3 translation_vector,
         ref VECTOR_3 rotation_cosinus_vector,
         ref VECTOR_3 rotation_sinus_vector,
@@ -291,7 +298,7 @@ struct VECTOR_3
 
     // ~~
 
-    void Transform(
+    void ApplyTranslationRotationScalingTransform(
         ref VECTOR_3 translation_vector,
         ref VECTOR_3 rotated_x_axis_vector,
         ref VECTOR_3 rotated_y_axis_vector,
@@ -316,6 +323,39 @@ struct VECTOR_3
             translation_vector.Y,
             translation_vector.Z
             );
+    }
+
+    // ~~
+
+    void ApplyTranslationRotationTransform(
+        ref VECTOR_3 translation_vector,
+        ref VECTOR_3 rotated_x_axis_vector,
+        ref VECTOR_3 rotated_y_axis_vector,
+        ref VECTOR_3 rotated_z_axis_vector
+        )
+    {
+        SetVector(
+            X * rotated_x_axis_vector.X + Y * rotated_y_axis_vector.X + Z * rotated_z_axis_vector.X,
+            X * rotated_x_axis_vector.Y + Y * rotated_y_axis_vector.Y + Z * rotated_z_axis_vector.Y,
+            X * rotated_x_axis_vector.Z + Y * rotated_y_axis_vector.Z + Z * rotated_z_axis_vector.Z
+            );
+
+        Translate(
+            translation_vector.X,
+            translation_vector.Y,
+            translation_vector.Z
+            );
+    }
+
+    // ~~
+
+    void Read(
+        STREAM stream
+        )
+    {
+        stream.ReadReal64( X );
+        stream.ReadReal64( Y );
+        stream.ReadReal64( Z );
     }
 }
 

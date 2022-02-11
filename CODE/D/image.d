@@ -23,6 +23,19 @@ class IMAGE
 
     // -- INQUIRIES
 
+    void Write(
+        STREAM stream
+        )
+    {
+        stream.WriteText( Name );
+        stream.WriteText( Role );
+        stream.WriteText( Format );
+        stream.WriteObjectArray( PropertyArray );
+        stream.WriteScalarArray( ByteArray );
+    }
+
+    // ~~
+
     void Dump(
         string indentation = ""
         )
@@ -37,19 +50,6 @@ class IMAGE
 
             property.Dump( indentation ~ "    " );
         }
-    }
-
-    // ~~
-
-    void Write(
-        STREAM stream
-        )
-    {
-        stream.WriteText( Name );
-        stream.WriteText( Role );
-        stream.WriteText( Format );
-        stream.WriteObjectArray( PropertyArray );
-        stream.WriteScalarArray( ByteArray );
     }
 
     // -- OPERATIONS

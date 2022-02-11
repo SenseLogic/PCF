@@ -124,6 +124,27 @@ namespace pcf
 
         // ~~
 
+        void Write(
+            STREAM & stream
+            )
+        {
+            if ( PreWriteFunction != nullptr )
+            {
+                ( *PreWriteFunction )( *this );
+            }
+
+            stream.WriteNatural64( PointCount );
+            stream.WriteValue( PositionVector );
+            stream.WriteObjectVector( BufferVector );
+
+            if ( PostWriteFunction != nullptr )
+            {
+                ( *PostWriteFunction )( *this );
+            }
+        }
+
+        // ~~
+
         void Dump(
             const VECTOR_<LINK_<COMPONENT>> & component_vector,
             string indentation = ""
@@ -172,54 +193,12 @@ namespace pcf
             }
         }
 
-        // ~~
-
-        void Write(
-            STREAM & stream
-            )
-        {
-            if ( PreWriteFunction != nullptr )
-            {
-                ( *PreWriteFunction )( *this );
-            }
-
-            stream.WriteNatural64( PointCount );
-            stream.WriteValue( PositionVector );
-            stream.WriteObjectVector( BufferVector );
-
-            if ( PostWriteFunction != nullptr )
-            {
-                ( *PostWriteFunction )( *this );
-            }
-        }
-
         // -- OPERATIONS
 
         void Clear(
             )
         {
             BufferVector.clear();
-        }
-
-        // ~~
-
-        void Read(
-            STREAM & stream
-            )
-        {
-            if ( PreReadFunction != nullptr )
-            {
-                ( *PreReadFunction )( *this );
-            }
-
-            stream.ReadNatural64( PointCount );
-            stream.ReadValue( PositionVector );
-            stream.ReadObjectVector( BufferVector );
-
-            if ( PostReadFunction != nullptr )
-            {
-                ( *PostReadFunction )( *this );
-            }
         }
 
         // ~~
@@ -251,6 +230,27 @@ namespace pcf
                     *component_vector[ component_index ],
                     GetComponentOffset( component_vector, component_index )
                     );
+        }
+
+        // ~~
+
+        void Read(
+            STREAM & stream
+            )
+        {
+            if ( PreReadFunction != nullptr )
+            {
+                ( *PreReadFunction )( *this );
+            }
+
+            stream.ReadNatural64( PointCount );
+            stream.ReadValue( PositionVector );
+            stream.ReadObjectVector( BufferVector );
+
+            if ( PostReadFunction != nullptr )
+            {
+                ( *PostReadFunction )( *this );
+            }
         }
     };
 }

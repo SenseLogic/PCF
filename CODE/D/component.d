@@ -57,6 +57,24 @@ class COMPONENT
 
     // -- INQUIRIES
 
+    long GetIntegerValue(
+        double component_value
+        )
+    {
+        return ( ( component_value - BaseValue ) * OneOverPrecision ).floor().to!long();
+    }
+
+    // ~~
+
+    double GetRealValue(
+        long integer_value
+        )
+    {
+        return BaseValue + integer_value.to!double() * Precision;
+    }
+
+    // ~~
+
     void Dump(
         string indentation = ""
         )
@@ -85,24 +103,6 @@ class COMPONENT
         stream.WriteReal64( MinimumValue );
         stream.WriteReal64( MaximumValue );
         stream.WriteReal64( OneOverPrecision );
-    }
-
-    // ~~
-
-    long GetIntegerValue(
-        double component_value
-        )
-    {
-        return ( ( component_value - BaseValue ) * OneOverPrecision ).floor().to!long();
-    }
-
-    // ~~
-
-    double GetRealValue(
-        long integer_value
-        )
-    {
-        return BaseValue + integer_value.to!double() * Precision;
     }
 
     // -- OPERATIONS

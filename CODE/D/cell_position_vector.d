@@ -29,17 +29,6 @@ struct CELL_POSITION_VECTOR
 
     // -- OPERATIONS
 
-    void Read(
-        STREAM stream
-        )
-    {
-        stream.ReadInteger64( X );
-        stream.ReadInteger64( Y );
-        stream.ReadInteger64( Z );
-    }
-
-    // ~~
-
     void SetVector(
         long x,
         long y,
@@ -49,6 +38,17 @@ struct CELL_POSITION_VECTOR
         X = x;
         Y = y;
         Z = z;
+    }
+
+    // ~~
+
+    void Read(
+        STREAM stream
+        )
+    {
+        stream.ReadInteger64( X );
+        stream.ReadInteger64( Y );
+        stream.ReadInteger64( Z );
     }
 }
 

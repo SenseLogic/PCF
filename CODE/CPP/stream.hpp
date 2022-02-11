@@ -86,6 +86,16 @@ namespace pcf
 
         // ~~
 
+        void WriteCharacter(
+            char character
+            )
+        {
+            Scalar.Character = character;
+            OutputFileStream.write( ( const char * )Scalar.OneByteVector, 1 );
+        }
+
+        // ~~
+
         void WriteNatural8(
             uint8_t natural
             )
@@ -326,6 +336,16 @@ namespace pcf
         {
             InputFileStream.read( ( char * )Scalar.OneByteVector, 1 );
             boolean = Scalar.Boolean;
+        }
+
+        // ~~
+
+        void ReadCharacter(
+            char & character
+            )
+        {
+            InputFileStream.read( ( char * )Scalar.OneByteVector, 1 );
+            character = Scalar.Character;
         }
 
         // ~~

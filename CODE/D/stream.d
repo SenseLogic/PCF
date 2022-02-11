@@ -64,6 +64,16 @@ class STREAM
 
     // ~~
 
+    void WriteCharacter(
+        char character
+        )
+    {
+        Scalar.Character = character;
+        File_.rawWrite( Scalar.OneByteArray );
+    }
+
+    // ~~
+
     void WriteNatural8(
         ubyte natural
         )
@@ -275,6 +285,16 @@ class STREAM
     {
         File_.rawRead( Scalar.OneByteArray );
         boolean = Scalar.Boolean;
+    }
+
+    // ~~
+
+    void ReadCharacter(
+        ref char character
+        )
+    {
+        File_.rawRead( Scalar.OneByteArray );
+        character = Scalar.Character;
     }
 
     // ~~

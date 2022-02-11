@@ -131,6 +131,73 @@ namespace pcf
 
         // -- INQUIRIES
 
+        int64_t GetComponentIndex(
+            string component_name
+            )
+        {
+            uint64_t
+                component_index;
+
+            for ( component_index = 0;
+                  component_index < ComponentVector.size();
+                  ++component_index )
+            {
+                if ( ComponentVector[ component_index ]->Name == component_name )
+                {
+                    return ( int64_t )component_index;
+                }
+            }
+
+            return -1;
+        }
+
+        // ~~
+
+        void TransformPositionVector(
+            VECTOR_3 & position_vector
+            )
+        {
+            position_vector.ApplyTranslationRotationTransform(
+                PositionVector,
+                XAxisVector,
+                YAxisVector,
+                ZAxisVector
+                );
+        }
+
+        // ~~
+
+        void Write(
+            STREAM & stream
+            )
+        {
+            if ( PreWriteFunction != nullptr )
+            {
+                ( *PreWriteFunction )( *this );
+            }
+
+            stream.WriteText( Name );
+            stream.WriteNatural64( ColumnCount );
+            stream.WriteNatural64( RowCount );
+            stream.WriteNatural64( PointCount );
+            stream.WriteValue( PositionVector );
+            stream.WriteValue( RotationVector );
+            stream.WriteValue( XAxisVector );
+            stream.WriteValue( YAxisVector );
+            stream.WriteValue( ZAxisVector );
+            stream.WriteObjectVector( ComponentVector );
+            stream.WriteObjectVector( PropertyVector );
+            stream.WriteObjectVector( ImageVector );
+            stream.WriteObjectByValueMap( CellMap );
+
+            if ( PostWriteFunction != nullptr )
+            {
+                ( *PostWriteFunction )( *this );
+            }
+        }
+
+        // ~~
+
         void Dump(
             string indentation = ""
             ) const
@@ -185,59 +252,6 @@ namespace pcf
             }
         }
 
-        // ~~
-
-        void Write(
-            STREAM & stream
-            )
-        {
-            if ( PreWriteFunction != nullptr )
-            {
-                ( *PreWriteFunction )( *this );
-            }
-
-            stream.WriteText( Name );
-            stream.WriteNatural64( ColumnCount );
-            stream.WriteNatural64( RowCount );
-            stream.WriteNatural64( PointCount );
-            stream.WriteValue( PositionVector );
-            stream.WriteValue( RotationVector );
-            stream.WriteValue( XAxisVector );
-            stream.WriteValue( YAxisVector );
-            stream.WriteValue( ZAxisVector );
-            stream.WriteObjectVector( ComponentVector );
-            stream.WriteObjectVector( PropertyVector );
-            stream.WriteObjectVector( ImageVector );
-            stream.WriteObjectByValueMap( CellMap );
-
-            if ( PostWriteFunction != nullptr )
-            {
-                ( *PostWriteFunction )( *this );
-            }
-        }
-
-        // ~~
-
-        uint64_t GetComponentIndex(
-            string component_name
-            )
-        {
-            uint64_t
-                component_index;
-
-            for ( component_index = 0;
-                  component_index < ComponentVector.size();
-                  ++component_index )
-            {
-                if ( ComponentVector[ component_index ]->Name == component_name )
-                {
-                    return component_index;
-                }
-            }
-
-            return -1;
-        }
-
         // -- OPERATIONS
 
         void Clear(
@@ -247,37 +261,6 @@ namespace pcf
             PropertyVector.clear();
             ImageVector.clear();
             CellMap.clear();
-        }
-
-        // ~~
-
-        void Read(
-            STREAM & stream
-            )
-        {
-            if ( PreReadFunction != nullptr )
-            {
-                ( *PreReadFunction )( *this );
-            }
-
-            stream.ReadText( Name );
-            stream.ReadNatural64( ColumnCount );
-            stream.ReadNatural64( RowCount );
-            stream.ReadNatural64( PointCount );
-            stream.ReadValue( PositionVector );
-            stream.ReadValue( RotationVector );
-            stream.ReadValue( XAxisVector );
-            stream.ReadValue( YAxisVector );
-            stream.ReadValue( ZAxisVector );
-            stream.ReadObjectVector( ComponentVector );
-            stream.ReadObjectVector( PropertyVector );
-            stream.ReadObjectVector( ImageVector );
-            stream.ReadObjectByValueMap( CellMap );
-
-            if ( PostReadFunction != nullptr )
-            {
-                ( *PostReadFunction )( *this );
-            }
         }
 
         // ~~
@@ -349,6 +332,37 @@ namespace pcf
                 CellMap[ cell_position_vector ] = cell;
 
                 return cell.Address;
+            }
+        }
+
+        // ~~
+
+        void Read(
+            STREAM & stream
+            )
+        {
+            if ( PreReadFunction != nullptr )
+            {
+                ( *PreReadFunction )( *this );
+            }
+
+            stream.ReadText( Name );
+            stream.ReadNatural64( ColumnCount );
+            stream.ReadNatural64( RowCount );
+            stream.ReadNatural64( PointCount );
+            stream.ReadValue( PositionVector );
+            stream.ReadValue( RotationVector );
+            stream.ReadValue( XAxisVector );
+            stream.ReadValue( YAxisVector );
+            stream.ReadValue( ZAxisVector );
+            stream.ReadObjectVector( ComponentVector );
+            stream.ReadObjectVector( PropertyVector );
+            stream.ReadObjectVector( ImageVector );
+            stream.ReadObjectByValueMap( CellMap );
+
+            if ( PostReadFunction != nullptr )
+            {
+                ( *PostReadFunction )( *this );
             }
         }
     };

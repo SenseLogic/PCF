@@ -82,6 +82,37 @@ class CELL
 
     // ~~
 
+    void Write(
+        STREAM stream
+        )
+    {
+        if ( PreWriteFunction !is null )
+        {
+            PreWriteFunction( this );
+        }
+
+        if ( PreWriteDelegate !is null )
+        {
+            PreWriteDelegate( this );
+        }
+
+        stream.WriteNatural64( PointCount );
+        stream.WriteValue( PositionVector );
+        stream.WriteObjectArray( BufferArray );
+
+        if ( PostWriteFunction !is null )
+        {
+            PostWriteFunction( this );
+        }
+
+        if ( PostWriteDelegate !is null )
+        {
+            PostWriteDelegate( this );
+        }
+    }
+
+    // ~~
+
     void Dump(
         COMPONENT[] component_array,
         string indentation = ""
@@ -120,74 +151,12 @@ class CELL
         }
     }
 
-    // ~~
-
-    void Write(
-        STREAM stream
-        )
-    {
-        if ( PreWriteFunction !is null )
-        {
-            PreWriteFunction( this );
-        }
-
-        if ( PreWriteDelegate !is null )
-        {
-            PreWriteDelegate( this );
-        }
-
-        stream.WriteNatural64( PointCount );
-        stream.WriteValue( PositionVector );
-        stream.WriteObjectArray( BufferArray );
-
-        if ( PostWriteFunction !is null )
-        {
-            PostWriteFunction( this );
-        }
-
-        if ( PostWriteDelegate !is null )
-        {
-            PostWriteDelegate( this );
-        }
-    }
-
     // -- OPERATIONS
 
     void Clear(
         )
     {
         BufferArray.destroy();
-    }
-
-    // ~~
-
-    void Read(
-        STREAM stream
-        )
-    {
-        if ( PreReadFunction !is null )
-        {
-            PreReadFunction( this );
-        }
-
-        if ( PreReadDelegate !is null )
-        {
-            PreReadDelegate( this );
-        }
-
-        stream.ReadNatural64( PointCount );
-        stream.ReadValue( PositionVector );
-        stream.ReadObjectArray( BufferArray );
-
-        if ( PostReadFunction !is null )
-        {
-            PostReadFunction( this );
-        }
-
-        if ( PostReadDelegate !is null )
-        {
-            PostReadDelegate( this );
-        }
     }
 
     // ~~
@@ -219,5 +188,36 @@ class CELL
                 component_array[ component_index ],
                 GetComponentOffset( component_array, component_index )
                 );
+    }
+
+    // ~~
+
+    void Read(
+        STREAM stream
+        )
+    {
+        if ( PreReadFunction !is null )
+        {
+            PreReadFunction( this );
+        }
+
+        if ( PreReadDelegate !is null )
+        {
+            PreReadDelegate( this );
+        }
+
+        stream.ReadNatural64( PointCount );
+        stream.ReadValue( PositionVector );
+        stream.ReadObjectArray( BufferArray );
+
+        if ( PostReadFunction !is null )
+        {
+            PostReadFunction( this );
+        }
+
+        if ( PostReadDelegate !is null )
+        {
+            PostReadDelegate( this );
+        }
     }
 }

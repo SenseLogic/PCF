@@ -27,9 +27,10 @@ namespace pcf
             Version;
         string
             Name;
-        bool
-            XIsRight,
-            ZIsUp;
+        char
+            LeftAxisLetter,
+            UpAxisLetter,
+            ForwardAxisLetter;
         VECTOR_<LINK_<PROPERTY>>
             PropertyVector;
         VECTOR_<LINK_<SCAN>>
@@ -42,8 +43,9 @@ namespace pcf
             OBJECT(),
             Version( 0 ),
             Name(),
-            XIsRight( false ),
-            ZIsUp( false ),
+            LeftAxisLetter( 'X' ),
+            UpAxisLetter( 'Y' ),
+            ForwardAxisLetter( 'Z' ),
             PropertyVector(),
             ScanVector()
         {
@@ -57,8 +59,9 @@ namespace pcf
             OBJECT( cloud ),
             Version( cloud.Version ),
             Name( cloud.Name ),
-            XIsRight( cloud.XIsRight ),
-            ZIsUp( cloud.ZIsUp ),
+            LeftAxisLetter( cloud.LeftAxisLetter ),
+            UpAxisLetter( cloud.UpAxisLetter ),
+            ForwardAxisLetter( cloud.ForwardAxisLetter ),
             PropertyVector( cloud.PropertyVector ),
             ScanVector( cloud.ScanVector )
         {
@@ -79,8 +82,9 @@ namespace pcf
         {
             Version = cloud.Version;
             Name = cloud.Name;
-            XIsRight = cloud.XIsRight;
-            ZIsUp = cloud.ZIsUp;
+            LeftAxisLetter = cloud.LeftAxisLetter;
+            UpAxisLetter = cloud.UpAxisLetter;
+            ForwardAxisLetter = cloud.ForwardAxisLetter;
             PropertyVector = cloud.PropertyVector;
             ScanVector = cloud.ScanVector;
 
@@ -107,48 +111,15 @@ namespace pcf
 
         // ~~
 
-        void Dump(
-            string indentation = ""
-            ) const
-        {
-            uint64_t
-                property_index,
-                scan_index;
-
-            cout << indentation << "Version : " << Version << "\n";
-            cout << indentation << "Name : " << Name << "\n";
-            cout << indentation << "XIsRight : " << GetText( XIsRight ) << "\n";
-            cout << indentation << "ZIsUp : " << GetText( ZIsUp ) << "\n";
-
-            for ( property_index = 0;
-                  property_index < PropertyVector.size();
-                  ++property_index )
-            {
-                cout << indentation << "Property[" << property_index << "] :" << "\n";
-
-                PropertyVector[ property_index ]->Dump( indentation + "    " );
-            }
-
-            for ( scan_index = 0;
-                  scan_index < ScanVector.size();
-                  ++scan_index )
-            {
-                cout << indentation << "Scan[" << scan_index << "] :" << "\n";
-
-                ScanVector[ scan_index ]->Dump( indentation + "    " );
-            }
-        }
-
-        // ~~
-
         void Write(
             STREAM & stream
             )
         {
             stream.WriteNatural32( Version );
             stream.WriteText( Name );
-            stream.WriteBoolean( XIsRight );
-            stream.WriteBoolean( ZIsUp );
+            stream.WriteCharacter( LeftAxisLetter );
+            stream.WriteCharacter( UpAxisLetter );
+            stream.WriteCharacter( ForwardAxisLetter );
             stream.WriteObjectVector( PropertyVector );
             stream.WriteObjectVector( ScanVector );
         }
@@ -259,6 +230,41 @@ namespace pcf
             stream.CloseOutputTextFile();
         }
 
+        // ~~
+
+        void Dump(
+            string indentation = ""
+            ) const
+        {
+            uint64_t
+                property_index,
+                scan_index;
+
+            cout << indentation << "Version : " << Version << "\n";
+            cout << indentation << "Name : " << Name << "\n";
+            cout << indentation << "LeftAxisLetter : " << LeftAxisLetter << "\n";
+            cout << indentation << "UpAxisLetter : " << UpAxisLetter << "\n";
+            cout << indentation << "ForwardAxisLetter : " << ForwardAxisLetter << "\n";
+
+            for ( property_index = 0;
+                  property_index < PropertyVector.size();
+                  ++property_index )
+            {
+                cout << indentation << "Property[" << property_index << "] :" << "\n";
+
+                PropertyVector[ property_index ]->Dump( indentation + "    " );
+            }
+
+            for ( scan_index = 0;
+                  scan_index < ScanVector.size();
+                  ++scan_index )
+            {
+                cout << indentation << "Scan[" << scan_index << "] :" << "\n";
+
+                ScanVector[ scan_index ]->Dump( indentation + "    " );
+            }
+        }
+
         // -- OPERATIONS
 
         void Clear(
@@ -270,14 +276,28 @@ namespace pcf
 
         // ~~
 
+        void SetAxes(
+            string axes
+            )
+        {
+            assert( axes.length() == 3 );
+
+            LeftAxisLetter = axes[ 0 ];
+            UpAxisLetter = axes[ 1 ];
+            ForwardAxisLetter = axes[ 2 ];
+        }
+
+        // ~~
+
         void Read(
             STREAM & stream
             )
         {
             stream.ReadNatural32( Version );
             stream.ReadText( Name );
-            stream.ReadBoolean( XIsRight );
-            stream.ReadBoolean( ZIsUp );
+            stream.ReadCharacter( LeftAxisLetter );
+            stream.ReadCharacter( UpAxisLetter );
+            stream.ReadCharacter( ForwardAxisLetter );
             stream.ReadObjectVector( PropertyVector );
             stream.ReadObjectVector( ScanVector );
         }

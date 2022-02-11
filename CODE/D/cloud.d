@@ -23,13 +23,24 @@ class CLOUD
         Version;
     string
         Name;
-    bool
-        XIsRight,
-        ZIsUp;
+    char
+        LeftAxisLetter,
+        UpAxisLetter,
+        ForwardAxisLetter;
     PROPERTY[]
         PropertyArray;
     SCAN[]
         ScanArray;
+
+    // -- CONSTRUCTORS
+
+    this(
+        )
+    {
+        LeftAxisLetter = 'X';
+        UpAxisLetter = 'Y';
+        ForwardAxisLetter = 'Z';
+    }
 
     // -- INQUIRIES
 
@@ -51,40 +62,15 @@ class CLOUD
 
     // ~~
 
-    void Dump(
-        string indentation = ""
-        )
-    {
-        writeln( indentation, "Version : ", Version );
-        writeln( indentation, "Name : ", Name );
-        writeln( indentation, "XIsRight : ", XIsRight );
-        writeln( indentation, "ZIsUp : ", ZIsUp );
-
-        foreach ( property_index, property; PropertyArray )
-        {
-            writeln( indentation, "Property[", property_index, "] :" );
-
-            property.Dump( indentation ~ "    " );
-        }
-
-        foreach ( scan_index, scan; ScanArray )
-        {
-            writeln( indentation, "Scan[", scan_index, "] :" );
-
-            scan.Dump( indentation ~ "    " );
-        }
-    }
-
-    // ~~
-
     void Write(
         STREAM stream
         )
     {
         stream.WriteNatural32( Version );
         stream.WriteText( Name );
-        stream.WriteBoolean( XIsRight );
-        stream.WriteBoolean( ZIsUp );
+        stream.WriteCharacter( LeftAxisLetter );
+        stream.WriteCharacter( UpAxisLetter );
+        stream.WriteCharacter( ForwardAxisLetter );
         stream.WriteObjectArray( PropertyArray );
         stream.WriteObjectArray( ScanArray );
     }
@@ -184,6 +170,33 @@ class CLOUD
         stream.CloseOutputTextFile();
     }
 
+    // ~~
+
+    void Dump(
+        string indentation = ""
+        )
+    {
+        writeln( indentation, "Version : ", Version );
+        writeln( indentation, "Name : ", Name );
+        writeln( indentation, "LeftAxisLetter : ", LeftAxisLetter );
+        writeln( indentation, "UpAxisLetter : ", UpAxisLetter );
+        writeln( indentation, "ForwardAxisLetter : ", ForwardAxisLetter );
+
+        foreach ( property_index, property; PropertyArray )
+        {
+            writeln( indentation, "Property[", property_index, "] :" );
+
+            property.Dump( indentation ~ "    " );
+        }
+
+        foreach ( scan_index, scan; ScanArray )
+        {
+            writeln( indentation, "Scan[", scan_index, "] :" );
+
+            scan.Dump( indentation ~ "    " );
+        }
+    }
+
     // -- OPERATIONS
 
     void Clear(
@@ -195,14 +208,28 @@ class CLOUD
 
     // ~~
 
+    void SetAxes(
+        string axes
+        )
+    {
+        assert( axes.length == 3 );
+
+        LeftAxisLetter = axes[ 0 ];
+        UpAxisLetter = axes[ 1 ];
+        ForwardAxisLetter = axes[ 2 ];
+    }
+
+    // ~~
+
     void Read(
         STREAM stream
         )
     {
         stream.ReadNatural32( Version );
         stream.ReadText( Name );
-        stream.ReadBoolean( XIsRight );
-        stream.ReadBoolean( ZIsUp );
+        stream.ReadCharacter( LeftAxisLetter );
+        stream.ReadCharacter( UpAxisLetter );
+        stream.ReadCharacter( ForwardAxisLetter );
         stream.ReadObjectArray( PropertyArray );
         stream.ReadObjectArray( ScanArray );
     }

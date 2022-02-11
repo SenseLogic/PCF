@@ -89,17 +89,6 @@ namespace pcf
 
         // -- INQUIRIES
 
-        void Dump(
-            string indentation = ""
-            ) const
-        {
-            cout << indentation << "BaseValue : " << BaseValue << "\n";
-            cout << indentation << "ComponentBitCount : " << ComponentBitCount << "\n";
-            cout << indentation << "BitCount : " << BitCount << "\n";
-        }
-
-        // ~~
-
         void Write(
             STREAM & stream
             )
@@ -110,19 +99,18 @@ namespace pcf
             stream.WriteScalarVector( ByteVector );
         }
 
-        // -- OPERATIONS
+        // ~~
 
-        void Read(
-            STREAM & stream
-            )
+        void Dump(
+            string indentation = ""
+            ) const
         {
-            stream.ReadNatural64( BaseValue );
-            stream.ReadNatural16( ComponentBitCount );
-            stream.ReadNatural64( BitCount );
-            stream.ReadScalarVector( ByteVector );
+            cout << indentation << "BaseValue : " << BaseValue << "\n";
+            cout << indentation << "ComponentBitCount : " << ComponentBitCount << "\n";
+            cout << indentation << "BitCount : " << BitCount << "\n";
         }
 
-        // ~~
+        // -- OPERATIONS
 
         void AddComponentValue(
             COMPONENT & component,
@@ -278,6 +266,18 @@ namespace pcf
             }
 
             return component_value;
+        }
+
+        // ~~
+
+        void Read(
+            STREAM & stream
+            )
+        {
+            stream.ReadNatural64( BaseValue );
+            stream.ReadNatural16( ComponentBitCount );
+            stream.ReadNatural64( BitCount );
+            stream.ReadScalarVector( ByteVector );
         }
     };
 }

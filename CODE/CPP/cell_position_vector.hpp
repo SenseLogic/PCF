@@ -117,17 +117,6 @@ namespace pcf
 
         // -- OPERATIONS
 
-        void Read(
-            STREAM & stream
-            )
-        {
-            stream.ReadInteger64( X );
-            stream.ReadInteger64( Y );
-            stream.ReadInteger64( Z );
-        }
-
-        // ~~
-
         void SetVector(
             int64_t x,
             int64_t y,
@@ -137,6 +126,17 @@ namespace pcf
             X = x;
             Y = y;
             Z = z;
+        }
+
+        // ~~
+
+        void Read(
+            STREAM & stream
+            )
+        {
+            stream.ReadInteger64( X );
+            stream.ReadInteger64( Y );
+            stream.ReadInteger64( Z );
         }
     };
 
