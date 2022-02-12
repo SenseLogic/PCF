@@ -57,7 +57,7 @@ struct VECTOR_3
 
     // ~~
 
-    void GetVector(
+    void GetComponentVector(
         ref VECTOR_3 vector,
         char x_component_letter,
         char y_component_letter,

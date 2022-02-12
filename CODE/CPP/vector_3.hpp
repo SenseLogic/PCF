@@ -144,7 +144,7 @@ namespace pcf
 
         // ~~
 
-        void GetVector(
+        void GetComponentVector(
             VECTOR_3 & vector,
             char x_component_letter,
             char y_component_letter,
