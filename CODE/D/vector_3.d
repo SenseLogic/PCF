@@ -20,30 +20,30 @@ struct VECTOR_3
     // -- INQUIRIES
 
     double GetComponent(
-        char component_letter
+        char axis_component_letter
         )
     {
-        if ( component_letter == 'x' )
+        if ( axis_component_letter == 'x' )
         {
             return -X;
         }
-        else if ( component_letter == 'X' )
+        else if ( axis_component_letter == 'X' )
         {
             return X;
         }
-        if ( component_letter == 'y' )
+        else if ( axis_component_letter == 'y' )
         {
             return -Y;
         }
-        else if ( component_letter == 'Y' )
+        else if ( axis_component_letter == 'Y' )
         {
             return Y;
         }
-        if ( component_letter == 'z' )
+        else if ( axis_component_letter == 'z' )
         {
             return -Z;
         }
-        else if ( component_letter == 'Z' )
+        else if ( axis_component_letter == 'Z' )
         {
             return Z;
         }
@@ -59,14 +59,14 @@ struct VECTOR_3
 
     void GetComponentVector(
         ref VECTOR_3 vector,
-        char x_component_letter,
-        char y_component_letter,
-        char z_component_letter
+        char x_axis_component_letter,
+        char y_axis_component_letter,
+        char z_axis_component_letter
         )
     {
-        vector.X = GetComponent( x_component_letter );
-        vector.Y = GetComponent( y_component_letter );
-        vector.Z = GetComponent( z_component_letter );
+        vector.X = GetComponent( x_axis_component_letter );
+        vector.Y = GetComponent( y_axis_component_letter );
+        vector.Z = GetComponent( z_axis_component_letter );
     }
 
     // ~~

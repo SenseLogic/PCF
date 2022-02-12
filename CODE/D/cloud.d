@@ -24,9 +24,9 @@ class CLOUD
     string
         Name;
     char
-        LeftAxisLetter,
-        UpAxisLetter,
-        ForwardAxisLetter;
+        LeftAxisComponentLetter,
+        UpAxisComponentLetter,
+        ForwardAxisComponentLetter;
     PROPERTY[]
         PropertyArray;
     SCAN[]
@@ -37,9 +37,9 @@ class CLOUD
     this(
         )
     {
-        LeftAxisLetter = 'X';
-        UpAxisLetter = 'Y';
-        ForwardAxisLetter = 'Z';
+        LeftAxisComponentLetter = 'X';
+        UpAxisComponentLetter = 'Y';
+        ForwardAxisComponentLetter = 'Z';
     }
 
     // -- INQUIRIES
@@ -68,9 +68,9 @@ class CLOUD
     {
         stream.WriteNatural32( Version );
         stream.WriteText( Name );
-        stream.WriteCharacter( LeftAxisLetter );
-        stream.WriteCharacter( UpAxisLetter );
-        stream.WriteCharacter( ForwardAxisLetter );
+        stream.WriteCharacter( LeftAxisComponentLetter );
+        stream.WriteCharacter( UpAxisComponentLetter );
+        stream.WriteCharacter( ForwardAxisComponentLetter );
         stream.WriteObjectArray( PropertyArray );
         stream.WriteObjectArray( ScanArray );
     }
@@ -178,9 +178,9 @@ class CLOUD
     {
         writeln( indentation, "Version : ", Version );
         writeln( indentation, "Name : ", Name );
-        writeln( indentation, "LeftAxisLetter : ", LeftAxisLetter );
-        writeln( indentation, "UpAxisLetter : ", UpAxisLetter );
-        writeln( indentation, "ForwardAxisLetter : ", ForwardAxisLetter );
+        writeln( indentation, "LeftAxisComponentLetter : ", LeftAxisComponentLetter );
+        writeln( indentation, "UpAxisComponentLetter : ", UpAxisComponentLetter );
+        writeln( indentation, "ForwardAxisComponentLetter : ", ForwardAxisComponentLetter );
 
         foreach ( property_index, property; PropertyArray )
         {
@@ -208,15 +208,15 @@ class CLOUD
 
     // ~~
 
-    void SetAxes(
-        string axes
+    void SetAxisFormat(
+        string axis_format
         )
     {
-        assert( axes.length == 3 );
+        assert( axis_format.length == 3 );
 
-        LeftAxisLetter = axes[ 0 ];
-        UpAxisLetter = axes[ 1 ];
-        ForwardAxisLetter = axes[ 2 ];
+        LeftAxisComponentLetter = axis_format[ 0 ];
+        UpAxisComponentLetter = axis_format[ 1 ];
+        ForwardAxisComponentLetter = axis_format[ 2 ];
     }
 
     // ~~
@@ -227,9 +227,9 @@ class CLOUD
     {
         stream.ReadNatural32( Version );
         stream.ReadText( Name );
-        stream.ReadCharacter( LeftAxisLetter );
-        stream.ReadCharacter( UpAxisLetter );
-        stream.ReadCharacter( ForwardAxisLetter );
+        stream.ReadCharacter( LeftAxisComponentLetter );
+        stream.ReadCharacter( UpAxisComponentLetter );
+        stream.ReadCharacter( ForwardAxisComponentLetter );
         stream.ReadObjectArray( PropertyArray );
         stream.ReadObjectArray( ScanArray );
     }

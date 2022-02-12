@@ -28,9 +28,9 @@ namespace pcf
         string
             Name;
         char
-            LeftAxisLetter,
-            UpAxisLetter,
-            ForwardAxisLetter;
+            LeftAxisComponentLetter,
+            UpAxisComponentLetter,
+            ForwardAxisComponentLetter;
         VECTOR_<LINK_<PROPERTY>>
             PropertyVector;
         VECTOR_<LINK_<SCAN>>
@@ -43,9 +43,9 @@ namespace pcf
             OBJECT(),
             Version( 0 ),
             Name(),
-            LeftAxisLetter( 'X' ),
-            UpAxisLetter( 'Y' ),
-            ForwardAxisLetter( 'Z' ),
+            LeftAxisComponentLetter( 'X' ),
+            UpAxisComponentLetter( 'Y' ),
+            ForwardAxisComponentLetter( 'Z' ),
             PropertyVector(),
             ScanVector()
         {
@@ -59,9 +59,9 @@ namespace pcf
             OBJECT( cloud ),
             Version( cloud.Version ),
             Name( cloud.Name ),
-            LeftAxisLetter( cloud.LeftAxisLetter ),
-            UpAxisLetter( cloud.UpAxisLetter ),
-            ForwardAxisLetter( cloud.ForwardAxisLetter ),
+            LeftAxisComponentLetter( cloud.LeftAxisComponentLetter ),
+            UpAxisComponentLetter( cloud.UpAxisComponentLetter ),
+            ForwardAxisComponentLetter( cloud.ForwardAxisComponentLetter ),
             PropertyVector( cloud.PropertyVector ),
             ScanVector( cloud.ScanVector )
         {
@@ -82,9 +82,9 @@ namespace pcf
         {
             Version = cloud.Version;
             Name = cloud.Name;
-            LeftAxisLetter = cloud.LeftAxisLetter;
-            UpAxisLetter = cloud.UpAxisLetter;
-            ForwardAxisLetter = cloud.ForwardAxisLetter;
+            LeftAxisComponentLetter = cloud.LeftAxisComponentLetter;
+            UpAxisComponentLetter = cloud.UpAxisComponentLetter;
+            ForwardAxisComponentLetter = cloud.ForwardAxisComponentLetter;
             PropertyVector = cloud.PropertyVector;
             ScanVector = cloud.ScanVector;
 
@@ -117,9 +117,9 @@ namespace pcf
         {
             stream.WriteNatural32( Version );
             stream.WriteText( Name );
-            stream.WriteCharacter( LeftAxisLetter );
-            stream.WriteCharacter( UpAxisLetter );
-            stream.WriteCharacter( ForwardAxisLetter );
+            stream.WriteCharacter( LeftAxisComponentLetter );
+            stream.WriteCharacter( UpAxisComponentLetter );
+            stream.WriteCharacter( ForwardAxisComponentLetter );
             stream.WriteObjectVector( PropertyVector );
             stream.WriteObjectVector( ScanVector );
         }
@@ -242,9 +242,9 @@ namespace pcf
 
             cout << indentation << "Version : " << Version << "\n";
             cout << indentation << "Name : " << Name << "\n";
-            cout << indentation << "LeftAxisLetter : " << LeftAxisLetter << "\n";
-            cout << indentation << "UpAxisLetter : " << UpAxisLetter << "\n";
-            cout << indentation << "ForwardAxisLetter : " << ForwardAxisLetter << "\n";
+            cout << indentation << "LeftAxisComponentLetter : " << LeftAxisComponentLetter << "\n";
+            cout << indentation << "UpAxisComponentLetter : " << UpAxisComponentLetter << "\n";
+            cout << indentation << "ForwardAxisComponentLetter : " << ForwardAxisComponentLetter << "\n";
 
             for ( property_index = 0;
                   property_index < PropertyVector.size();
@@ -276,15 +276,15 @@ namespace pcf
 
         // ~~
 
-        void SetAxes(
-            string axes
+        void SetAxisFormat(
+            string axis_format
             )
         {
-            assert( axes.length() == 3 );
+            assert( axis_format.length() == 3 );
 
-            LeftAxisLetter = axes[ 0 ];
-            UpAxisLetter = axes[ 1 ];
-            ForwardAxisLetter = axes[ 2 ];
+            LeftAxisComponentLetter = axis_format[ 0 ];
+            UpAxisComponentLetter = axis_format[ 1 ];
+            ForwardAxisComponentLetter = axis_format[ 2 ];
         }
 
         // ~~
@@ -295,9 +295,9 @@ namespace pcf
         {
             stream.ReadNatural32( Version );
             stream.ReadText( Name );
-            stream.ReadCharacter( LeftAxisLetter );
-            stream.ReadCharacter( UpAxisLetter );
-            stream.ReadCharacter( ForwardAxisLetter );
+            stream.ReadCharacter( LeftAxisComponentLetter );
+            stream.ReadCharacter( UpAxisComponentLetter );
+            stream.ReadCharacter( ForwardAxisComponentLetter );
             stream.ReadObjectVector( PropertyVector );
             stream.ReadObjectVector( ScanVector );
         }
