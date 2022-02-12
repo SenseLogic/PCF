@@ -2,8 +2,8 @@ module pcf.vector_3;
 
 // -- IMPORTS
 
-import pcf.base : GetText;
 import std.math : cos, sin, sqrt;
+import pcf.base : Abort, GetText;
 import pcf.stream;
 
 // -- TYPES
@@ -18,6 +18,58 @@ struct VECTOR_3
         Z = 0.0;
 
     // -- INQUIRIES
+
+    double GetComponent(
+        char component_letter
+        )
+    {
+        if ( component_letter == 'x' )
+        {
+            return -X;
+        }
+        else if ( component_letter == 'X' )
+        {
+            return X;
+        }
+        if ( component_letter == 'y' )
+        {
+            return -Y;
+        }
+        else if ( component_letter == 'Y' )
+        {
+            return Y;
+        }
+        if ( component_letter == 'z' )
+        {
+            return -Z;
+        }
+        else if ( component_letter == 'Z' )
+        {
+            return Z;
+        }
+        else
+        {
+            Abort( "Invalid component letter" );
+
+            return 0.0;
+        }
+    }
+
+    // ~~
+
+    void GetVector(
+        ref VECTOR_3 vector,
+        char x_component_letter,
+        char y_component_letter,
+        char z_component_letter
+        )
+    {
+        vector.X = GetComponent( x_component_letter );
+        vector.Y = GetComponent( y_component_letter );
+        vector.Z = GetComponent( z_component_letter );
+    }
+
+    // ~~
 
     double GetDistance(
         ref VECTOR_3 position_vector

@@ -2,6 +2,7 @@
 
 // -- IMPORTS
 
+#include "base.hpp"
 #include "stream.hpp"
 #include "vector_3.hpp"
 
@@ -118,6 +119,33 @@ namespace pcf
 
         // -- INQUIRIES
 
+        void GetAxisVectors(
+            VECTOR_3 & x_axis_vector,
+            VECTOR_3 & y_axis_vector,
+            VECTOR_3 & z_axis_vector
+            )
+        {
+            x_axis_vector.SetVector(
+                1.0 - 2.0 * ( Y * Y + Z * Z ),
+                2.0 * ( X * Y + W * Z ),
+                2.0 * ( X * Z - W * Y )
+                );
+
+            y_axis_vector.SetVector(
+                2.0 * ( X * Y - W * Z ),
+                1.0 - 2.0 * ( X * X + Z * Z ),
+                2.0 * ( Y * Z + W * X )
+                );
+
+            z_axis_vector.SetVector(
+                2.0 * ( X * Z + W * Y ),
+                2.0 * ( Y * Z - W * X ),
+                1.0 - 2.0 * ( X * X + Y * Y )
+                );
+        }
+
+        // ~~
+
         void Write(
             STREAM & stream
             ) const
@@ -217,33 +245,6 @@ namespace pcf
             Y *= y_scaling;
             Z *= z_scaling;
             W *= w_scaling;
-        }
-
-        // ~~
-
-        void GetAxisVectors(
-            VECTOR_3 & x_axis_vector,
-            VECTOR_3 & y_axis_vector,
-            VECTOR_3 & z_axis_vector
-            )
-        {
-            x_axis_vector.SetVector(
-                1.0 - 2.0 * ( Y * Y + Z * Z ),
-                2.0 * ( X * Y + W * Z ),
-                2.0 * ( X * Z - W * Y )
-                );
-
-            y_axis_vector.SetVector(
-                2.0 * ( X * Y - W * Z ),
-                1.0 - 2.0 * ( X * X + Z * Z ),
-                2.0 * ( Y * Z + W * X )
-                );
-
-            z_axis_vector.SetVector(
-                2.0 * ( X * Z + W * Y ),
-                2.0 * ( Y * Z - W * X ),
-                1.0 - 2.0 * ( X * X + Y * Y )
-                );
         }
 
         // ~~

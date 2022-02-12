@@ -29,6 +29,19 @@ void Abort(
 
 // ~~
 
+void Abort(
+    string message,
+    Exception exception
+    )
+{
+    PrintError( message );
+    PrintError( exception.msg );
+
+    exit( -1 );
+}
+
+// ~~
+
 string RemoveTrailingZeros(
     string text
     )
