@@ -4,7 +4,8 @@ module pcf.base;
 
 import core.stdc.stdlib : exit;
 import std.conv : to;
-import std.stdio : writeln;
+import std.math : floor;
+import std.stdio : write, writeln;
 import std.string : endsWith, format, indexOf;
 
 // -- FUNCTIONS
@@ -38,6 +39,42 @@ void Abort(
     PrintError( exception.msg );
 
     exit( -1 );
+}
+
+// ~~
+
+void PrintProgress(
+    ref ulong progress,
+    ulong index,
+    ulong count,
+    )
+{
+    ulong
+        old_progress;
+
+    if ( index + 1 == count )
+    {
+        write( "    \r" );
+    }
+    else
+    {
+        old_progress = progress;
+        progress = ( 100.0 * ( index + 1 ).to!double() / count.to!double() ).floor().to!ulong();
+
+        if ( progress < 0 )
+        {
+            progress = 0;
+        }
+        else if ( progress > 100 )
+        {
+            progress = 100;
+        }
+
+        if ( progress != old_progress )
+        {
+            write( progress, "%\r" );
+        }
+    }
 }
 
 // ~~

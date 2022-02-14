@@ -51,6 +51,42 @@ namespace pcf
 
     // ~~
 
+    inline void PrintProgress(
+        uint64_t & progress,
+        uint64_t index,
+        uint64_t count
+        )
+    {
+        uint64_t
+            old_progress;
+
+        if ( index + 1 == count )
+        {
+            cout << "    \r";
+        }
+        else
+        {
+            old_progress = progress;
+            progress = ( uint64_t )floor( 100.0 * ( double )( index + 1 ) / ( double )count );
+
+            if ( progress < 0 )
+            {
+                progress = 0;
+            }
+            else if ( progress > 100 )
+            {
+                progress = 100;
+            }
+
+            if ( progress != old_progress )
+            {
+                cout << progress << "%\r";
+            }
+        }
+    }
+
+    // ~~
+
     inline bool HasPrefix(
         const char * text_character_array,
         const char * prefix_character_array
