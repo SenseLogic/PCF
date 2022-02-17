@@ -62,25 +62,25 @@ namespace pcf
 
         if ( index + 1 == count )
         {
-            cout << "    \r";
+            cout << "      \r";
         }
         else
         {
             old_progress = progress;
-            progress = ( uint64_t )floor( 100.0 * ( double )( index + 1 ) / ( double )count );
+            progress = ( uint64_t )floor( 1000.0 * ( double )( index + 1 ) / ( double )count );
 
             if ( progress < 0 )
             {
                 progress = 0;
             }
-            else if ( progress > 100 )
+            else if ( progress > 1000 )
             {
-                progress = 100;
+                progress = 1000;
             }
 
             if ( progress != old_progress )
             {
-                cout << progress << "%\r";
+                cout << ( progress / 10 ) << "." << ( progress % 10 ) << "%\r";
             }
         }
     }

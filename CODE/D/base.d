@@ -54,25 +54,25 @@ void PrintProgress(
 
     if ( index + 1 == count )
     {
-        write( "    \r" );
+        write( "      \r" );
     }
     else
     {
         old_progress = progress;
-        progress = ( 100.0 * ( index + 1 ).to!double() / count.to!double() ).floor().to!ulong();
+        progress = ( 1000.0 * ( index + 1 ).to!double() / count.to!double() ).floor().to!ulong();
 
         if ( progress < 0 )
         {
             progress = 0;
         }
-        else if ( progress > 100 )
+        else if ( progress > 1000 )
         {
-            progress = 100;
+            progress = 1000;
         }
 
         if ( progress != old_progress )
         {
-            write( progress, "%\r" );
+            write( progress / 10, ".", progress % 10, "%\r" );
         }
     }
 }
