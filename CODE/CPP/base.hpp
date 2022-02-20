@@ -11,9 +11,9 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-using namespace std;
-
 #include "vector_.hpp"
+
+using namespace std;
 
 // -- FUNCTIONS
 
@@ -29,7 +29,7 @@ using namespace std;
 
 // ~~
 
-namespace pcf
+namespace base
 {
     inline void PrintError(
         string message

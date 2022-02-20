@@ -5,13 +5,13 @@ module pcf.cloud;
 import std.conv : to;
 import std.stdio : writeln;
 import std.string : strip;
+import base.stream;
+import base.vector_3;
 import pcf.cell;
 import pcf.component;
 import pcf.compression;
 import pcf.property;
 import pcf.scan;
-import pcf.stream;
-import pcf.vector_3;
 
 // -- TYPES
 

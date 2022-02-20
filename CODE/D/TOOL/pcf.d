@@ -5,7 +5,7 @@ module pcf.pcf;
 import std.conv : to;
 import std.stdio : writeln;
 import std.string : endsWith, startsWith;
-import pcf.base;
+import base.base;
 import pcf.cloud;
 import pcf.compression;
 

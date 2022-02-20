@@ -6,7 +6,7 @@
 
 // -- TYPES
 
-namespace pcf
+namespace base
 {
     struct OBJECT
     {

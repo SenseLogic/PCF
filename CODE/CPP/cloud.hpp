@@ -6,13 +6,19 @@
 #include "cell.hpp"
 #include "component.hpp"
 #include "compression.hpp"
-#include "stream.hpp"
 #include "link_.hpp"
 #include "object.hpp"
 #include "property.hpp"
 #include "scan.hpp"
+#include "stream.hpp"
 #include "vector_.hpp"
 #include "vector_3.hpp"
+
+using base::LINK_;
+using base::OBJECT;
+using base::STREAM;
+using base::VECTOR_;
+using base::VECTOR_3;
 
 // -- TYPES
 

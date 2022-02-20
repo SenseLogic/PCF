@@ -5,11 +5,11 @@ module pcf.cell;
 import std.container.array;
 import std.container.util;
 import std.stdio : write, writeln;
+import base.stream;
 import pcf.buffer;
 import pcf.cell_position_vector;
 import pcf.component;
 import pcf.compression;
-import pcf.stream;
 
 // -- TYPES
 

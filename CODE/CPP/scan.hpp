@@ -17,6 +17,12 @@
 #include "vector_3.hpp"
 #include "vector_4.hpp"
 
+using base::MAP_;
+using base::LINK_;
+using base::VECTOR_;
+using base::VECTOR_3;
+using base::VECTOR_4;
+
 // -- TYPES
 
 namespace pcf

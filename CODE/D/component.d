@@ -5,8 +5,8 @@ module pcf.component;
 import std.conv : to;
 import std.math : floor;
 import std.stdio : writeln;
+import base.stream;
 import pcf.compression;
-import pcf.stream;
 
 // -- TYPES
 

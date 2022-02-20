@@ -6,6 +6,9 @@
 #include "stream.hpp"
 #include "object.hpp"
 
+using base::STREAM;
+using base::OBJECT;
+
 // -- TYPES
 
 namespace pcf

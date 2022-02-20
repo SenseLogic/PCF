@@ -1,4 +1,4 @@
-module pcf.base;
+module base.base;
 
 // -- IMPORTS
 

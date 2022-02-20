@@ -3,11 +3,12 @@
 // -- IMPORTS
 
 #include <vector>
+
 using namespace std;
 
 // -- TYPES
 
-namespace pcf
+namespace base
 {
     template <typename _ELEMENT_>
     struct VECTOR_ :

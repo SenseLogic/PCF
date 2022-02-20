@@ -4,8 +4,11 @@
 
 #include "base.hpp"
 #include "compression.hpp"
-#include "stream.hpp"
 #include "object.hpp"
+#include "stream.hpp"
+
+using base::OBJECT;
+using base::STREAM;
 
 // -- TYPES
 

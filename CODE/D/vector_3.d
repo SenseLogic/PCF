@@ -1,10 +1,10 @@
-module pcf.vector_3;
+module base.vector_3;
 
 // -- IMPORTS
 
 import std.math : cos, sin, sqrt;
-import pcf.base : Abort, GetText;
-import pcf.stream;
+import base.base : Abort, GetText;
+import base.stream;
 
 // -- TYPES
 

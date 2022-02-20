@@ -4,10 +4,10 @@ module pcf.buffer;
 
 import std.conv : to;
 import std.stdio : writeln;
+import base.scalar;
+import base.stream;
 import pcf.component;
 import pcf.compression;
-import pcf.scalar;
-import pcf.stream;
 
 // -- TYPES
 

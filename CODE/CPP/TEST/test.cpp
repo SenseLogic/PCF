@@ -5,6 +5,7 @@
 #include "cloud.hpp"
 #include "compression.hpp"
 #include "scan.hpp"
+using namespace base;
 using namespace pcf;
 
 // -- VARIABLES

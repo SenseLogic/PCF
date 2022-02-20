@@ -10,6 +10,11 @@
 #include "scalar.hpp"
 #include "vector_.hpp"
 
+using base::OBJECT;
+using base::SCALAR;
+using base::STREAM;
+using base::VECTOR_;
+
 // -- TYPES
 
 namespace pcf

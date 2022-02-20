@@ -3,11 +3,16 @@
 // -- IMPORTS
 
 #include "base.hpp"
-#include "stream.hpp"
 #include "property.hpp"
 #include "link_.hpp"
 #include "object.hpp"
+#include "stream.hpp"
 #include "vector_.hpp"
+
+using base::LINK_;
+using base::OBJECT;
+using base::STREAM;
+using base::VECTOR_;
 
 // -- TYPES
 

@@ -3,8 +3,8 @@ module pcf.image;
 // -- IMPORTS
 
 import std.stdio : writeln;
+import base.stream;
 import pcf.property;
-import pcf.stream;
 
 // -- TYPES
 

@@ -1,11 +1,11 @@
-module pcf.vector_4;
+module base.vector_4;
 
 // -- IMPORTS
 
 import std.math : sqrt;
-import pcf.base : GetText;
-import pcf.stream;
-import pcf.vector_3;
+import base.base : GetText;
+import base.stream;
+import base.vector_3;
 
 // -- TYPES
 

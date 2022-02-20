@@ -3,6 +3,7 @@
 #include "base.hpp"
 #include "cloud.hpp"
 #include "compression.hpp"
+using namespace base;
 using namespace pcf;
 
 // -- VARIABLES

@@ -3,15 +3,15 @@ module pcf.scan;
 // -- IMPORTS
 
 import std.stdio : writeln;
+import base.stream;
+import base.vector_3;
+import base.vector_4;
 import pcf.cell;
 import pcf.cell_position_vector;
 import pcf.component;
 import pcf.compression;
 import pcf.image;
 import pcf.property;
-import pcf.stream;
-import pcf.vector_3;
-import pcf.vector_4;
 
 // -- TYPES
 

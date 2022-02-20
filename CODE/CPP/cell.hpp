@@ -11,6 +11,11 @@
 #include "stream.hpp"
 #include "vector_.hpp"
 
+using base::LINK_;
+using base::OBJECT;
+using base::STREAM;
+using base::VECTOR_;
+
 // -- TYPES
 
 namespace pcf

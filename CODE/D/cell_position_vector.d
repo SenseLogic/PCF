@@ -2,8 +2,8 @@ module pcf.cell_position_vector;
 
 // -- IMPORTS
 
-import pcf.base : GetText;
-import pcf.stream;
+import base.base : GetText;
+import base.stream;
 
 // -- TYPES
 

@@ -2,7 +2,7 @@
 
 // -- TYPES
 
-namespace pcf
+namespace base
 {
     template <typename _TYPE_>
     struct POINTER_

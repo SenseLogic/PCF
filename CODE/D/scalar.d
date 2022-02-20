@@ -1,4 +1,4 @@
-module pcf.scalar;
+module base.scalar;
 
 // -- TYPES
 

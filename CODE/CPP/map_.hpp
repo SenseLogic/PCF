@@ -3,11 +3,12 @@
 // -- IMPORTS
 
 #include <map>
+
 using namespace std;
 
 // -- TYPES
 
-namespace pcf
+namespace base
 {
     template <typename _KEY_, typename _ELEMENT_>
     struct MAP_ :

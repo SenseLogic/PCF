@@ -3,7 +3,7 @@ module pcf.property;
 // -- IMPORTS
 
 import std.stdio : writeln;
-import pcf.stream;
+import base.stream;
 
 // -- TYPES
 
