@@ -151,6 +151,44 @@ struct VECTOR_4
 
     // ~~
 
+    void Clamp(
+        double minimum,
+        double maximum
+        )
+    {
+        if ( X < minimum )
+        {
+            X = minimum;
+        }
+
+        if ( X > maximum )
+        {
+            X = maximum;
+        }
+
+        if ( Y < minimum )
+        {
+            Y = minimum;
+        }
+
+        if ( Y > maximum )
+        {
+            Y = maximum;
+        }
+
+        if ( Z < minimum )
+        {
+            Z = minimum;
+        }
+
+        if ( Z > maximum )
+        {
+            Z = maximum;
+        }
+    }
+
+    // ~~
+
     void SetFromAxisVectors(
         ref VECTOR_3 x_axis_vector,
         ref VECTOR_3 y_axis_vector,
